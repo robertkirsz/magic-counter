@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Counter from '@/components/Counter'
-import Dice from '@/components/Dice'
-import Statistics from '@/components/Statistics'
-import Hello from '@/components/Hello'
+import Counter from '@/components/routes/Counter'
+import Dice from '@/components/routes/Dice'
+import Statistics from '@/components/routes/Statistics'
+import Hello from '@/components/routes/Hello'
 
 Vue.use(Router)
 
@@ -12,17 +12,19 @@ export default new Router({
     {
       path: '/',
       name: 'Counter',
-      component: Counter
-    },
-    {
-      path: '/dice',
-      name: 'Dice',
-      component: Dice
-    },
-    {
-      path: '/statistics',
-      name: 'Statistics',
-      component: Statistics
+      component: Counter,
+      children: [
+        {
+          path: '/dice',
+          name: 'Dice',
+          component: Dice
+        },
+        {
+          path: '/statistics',
+          name: 'Statistics',
+          component: Statistics
+        }
+      ]
     },
     {
       path: '/hello',

@@ -32,4 +32,17 @@ body,
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
+.fade-enter-active {
+  animation: fade .1s linear;
+}
+
+.fade-leave-active {
+  animation: fade .1s linear reverse;
+}
+
+@keyframes fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 </style>
