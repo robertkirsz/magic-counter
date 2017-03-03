@@ -4,47 +4,49 @@
  -->
 
 <template>
-  <div class="settings-menu">
+  <div class="settings-menu" :class="{ opened: settingsMenuOpened }">
     <div class="icons">
       <span
-        class="icon poison"
-        title="Poison counter"
-        :disabled="noPlayers"
+        v-for="button in buttons"
+        :key="button.class"
+        class="icon"
+        :class="button.class"
+        :title="button.title"
+        :disabled="button.disabled"
+        @click="button.action"
       />
-      <span
-        class="icon commander"
-        title="Commander damage"
-        :disabled="noPlayers"
-      />
-      <span
-        class="icon dice"
-        title="Dice"
-      />
-      <span
-        class="icon fa fa-paint-brush"
-        title="Change color"
-      />
-      <span
-        class="icon fa fa-undo"
-        title="Reset current game"
-      />
-      <span
-        class="icon new-game"
-        title="Start new game"
-      >
-        New game
-      </span>
     </div>
-    <span class="fa fa-cog" />
+    <span
+      class="fa fa-cog"
+      :style="settingsMenuOpened && { transform: 'rotate(-90deg)' }"
+      @click="$store.dispatch('toggleSettingsMenu')"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: 'SettingsMenu',
+  data () {
+    return {
+      buttons: [
+        { class: 'poison', title: 'Posion counter', action: () => console.log('a'), disabled: this.noPlayers },
+        { class: 'commander', title: 'Commander damage', action: () => console.log('a'), disabled: this.noPlayers },
+        { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
+        { class: 'fa fa-undo', title: 'Reset current game', action: () => console.log('a') },
+        { class: 'new-game', title: 'Start new game', action: () => console.log('a') }
+      ]
+    }
+  },
   computed: {
+    settingsMenuOpened () {
+      return this.$store.state.app.settingsMenuOpened
+    },
+    numberOfPlayers () {
+      return this.$store.getters.numberOfPlayers
+    },
     noPlayers () {
-      return this.$store.getters.numberOfPlayers === 0
+      return this.numberOfPlayers === 0
     }
   }
 }
@@ -52,6 +54,9 @@ export default {
 
 <style scoped>
 .settings-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 	position: absolute;
 	bottom: 50%;
 	width: 100%;
@@ -62,8 +67,12 @@ export default {
 	text-align: right;
 	transition: background-color 0.3s ease, opacity 0.4s ease;
 	overflow: hidden;
-	z-index: 2;
   transform: translateY(50%);
+}
+
+.icon,
+.fa {
+  cursor: pointer;
 }
 
 .settings-menu.opened {
@@ -76,8 +85,6 @@ export default {
   pointer-events: auto;
 }
 
-.settings-menu.opened.fa-cog { transform: rotate(-90deg); }
-
 .settings-menu.hidden {
 	transition: background-color 0.3s ease, opacity 0.3s ease 0.3s;
 	pointer-events: none;
@@ -87,12 +94,8 @@ export default {
 .fa-cog {	transition: all 0.3s; }
 
 .icons {
-	position: relative;
-	left: 250px;
-	opacity: 0;
-	float: left;
-	pointer-events: none;
-	transition: all 0.5s ease;
+  display: flex;
+  align-items: center;
 }
 
 .icon {
@@ -109,8 +112,6 @@ export default {
 .poison,
 .commander,
 .dice {
-	position: relative;
-	top: 6px;
 	height: 42px;
 	background-position: 50%;
 	background-repeat: no-repeat;
@@ -135,7 +136,6 @@ export default {
 
 .new-game {
 	position: relative;
-	bottom: 2px;
 	max-width: 45px;
 	border: 2px solid;
 	border-radius: 5px;
@@ -144,6 +144,10 @@ export default {
 	font-weight: 600;
 	text-align: center;
 	text-transform: uppercase;
+}
+
+.new-game::after {
+  content: "New game"
 }
 
 [disabled] {

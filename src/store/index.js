@@ -1,28 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import app from '@/store/modules/app'
+import players from '@/store/modules/players'
 
 Vue.use(Vuex)
 
+const debug = process.env.NODE_ENV !== 'production'
+
 export default new Vuex.Store({
-  strict: process.env.NODE_ENV !== 'production',
-  state: {
-    players: [
-      { id: 0 },
-      { id: 1 }
-    ]
+  modules: {
+    app,
+    players
   },
-  getters: {
-    numberOfPlayers: state => state.players.length
-  },
-  mutations: {
-    addPlayer (state) {
-      // if (state.players.length < 6) {
-      state.players.push({ id: Date.now() })
-      // }
-    },
-    removePlayer (state) {
-      state.players.pop()
-    }
-  },
-  actions: {}
+  strict: debug
 })
