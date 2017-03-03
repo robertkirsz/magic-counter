@@ -1,3 +1,9 @@
+<!--
+  Allows players to "roll" dice. It creates a "Die" component
+  for each player that can be "rolled" by clicking on it.
+  That generates a random number from 1 to 6.
+ -->
+
 <template>
   <backdrop>
     <div class="container">
@@ -22,7 +28,7 @@ import PlayerTile from '@/components/layout/PlayerTile'
 import Die from '@/components/Die'
 
 export default {
-  name: 'dice',
+  name: 'DiceScreen',
   components: { Backdrop, PlayerTile, Die },
   data () {
     return {

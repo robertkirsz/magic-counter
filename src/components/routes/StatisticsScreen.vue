@@ -10,7 +10,7 @@
 import Backdrop from '@/components/layout/Backdrop'
 
 export default {
-  name: 'statistics',
+  name: 'StatisticsScreen',
   components: { Backdrop }
 }
 </script>

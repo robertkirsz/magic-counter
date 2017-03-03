@@ -1,17 +1,23 @@
+<!--
+  Displays results of a die roll
+ -->
+
 <template>
   <div class="die">
     <transition
       enter-active-class="animated fadeInRight"
       leave-active-class="animated fadeOutLeft"
     >
-      <span class="number" :key="number">{{ number }}</span>
+      <span class="number" :key="number">
+        {{ number }}
+      </span>
     </transition>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'die',
+  name: 'Die',
   props: { number: Number }
 }
 </script>

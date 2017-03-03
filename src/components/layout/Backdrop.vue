@@ -1,3 +1,10 @@
+<!--
+  A dark backdrop used as a background for modals
+  and nested routes like dice screen. It goes back
+  to previous route when clicked on, so child components
+  should stop propagation of their click events.
+ -->
+
 <template>
   <div class="backdrop" @click="$router.replace('/')">
     <slot />

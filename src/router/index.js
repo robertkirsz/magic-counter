@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Counter from '@/components/routes/Counter'
-import Dice from '@/components/routes/Dice'
-import Statistics from '@/components/routes/Statistics'
+import DiceScreen from '@/components/routes/DiceScreen'
+import StatisticsScreen from '@/components/routes/StatisticsScreen'
 import Hello from '@/components/routes/Hello'
 
 Vue.use(Router)
@@ -16,13 +16,13 @@ export default new Router({
       children: [
         {
           path: '/dice',
-          name: 'Dice',
-          component: Dice
+          name: 'DiceScreen',
+          component: DiceScreen
         },
         {
           path: '/statistics',
-          name: 'Statistics',
-          component: Statistics
+          name: 'StatisticsScreen',
+          component: StatisticsScreen
         }
       ]
     },

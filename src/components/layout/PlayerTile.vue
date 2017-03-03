@@ -1,3 +1,9 @@
+<!--
+  This component creates a space on the screen for each
+  player. It also rotates each space accordingly to its
+  order so that every even tile is rotated by 180 degree.
+-->
+
 <template>
   <div class="player-tile" :style="style">
     <slot />
@@ -6,7 +12,7 @@
 
 <script>
 export default {
-  name: 'player-tile',
+  name: 'PlayerTile',
   computed: {
     numberOfPlayers () {
       return this.$store.getters.numberOfPlayers
