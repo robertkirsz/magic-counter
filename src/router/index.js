@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import CounterScreen from '@/components/routes/CounterScreen'
-import DiceScreen from '@/components/routes/DiceScreen'
-import StatisticsScreen from '@/components/routes/StatisticsScreen'
-import Hello from '@/components/routes/Hello'
+import CounterScreen from '@/routes/CounterScreen'
+import DiceScreen from '@/routes/DiceScreen'
+import StatisticsScreen from '@/routes/StatisticsScreen'
+import Hello from '@/routes/Hello'
 
 Vue.use(Router)
 
