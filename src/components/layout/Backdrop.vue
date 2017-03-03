@@ -1,5 +1,5 @@
 <template>
-  <div class="backdrop" @click="$router.go(-1)">
+  <div class="backdrop" @click="$router.replace('/')">
     <slot />
   </div>
 </template>

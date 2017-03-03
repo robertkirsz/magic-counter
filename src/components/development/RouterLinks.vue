@@ -9,8 +9,15 @@
 
 <style scoped>
   div {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
     margin: 8px 0;
-    text-align: center;
+    z-index: 100;
   }
 
   a {
