@@ -26,23 +26,23 @@ body,
   padding: 0;
 }
 
+* {
+	box-sizing: border-box;
+	user-drag: none;
+	user-select: none;
+	outline: none;
+	cursor: inherit;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  cursor: default;
 }
 
-.fade-enter-active {
-  animation: fade .1s linear;
-}
-
-.fade-leave-active {
-  animation: fade .1s linear reverse;
-}
-
-@keyframes fade {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+.animated {
+  animation-duration: 0.2s;
 }
 </style>

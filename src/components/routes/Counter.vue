@@ -1,7 +1,10 @@
 <template>
   <div class="counter">
     <h2>Counter</h2>
-    <transition name="fade">
+    <transition
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
       <router-view />
     </transition>
   </div>
