@@ -1,33 +1,65 @@
 <template>
   <backdrop>
     <div class="container">
-      <die
-        v-for="value in values"
-        :number="value"
-        @click.native.stop="rollDice"
-      />
+      <player-tile
+        v-for="(player, index) in numberOfPlayers"
+        :key="player.id"
+      >
+        <die
+          :number="dice[index]"
+          @click.native.stop="rollDie(index)"
+        />
+      </player-tile>
     </div>
   </backdrop>
 </template>
 
 <script>
+import _times from 'lodash/times'
 import _random from 'lodash/random'
 import Backdrop from '@/components/layout/Backdrop'
+import PlayerTile from '@/components/layout/PlayerTile'
 import Die from '@/components/Die'
 
 export default {
   name: 'dice',
-  components: { Backdrop, Die },
+  components: { Backdrop, PlayerTile, Die },
   data () {
     return {
-      values: [_random(1, 3), _random(1, 3)]
+      dice: []
+    }
+  },
+  beforeMount () {
+    this.rollDice()
+  },
+  computed: {
+    numberOfPlayers () {
+      return this.$store.getters.numberOfPlayers
+    },
+    lastPlayerIndex () {
+      return this.numberOfPlayers - 1
     }
   },
   methods: {
     rollDice () {
-      this.values = this.values.map(() => {
-        return _random(1, 3)
-      })
+      this.dice = _times(this.numberOfPlayers, () => _random(1, 6))
+    },
+    rollDie (index) {
+      const oldValue = this.dice[index]
+      let newValue
+
+      do {
+        newValue = _random(1, 6)
+      } while (newValue === oldValue)
+
+      this.$set(this.dice, index, newValue)
+    }
+  },
+  watch: {
+    numberOfPlayers (newNumber, oldNumber) {
+      if (newNumber > oldNumber) {
+        this.rollDie(this.lastPlayerIndex)
+      }
     }
   }
 }
@@ -37,7 +69,9 @@ export default {
 .container {
   flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  flex-flow: column-reverse wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
 }
 </style>
