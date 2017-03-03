@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Counter from '@/components/routes/Counter'
+import CounterScreen from '@/components/routes/CounterScreen'
 import DiceScreen from '@/components/routes/DiceScreen'
 import StatisticsScreen from '@/components/routes/StatisticsScreen'
 import Hello from '@/components/routes/Hello'
@@ -11,8 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Counter',
-      component: Counter,
+      name: 'CounterScreen',
+      component: CounterScreen,
       children: [
         {
           path: '/dice',
