@@ -2,16 +2,19 @@
   <div id="app">
     <router-links />
     <router-view />
+    <modify-players />
   </div>
 </template>
 
 <script>
 import RouterLinks from '@/components/development/RouterLinks'
+import ModifyPlayers from '@/components/development/ModifyPlayers'
 
 export default {
   name: 'app',
   components: {
-    RouterLinks
+    RouterLinks,
+    ModifyPlayers
   }
 }
 </script>
@@ -32,6 +35,11 @@ body,
 	user-select: none;
 	outline: none;
 	cursor: inherit;
+}
+
+a,
+button {
+  cursor: pointer;
 }
 
 #app {
