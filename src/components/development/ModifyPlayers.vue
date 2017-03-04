@@ -1,6 +1,6 @@
 <template>
   <div v-once>
-    <button @click="$store.commit('addPlayer')">Add player</button>
+    <button @click="$store.dispatch('addPlayer')">Add player</button>
     <button @click="$store.dispatch('removePlayer')">Remove player</button>
   </div>
 </template>

@@ -8,8 +8,8 @@
       enter-active-class="animated fadeInRight"
       leave-active-class="animated fadeOutLeft"
     >
-      <span class="number" :key="number">
-        {{ number }}
+      <span class="number" :key="value">
+        {{ value }}
       </span>
     </transition>
   </div>
@@ -18,7 +18,7 @@
 <script>
 export default {
   name: 'Die',
-  props: { number: Number }
+  props: { value: Number }
 }
 </script>
 

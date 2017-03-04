@@ -5,17 +5,22 @@
 
 <template>
   <div class="settings-menu" :class="{ opened: settingsMenuOpened }">
-    <div class="icons">
-      <span
-        v-for="button in buttons"
-        :key="button.class"
-        class="icon"
-        :class="button.class"
-        :title="button.title"
-        :disabled="button.disabled"
-        @click="button.action"
-      />
-    </div>
+    <transition
+      enter-active-class="animated fadeInRight"
+      leave-active-class="animated fadeOutRight"
+    >
+      <div class="icons" v-if="settingsMenuOpened">
+        <span
+          v-for="button in buttons"
+          :key="button.class"
+          class="icon"
+          :class="button.class"
+          :title="button.title"
+          :disabled="button.disableable && noPlayers"
+          @click="button.action"
+        />
+      </div>
+    </transition>
     <span
       class="fa fa-cog"
       :style="settingsMenuOpened && { transform: 'rotate(-90deg)' }"
@@ -30,8 +35,8 @@ export default {
   data () {
     return {
       buttons: [
-        { class: 'poison', title: 'Posion counter', action: () => console.log('a'), disabled: this.noPlayers },
-        { class: 'commander', title: 'Commander damage', action: () => console.log('a'), disabled: this.noPlayers },
+        { class: 'poison', title: 'Posion counter', action: () => console.log('a'), disableable: true },
+        { class: 'commander', title: 'Commander damage', action: () => console.log('a'), disableable: true },
         { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
         { class: 'fa fa-undo', title: 'Reset current game', action: () => console.log('a') },
         { class: 'new-game', title: 'Start new game', action: () => console.log('a') }
@@ -61,17 +66,17 @@ export default {
 	bottom: 50%;
 	width: 100%;
 	background-color: transparent;
-	color: rgba(0, 0, 0, 0.5);
 	font-size: 2.5em;
-	padding: 0 5px;
+	padding: 5px;
 	text-align: right;
 	transition: background-color 0.3s ease, opacity 0.4s ease;
-	overflow: hidden;
   transform: translateY(50%);
 }
 
 .icon,
 .fa {
+  color: black;
+  opacity: 0.5;
   cursor: pointer;
 }
 
@@ -91,7 +96,15 @@ export default {
 	opacity: 0;
 }
 
-.fa-cog {	transition: all 0.3s; }
+.fa-cog {
+  margin-left: auto;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.fa-cog:active {
+  opacity: 0.85;
+}
 
 .icons {
   display: flex;
@@ -101,7 +114,7 @@ export default {
 .icon {
 	display: inline-block;
 	margin-right: 10px;
-	transition: all 0.3s ease;
+	transition: all 0.3s;
 }
 
 .icon:active {
@@ -116,7 +129,6 @@ export default {
 	background-position: 50%;
 	background-repeat: no-repeat;
 	background-size: contain;
-	opacity: 0.5;
 }
 
 .poison {
