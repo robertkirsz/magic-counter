@@ -6,30 +6,31 @@
 
 <template>
   <backdrop>
-    <div class="container">
-      <player-tile
-        v-for="(player, index) in numberOfPlayers"
-        :key="player.id"
-      >
-        <die
-          :number="dice[index]"
-          @click.native.stop="rollDie(index)"
-        />
-      </player-tile>
-    </div>
+    <tiles :items="dice">
+      <template slot="item" scope="props">
+        <tile>
+          <die
+            :value="props.item"
+            @click.native.stop="rollDie(props.index)"
+          />
+        </tile>
+      </template>
+    </tiles>
   </backdrop>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import _times from 'lodash/times'
 import _random from 'lodash/random'
 import Backdrop from '@/components/layout/Backdrop'
-import PlayerTile from '@/components/layout/PlayerTile'
+import Tiles from '@/components/layout/Tiles'
+import Tile from '@/components/layout/Tile'
 import Die from '@/components/Die'
 
 export default {
   name: 'DiceScreen',
-  components: { Backdrop, PlayerTile, Die },
+  components: { Backdrop, Tiles, Tile, Die },
   data () {
     return {
       dice: []
@@ -39,12 +40,10 @@ export default {
     this.rollDice()
   },
   computed: {
-    numberOfPlayers () {
-      return this.$store.getters.numberOfPlayers
-    },
-    lastPlayerIndex () {
-      return this.numberOfPlayers - 1
-    }
+    ...mapGetters([
+      'numberOfPlayers',
+      'lastPlayerIndex'
+    ])
   },
   methods: {
     rollDice () {
@@ -62,22 +61,9 @@ export default {
     }
   },
   watch: {
-    numberOfPlayers (newNumber, oldNumber) {
-      if (newNumber > oldNumber) {
-        this.rollDie(this.lastPlayerIndex)
-      }
+    numberOfPlayers () {
+      this.rollDice()
     }
   }
 }
 </script>
-
-<style scoped>
-.container {
-  flex: 1;
-  display: flex;
-  flex-flow: column-reverse wrap;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-}
-</style>
