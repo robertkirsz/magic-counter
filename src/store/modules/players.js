@@ -46,6 +46,9 @@ const actions = {
     const player = getters.getElementById('players', id)
     player.data.life -= amount
     commit(types.DECREASE_LIFE, player)
+  },
+  chooseColor (context, color) {
+    console.warn('color', color)
   }
 }
 

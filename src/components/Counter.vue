@@ -88,7 +88,7 @@ export default {
 	left: 50%;
 	transform: translateX(-50%);
 	.count:after {
-		background-image: url(../assets/poison.svg);
+		background-image: url("../assets/poison.svg");
 		background-position: 50% 50%;
 	}
 }
@@ -97,7 +97,7 @@ export default {
 	right: 50%;
 	transform: translateX(50%);
 	.count:after {
-		background-image: url(../assets/commander.svg);
+		background-image: url("../assets/commander.svg");
 		background-position: 50% 35%;
 	}
 }

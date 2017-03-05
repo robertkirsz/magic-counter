@@ -1,11 +1,12 @@
 <template>
   <div class="player">
-    <counter
+    <color-picker @colorChosen="chooseColor" />
+    <!-- <counter
       type="life"
       :value="player.life"
       @minusClick="decreaseLife(player.id, 1)"
       @plusClick="increaseLife(player.id, 1)"
-    />
+    /> -->
     <!-- <div class="other">
       <counter
         :value="20"
@@ -22,21 +23,23 @@
 <script>
 import { mapActions } from 'vuex'
 import Counter from '@/components/Counter'
+import ColorPicker from '@/components/ColorPicker'
 
 export default {
   name: 'Player',
-  components: { Counter },
+  components: { Counter, ColorPicker },
   props: { player: Object },
   methods: {
     ...mapActions([
       'increaseLife',
-      'decreaseLife'
+      'decreaseLife',
+      'chooseColor'
     ])
   }
 }
 </script>
 
-<style type="scss" scoped>
+<style scoped>
 .player {
   display: flex;
   flex-flow: column nowrap;
