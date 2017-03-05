@@ -44,11 +44,11 @@ export default {
   align-items: center;
   transition: all 0.3s;
   .count {
-    font-size: 43vw;
+    font-size: 10em;
   }
   .minus, .plus {
-    font-size: 19vw;
-    padding: 20px 5px;
+    font-size: 4.5em;
+    padding: 0.3em;
   }
 }
 

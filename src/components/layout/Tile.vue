@@ -21,7 +21,10 @@ export default {
       'divider'
     ]),
     style () {
-      return { width: `calc(100vw / ${this.divider})` }
+      return {
+        width: `${100 / this.divider}vw`,
+        'font-size': `${1 / this.divider}em`
+      }
     }
   }
 }

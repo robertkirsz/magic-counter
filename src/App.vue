@@ -35,6 +35,8 @@ body,
 	user-select: none;
 	outline: none;
 	cursor: inherit;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 a,
@@ -48,6 +50,7 @@ button {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   cursor: default;
+  overflow: hidden;
 }
 
 .animated {

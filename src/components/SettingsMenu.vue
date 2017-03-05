@@ -64,13 +64,14 @@ export default {
   align-items: center;
 	position: absolute;
 	bottom: 50%;
-	width: 100%;
+	width: 100vw;
 	background-color: transparent;
 	font-size: 2.5em;
 	padding: 5px;
 	text-align: right;
 	transition: background-color 0.3s ease, opacity 0.4s ease;
   transform: translateY(50%);
+  overflow: hidden;
 }
 
 .icon,
