@@ -8,6 +8,13 @@ Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
+  getters: {
+    getElementById: state => (path, id) => {
+      const index = state[path].findIndex(item => item.id === id)
+      const data = { ...state[path][index] }
+      return { index, data }
+    }
+  },
   modules: {
     app,
     players

@@ -13,10 +13,16 @@ const getters = {
 
 const mutations = {
   [types.ADD_PLAYER] (state) {
-    state.push({ id: state.length })
+    state.push({ id: state.length, life: 20, color: 'green' })
   },
   [types.REMOVE_PLAYER] (state) {
     state.pop()
+  },
+  [types.INCREASE_LIFE] (state, payload) {
+    state.splice(payload.index, 1, payload.data)
+  },
+  [types.DECREASE_LIFE] (state, payload) {
+    state.splice(payload.index, 1, payload.data)
   }
 }
 
@@ -30,6 +36,16 @@ const actions = {
     if (getters.numberOfPlayers > 0) {
       commit(types.REMOVE_PLAYER)
     }
+  },
+  increaseLife ({ commit, getters }, id, amount = 1) {
+    const player = getters.getElementById('players', id)
+    player.data.life += amount
+    commit(types.INCREASE_LIFE, player)
+  },
+  decreaseLife ({ commit, getters }, id, amount = 1) {
+    const player = getters.getElementById('players', id)
+    player.data.life -= amount
+    commit(types.DECREASE_LIFE, player)
   }
 }
 

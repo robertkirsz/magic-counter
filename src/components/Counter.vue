@@ -15,10 +15,10 @@ export default {
   },
   methods: {
     minusClick () {
-      console.log('minus')
+      this.$emit('minusClick')
     },
     plusClick () {
-      console.log('plus')
+      this.$emit('plusClick')
     }
   }
 }

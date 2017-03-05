@@ -1,8 +1,10 @@
 <template>
   <div class="player">
     <counter
-      :value="20"
       type="life"
+      :value="player.life"
+      @minusClick="decreaseLife(player.id, 1)"
+      @plusClick="increaseLife(player.id, 1)"
     />
     <!-- <div class="other">
       <counter
@@ -18,11 +20,19 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import Counter from '@/components/Counter'
 
 export default {
   name: 'Player',
-  components: { Counter }
+  components: { Counter },
+  props: { player: Object },
+  methods: {
+    ...mapActions([
+      'increaseLife',
+      'decreaseLife'
+    ])
+  }
 }
 </script>
 
