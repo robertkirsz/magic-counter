@@ -8,6 +8,7 @@ const state = [
 const getters = {
   numberOfPlayers: state => state.length,
   lastPlayerIndex: state => state.length - 1,
+  playersColors: state => state.map(player => player.color),
   divider: state => Math.ceil(state.length / 2) || 1
 }
 

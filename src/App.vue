@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-links />
-    <counter-screen :style="blurBackground && blurEffect" />
+    <counter-screen :blurred="blurBackground" />
     <transition
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
@@ -27,11 +27,6 @@ export default {
   data () {
     return {
       blurBackground: false
-    }
-  },
-  computed: {
-    blurEffect () {
-      return { filter: 'blur(3px)' }
     }
   },
   methods: {
