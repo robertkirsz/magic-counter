@@ -22,30 +22,35 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$imgSize: 3.7em;
+
 .color-picker {
   position: absolute;
-  top: 50%; bottom: auto;
-  width: 192px; height: 192px;
+  top: 50%;
+  bottom: auto;
+  width: 12em;
+  height: 12em;
   transform: translateY(-50%);
-  transition: opacity 0.3s;
+  transition: width 0.3s, height 0.3s;
 }
 
 img {
   position: absolute;
-  width: 56px; height: 56px;
-  transition: transform 0.3s;
+  width: $imgSize;
+  height: $imgSize;
+  transition: width 0.3s, height 0.3s;
 }
 
 .white {
-  top: calc(-56px / 2);
+  top: calc(#{-$imgSize} / 2);
   left: 50%;
-  margin-left: calc(-56px / 2);
+  margin-left: calc(#{-$imgSize} / 2);
 }
 
 .blue {
   top: 24%;
-  right: calc(-56px / 2);
+  right: calc(#{-$imgSize} / 2);
 }
 
 .black {
@@ -60,6 +65,6 @@ img {
 
 .green {
   top: 24%;
-  left: calc(-56px / 2);
+  left: calc(#{-$imgSize} / 2);
 }
 </style>

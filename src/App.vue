@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <router-links />
-    <router-view />
+    <counter-screen :style="blurBackground && blurEffect" />
+    <transition
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+      <router-view />
+    </transition>
     <modify-players />
   </div>
 </template>
@@ -9,12 +15,44 @@
 <script>
 import RouterLinks from '@/components/development/RouterLinks'
 import ModifyPlayers from '@/components/development/ModifyPlayers'
+import CounterScreen from '@/routes/CounterScreen'
 
 export default {
   name: 'app',
   components: {
     RouterLinks,
-    ModifyPlayers
+    ModifyPlayers,
+    CounterScreen
+  },
+  data () {
+    return {
+      blurBackground: false
+    }
+  },
+  computed: {
+    blurEffect () {
+      return { filter: 'blur(3px)' }
+    }
+  },
+  methods: {
+    checkBlur () {
+      if (
+        this.$router.currentRoute.name === 'DiceScreen' ||
+        this.$router.currentRoute.name === 'SettingsScreen'
+      ) {
+        this.blurBackground = true
+      } else {
+        this.blurBackground = false
+      }
+    }
+  },
+  mounted () {
+    this.checkBlur()
+  },
+  watch: {
+    '$route' () {
+      this.checkBlur()
+    }
   }
 }
 </script>

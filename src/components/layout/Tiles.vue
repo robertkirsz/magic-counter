@@ -18,7 +18,7 @@ import Tile from '@/components/layout/Tile'
 
 export default {
   name: 'Tiles',
-  props: [ 'items' ],
+  props: [ 'items', 'style' ],
   components: { Tile },
   computed: {
     ...mapGetters(['numberOfPlayers'])

@@ -1,8 +1,8 @@
 import * as types from '@/store/mutation-types'
 
 const state = [
-  { id: 0, life: 20, color: 'red' },
-  { id: 1, life: 20, color: 'green' }
+  { id: 0, life: 20, color: '' },
+  { id: 1, life: 20, color: '' }
 ]
 
 const getters = {
@@ -13,7 +13,7 @@ const getters = {
 
 const mutations = {
   [types.ADD_PLAYER] (state) {
-    state.push({ id: state.length, life: 20, color: 'green' })
+    state.push({ id: state.length, life: 20, color: '' })
   },
   [types.REMOVE_PLAYER] (state) {
     state.pop()
@@ -22,6 +22,9 @@ const mutations = {
     state.splice(payload.index, 1, payload.data)
   },
   [types.DECREASE_LIFE] (state, payload) {
+    state.splice(payload.index, 1, payload.data)
+  },
+  [types.CHOOSE_COLOR] (state, payload) {
     state.splice(payload.index, 1, payload.data)
   }
 }
@@ -47,8 +50,10 @@ const actions = {
     player.data.life -= amount
     commit(types.DECREASE_LIFE, player)
   },
-  chooseColor (context, color) {
-    console.warn('color', color)
+  chooseColor ({ commit, getters }, { id, color }) {
+    const player = getters.getElementById('players', id)
+    player.data.color = color
+    commit(types.CHOOSE_COLOR, player)
   }
 }
 

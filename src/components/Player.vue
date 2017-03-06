@@ -1,23 +1,37 @@
 <template>
-  <div class="player">
-    <color-picker @colorChosen="chooseColor" />
-    <!-- <counter
-      type="life"
-      :value="player.life"
-      @minusClick="decreaseLife(player.id, 1)"
-      @plusClick="increaseLife(player.id, 1)"
-    /> -->
-    <!-- <div class="other">
-      <counter
-        :value="20"
-        type="poison"
-      />
-      <counter
-        :value="20"
-        type="commander"
-      />
-    </div> -->
-  </div>
+  <transition
+    enter-active-class="animated fadeIn"
+    leave-active-class="animated fadeOut"
+  >
+    <div class="player">
+      <transition
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+      >
+        <color-picker
+          v-if="!player.color"
+          @colorChosen="_chooseColor"
+        />
+        <counter
+          v-else
+          type="life"
+          :value="player.life"
+          @minusClick="decreaseLife(player.id, 1)"
+          @plusClick="increaseLife(player.id, 1)"
+        />
+      </transition>
+      <!-- <div class="other">
+        <counter
+          :value="20"
+          type="poison"
+        />
+        <counter
+          :value="20"
+          type="commander"
+        />
+      </div> -->
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -34,7 +48,10 @@ export default {
       'increaseLife',
       'decreaseLife',
       'chooseColor'
-    ])
+    ]),
+    _chooseColor (color) {
+      this.chooseColor({ id: this.player.id, color })
+    }
   }
 }
 </script>

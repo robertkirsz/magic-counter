@@ -1,16 +1,10 @@
 <template>
-  <div class="counter-screen">
+  <div class="counter-screen" :style="style">
     <tiles :items="players">
       <template slot="item" scope="props">
         <player :player="props.item" />
       </template>
     </tiles>
-    <transition
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
-    >
-      <router-view />
-    </transition>
     <settings-menu />
   </div>
 </template>
@@ -24,6 +18,7 @@ import Player from '@/components/Player'
 export default {
   name: 'CounterScreen',
   components: { Tiles, SettingsMenu, Player },
+  props: [ 'style' ],
   computed: {
     ...mapState(['players'])
   }
@@ -33,5 +28,6 @@ export default {
 <style scoped>
 .counter-screen {
   background: rgba(0, 230, 0, 0.2);
+  transition: filter 0.3s;
 }
 </style>
