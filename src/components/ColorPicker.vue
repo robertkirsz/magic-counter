@@ -5,7 +5,7 @@
         v-for="mana in manaColors"
         :key="mana"
         :class="mana"
-        :src="`/static/mana/${mana}.svg`"
+        :src="`static/mana/${mana}.svg`"
         alt="Mana symbol"
         @click="$emit('colorChosen', mana)"
       />
