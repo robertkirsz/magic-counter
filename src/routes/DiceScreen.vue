@@ -8,12 +8,10 @@
   <backdrop>
     <tiles :items="dice">
       <template slot="item" scope="props">
-        <tile>
-          <die
-            :value="props.item"
-            @click.native.stop="rollDie(props.index)"
-          />
-        </tile>
+        <die
+          :value="props.item"
+          @click.native.stop="rollDie(props.index)"
+        />
       </template>
     </tiles>
   </backdrop>
@@ -25,12 +23,11 @@ import _times from 'lodash/times'
 import _random from 'lodash/random'
 import Backdrop from '@/components/layout/Backdrop'
 import Tiles from '@/components/layout/Tiles'
-import Tile from '@/components/layout/Tile'
 import Die from '@/components/Die'
 
 export default {
   name: 'DiceScreen',
-  components: { Backdrop, Tiles, Tile, Die },
+  components: { Backdrop, Tiles, Die },
   data () {
     return {
       dice: []

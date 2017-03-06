@@ -4,21 +4,22 @@
 
 <template>
   <div class="tiles">
-    <slot name="item"
-      v-for="(item, index) in items"
-      :item="item"
-      :index="index"
-    >
-    </slot>
+    <template v-for="(item, index) in items">
+      <tile>
+        <slot name="item" :item="item" :index="index" />
+      </tile>
+    </template>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Tile from '@/components/layout/Tile'
 
 export default {
   name: 'Tiles',
   props: [ 'items' ],
+  components: { Tile },
   computed: {
     ...mapGetters(['numberOfPlayers'])
   }
