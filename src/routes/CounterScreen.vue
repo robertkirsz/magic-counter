@@ -28,12 +28,18 @@ const colors = {
   clear: ['hsl(0, 0%, 100%)', 'hsl(0, 0%, 100%)']
 }
 
-const directions = [
-  'top right',
-  'top left',
-  'bottom right',
-  'bottom left'
-]
+const directions = {
+  upToTwo: [
+    'top',
+    'bottom'
+  ],
+  moreThanTwo: [
+    'top right',
+    'bottom right',
+    'top left',
+    'bottom left'
+  ]
+}
 
 export default {
   name: 'CounterScreen',
@@ -41,15 +47,18 @@ export default {
   props: ['blurred'],
   computed: {
     ...mapState(['players']),
-    ...mapGetters(['playersColors']),
+    ...mapGetters(['playersColors', 'numberOfPlayers']),
     backgroundGradients () {
-      let bgImg = 'url("static/background.png"), linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25))'
+      let backgroundImageValues = 'url("static/background.png"), linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25))'
+      const diredtionType = this.numberOfPlayers > 2 ? 'moreThanTwo' : 'upToTwo'
+
       this.playersColors.forEach((color, index) => {
         if (color) {
-          bgImg += `, linear-gradient(to ${directions[index]}, ${colors[color][0]}, ${colors[color][1]} 20%, transparent 60%)`
+          backgroundImageValues += `, linear-gradient(to ${directions[diredtionType][index]}, ${colors[color][0]}, ${colors[color][1]}, transparent 60%)`
         }
       })
-      return { backgroundImage: bgImg }
+
+      return { backgroundImage: backgroundImageValues }
     }
   }
 }

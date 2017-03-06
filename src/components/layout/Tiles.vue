@@ -31,7 +31,7 @@ export default {
   flex: 1;
   display: flex;
   flex-flow: column-reverse wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100vw;
   height: 100vh;

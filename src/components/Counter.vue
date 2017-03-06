@@ -1,12 +1,23 @@
 <template>
   <div :class="['counter', `counter--${type}`]">
     <i class="minus fa fa-minus" @click="minusClick" />
-    <div class="count">{{ value }}</div>
+    <div class="count">
+      <transition
+        enter-active-class="animated fadeInUp"
+        leave-active-class="animated fadeOutUp"
+      >
+        <span :key="value">{{ value }}</span>
+      </transition>
+    </div>
     <i class="plus fa fa-plus" @click="plusClick" />
   </div>
 </template>
 
 <script>
+// TODO: make '.count' width responsive
+// TODO: make animation travel less distance and maybe be slower
+// TODO: make animation direction different when adding and subtracting
+
 export default {
   name: 'Counter',
   props: {
@@ -36,15 +47,24 @@ export default {
 }
 
 .counter--life {
-  display: flex;
-  width: 100%;
   flex: 2;
+  display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
   align-items: center;
+  width: 100%;
   transition: all 0.3s;
   .count {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
     font-size: 10em;
+    width: 182px;
+    span {
+      position: absolute;
+    }
   }
   .minus, .plus {
     font-size: 4.5em;

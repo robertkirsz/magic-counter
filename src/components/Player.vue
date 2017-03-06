@@ -4,10 +4,6 @@
     leave-active-class="animated fadeOut"
   >
     <div class="player">
-      <transition
-        enter-active-class="animated fadeIn"
-        leave-active-class="animated fadeOut"
-      >
         <color-picker
           v-if="!player.color"
           @colorChosen="_chooseColor"
@@ -19,7 +15,6 @@
           @minusClick="decreaseLife(player.id, 1)"
           @plusClick="increaseLife(player.id, 1)"
         />
-      </transition>
       <!-- <div class="other">
         <counter
           :value="20"

@@ -1,14 +1,16 @@
 <template>
-  <div class="color-picker">
-    <img
-      v-for="mana in manaColors"
-      :key="mana"
-      :class="mana"
-      :src="`/static/mana/${mana}.svg`"
-      alt="Mana symbol"
-      @click="$emit('colorChosen', mana)"
-    />
-  </div>
+  <transition name="scale-and-fade" appear>
+    <div class="color-picker">
+      <img
+        v-for="mana in manaColors"
+        :key="mana"
+        :class="mana"
+        :src="`/static/mana/${mana}.svg`"
+        alt="Mana symbol"
+        @click="$emit('colorChosen', mana)"
+      />
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -23,15 +25,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.scale-and-fade-enter-active {
+  animation: scale-and-fade-in .3s;
+}
+.scale-and-fade-leave-active {
+  animation: scale-and-fade-out .3s;
+}
+@keyframes scale-and-fade-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-and-fade-out {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
 $imgSize: 3.7em;
 
 .color-picker {
   position: absolute;
-  top: 50%;
-  bottom: auto;
   width: 12em;
   height: 12em;
-  transform: translateY(-50%);
   transition: width 0.3s, height 0.3s;
 }
 
