@@ -72,6 +72,7 @@ export default {
 	transition: background-color 0.3s ease, opacity 0.4s ease;
   transform: translateY(50%);
   overflow: hidden;
+  pointer-events: none;
 }
 
 .icon,
@@ -79,22 +80,11 @@ export default {
   color: black;
   opacity: 0.5;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .settings-menu.opened {
 	background-color: rgba(0, 0, 0, 0.1);
-}
-
-.settings-menu.opened .icons {
-  opacity: 1;
-  left: 0;
-  pointer-events: auto;
-}
-
-.settings-menu.hidden {
-	transition: background-color 0.3s ease, opacity 0.3s ease 0.3s;
-	pointer-events: none;
-	opacity: 0;
 }
 
 .fa-cog {
