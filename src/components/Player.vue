@@ -1,32 +1,27 @@
 <template>
-  <transition
-    enter-active-class="animated fadeIn"
-    leave-active-class="animated fadeOut"
-  >
-    <div class="player">
-        <color-picker
-          v-if="!player.color"
-          @colorChosen="_chooseColor"
-        />
-        <counter
-          v-else
-          type="life"
-          :value="player.life"
-          @minusClick="decreaseLife(player.id, 1)"
-          @plusClick="increaseLife(player.id, 1)"
-        />
-      <!-- <div class="other">
-        <counter
-          :value="20"
-          type="poison"
-        />
-        <counter
-          :value="20"
-          type="commander"
-        />
-      </div> -->
-    </div>
-  </transition>
+  <div class="player">
+    <color-picker
+      v-if="!player.color"
+      @colorChosen="_chooseColor"
+    />
+    <counter
+      v-else
+      type="life"
+      :value="player.life"
+      @minusClick="decreaseLife(player.id, 1)"
+      @plusClick="increaseLife(player.id, 1)"
+    />
+    <!-- <div class="other">
+      <counter
+        :value="20"
+        type="poison"
+      />
+      <counter
+        :value="20"
+        type="commander"
+      />
+    </div> -->
+  </div>
 </template>
 
 <script>

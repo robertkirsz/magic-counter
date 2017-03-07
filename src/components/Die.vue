@@ -5,8 +5,8 @@
 <template>
   <div class="die">
     <transition
-      enter-active-class="animated fadeInRight"
-      leave-active-class="animated fadeOutLeft"
+      enter-active-class="fadeInRight"
+      leave-active-class="fadeOutLeft"
     >
       <span class="number" :key="value">
         {{ value }}

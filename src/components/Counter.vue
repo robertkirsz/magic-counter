@@ -1,7 +1,7 @@
 <template>
   <transition
-    enter-active-class="animated fadeIn"
-    leave-active-class="animated fadeOut"
+    enter-active-class="fadeIn"
+    leave-active-class="fadeOut"
   >
     <div :class="['counter', `counter--${type}`]">
       <i class="minus fa fa-minus" @click="minusClick" />

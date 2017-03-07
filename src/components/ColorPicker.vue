@@ -1,5 +1,9 @@
 <template>
-  <transition name="scale-and-fade" appear>
+  <transition
+    appear
+    enter-active-class="scaleIn"
+    leave-active-class="scaleOut"
+  >
     <div class="color-picker">
       <img
         v-for="mana in manaColors"

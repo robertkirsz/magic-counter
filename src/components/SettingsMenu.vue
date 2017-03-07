@@ -6,8 +6,8 @@
 <template>
   <div class="settings-menu" :class="{ opened: settingsMenuOpened }">
     <transition
-      enter-active-class="animated fadeInRight"
-      leave-active-class="animated fadeOutRight"
+      enter-active-class="fadeInRight"
+      leave-active-class="fadeOutRight"
     >
       <div class="icons" v-if="settingsMenuOpened">
         <span

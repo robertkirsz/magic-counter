@@ -3,8 +3,8 @@
     <router-links />
     <counter-screen :blurred="blurBackground" />
     <transition
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
+      enter-active-class="fadeIn"
+      leave-active-class="fadeOut"
     >
       <router-view />
     </transition>
@@ -14,6 +14,8 @@
 
 <script>
 // TODO: optymize SVGs
+// TODO: decide whether to leave blur effect in
+// TODO: remove "Animated.css" when it's no longer needed
 
 import RouterLinks from '@/components/development/RouterLinks'
 import ModifyPlayers from '@/components/development/ModifyPlayers'

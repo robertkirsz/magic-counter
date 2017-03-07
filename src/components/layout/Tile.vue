@@ -5,9 +5,15 @@
 -->
 
 <template>
-  <div class="tile" :style="style">
-    <slot />
-  </div>
+  <transition
+    appear
+    enter-active-class="fadeIn"
+    leave-active-class="fadeOut"
+  >
+    <div class="tile" :style="style">
+      <slot />
+    </div>
+  </transition>
 </template>
 
 <script>
