@@ -25,39 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.scale-and-fade-enter-active {
-  animation: scale-and-fade-in .3s;
-}
-.scale-and-fade-leave-active {
-  animation: scale-and-fade-out .3s;
-}
-@keyframes scale-and-fade-in {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-@keyframes scale-and-fade-out {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
-}
-
 $imgSize: 3.7em;
 
 .color-picker {

@@ -13,6 +13,8 @@
 </template>
 
 <script>
+// TODO: optymize SVGs
+
 import RouterLinks from '@/components/development/RouterLinks'
 import ModifyPlayers from '@/components/development/ModifyPlayers'
 import CounterScreen from '@/routes/CounterScreen'
@@ -52,7 +54,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import "./styles/animations";
+
 html,
 body,
 #app {
@@ -84,9 +88,5 @@ button {
   color: #2c3e50;
   cursor: default;
   overflow: hidden;
-}
-
-.animated {
-  animation-duration: 0.2s;
 }
 </style>

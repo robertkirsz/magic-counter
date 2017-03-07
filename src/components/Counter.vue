@@ -1,22 +1,25 @@
 <template>
-  <div :class="['counter', `counter--${type}`]">
-    <i class="minus fa fa-minus" @click="minusClick" />
-    <div class="count">
-      <transition
-        enter-active-class="animated fadeInUp"
-        leave-active-class="animated fadeOutUp"
-      >
-        <span :key="value">{{ value }}</span>
-      </transition>
+  <transition
+    enter-active-class="animated fadeIn"
+    leave-active-class="animated fadeOut"
+  >
+    <div :class="['counter', `counter--${type}`]">
+      <i class="minus fa fa-minus" @click="minusClick" />
+      <div class="count">
+        <transition
+          :enter-active-class="`fadeIn${animationDirection}`"
+          :leave-active-class="`fadeOut${animationDirection}`"
+        >
+          <span :key="value">{{ value }}</span>
+        </transition>
+      </div>
+      <i class="plus fa fa-plus" @click="plusClick" />
     </div>
-    <i class="plus fa fa-plus" @click="plusClick" />
-  </div>
+  </transition>
 </template>
 
 <script>
 // TODO: make '.count' width responsive
-// TODO: make animation travel less distance and maybe be slower
-// TODO: make animation direction different when adding and subtracting
 
 export default {
   name: 'Counter',
@@ -24,11 +27,18 @@ export default {
     value: { type: Number, required: true },
     type: { type: String, required: true }
   },
+  data () {
+    return {
+      animationDirection: ''
+    }
+  },
   methods: {
     minusClick () {
+      this.animationDirection = 'Down'
       this.$emit('minusClick')
     },
     plusClick () {
+      this.animationDirection = 'Up'
       this.$emit('plusClick')
     }
   }
