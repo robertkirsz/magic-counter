@@ -1,12 +1,13 @@
 import * as types from '@/store/mutation-types'
 
 const state = [
-  { id: 0, life: 20, color: '' },
-  { id: 1, life: 20, color: '' }
+  { id: 0, life: 20, color: 'red' },
+  { id: 1, life: 20, color: 'green' }
 ]
 
 const getters = {
   numberOfPlayers: state => state.length,
+  noPlayers: state => state.length === 0,
   lastPlayerIndex: state => state.length - 1,
   playersColors: state => state.map(player => player.color),
   divider: state => Math.ceil(state.length / 2) || 1

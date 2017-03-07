@@ -83,7 +83,8 @@ $duration: 0.3s;
   }
   to {
     opacity: 0;
-    transform: translate3d(0, -30%, 0);
+    color: lime;
+    transform: translate3d(0, -50%, 0);
   }
 }
 
@@ -112,7 +113,8 @@ $duration: 0.3s;
   }
   to {
     opacity: 0;
-    transform: translate3d(0, 30%, 0);
+    color: red;
+    transform: translate3d(0, 50%, 0);
   }
 }
 

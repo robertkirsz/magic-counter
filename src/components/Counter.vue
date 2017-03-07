@@ -63,6 +63,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  background: rgba(0, 255, 0, 0.2);
   transition: all 0.3s;
   .count {
     display: flex;
@@ -70,8 +71,8 @@ export default {
     justify-content: center;
     align-items: center;
     position: relative;
+    width: 1.2em;
     font-size: 10em;
-    width: 182px;
     span {
       position: absolute;
     }
@@ -79,13 +80,15 @@ export default {
   .minus, .plus {
     font-size: 4.5em;
     padding: 0.3em;
+    cursor: pointer;
   }
 }
 
 .counter--poison,
 .counter--commander {
-	bottom: 5px;
-	position: absolute;
+	// bottom: 5px;
+	// position: absolute;
+  background: white;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;

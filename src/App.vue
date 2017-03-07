@@ -12,7 +12,6 @@
 </template>
 
 <script>
-// TODO: optymize SVGs
 // TODO: decide whether to leave blur effect in
 // TODO: remove "Animated.css" when it's no longer needed
 

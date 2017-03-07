@@ -29,7 +29,7 @@ export default {
     style () {
       return {
         width: `${100 / this.divider}vw`,
-        'font-size': `${1 / this.divider}em`
+        'font-size': `${0.1 + 1 / this.divider}em`
       }
     }
   }
@@ -47,5 +47,11 @@ export default {
 
 .tile:nth-of-type(even):not(:only-of-type) {
   transform: rotate(180deg);
+}
+
+@media (max-width: 400px) {
+  .tile {
+    font-size: 4vw !important;
+  }
 }
 </style>

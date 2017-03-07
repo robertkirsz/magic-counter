@@ -50,11 +50,12 @@ export default {
     ...mapGetters(['playersColors', 'numberOfPlayers']),
     backgroundGradients () {
       let backgroundImageValues = 'url("static/background.png"), linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25))'
-      const diredtionType = this.numberOfPlayers > 2 ? 'moreThanTwo' : 'upToTwo'
+      const direction = this.numberOfPlayers > 2 ? 'moreThanTwo' : 'upToTwo'
+      const spread = this.numberOfPlayers > 2 ? '50%' : '65%'
 
       this.playersColors.forEach((color, index) => {
         if (color) {
-          backgroundImageValues += `, linear-gradient(to ${directions[diredtionType][index]}, ${colors[color][0]}, ${colors[color][1]}, transparent 60%)`
+          backgroundImageValues += `, linear-gradient(to ${directions[direction][index]}, ${colors[color][0]}, ${colors[color][1]}, transparent ${spread})`
         }
       })
 
