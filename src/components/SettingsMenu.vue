@@ -18,7 +18,7 @@
           v-for="button in buttons"
           :key="button.class"
           class="icon"
-          :class="button.class"
+          :class="[button.class, { active: button.active }]"
           :title="button.title"
           :disabled="button.disableable && noPlayers"
           @click="button.action"
@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       buttons: [
-        { class: 'poison', title: 'Poison counter', action: this.togglePoisonCounters, disableable: true },
-        { class: 'commander', title: 'Commander damage', action: this.toggleCommanderCounters, disableable: true },
+        { class: 'poison', title: 'Poison counter', action: this.togglePoisonCounters, active: this.poisonCountersVisible, disableable: true },
+        { class: 'commander', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disableable: true },
         { class: 'dice', title: 'Roll dice', action: () => this.$router.push('/dice') },
         { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
         { class: 'fa fa-undo', title: 'Reset current game', action: () => console.log('a') },
@@ -53,12 +53,24 @@ export default {
       ]
     }
   },
-  computed: {
-    ...mapState({ settingsMenuOpened: state => state.app.settingsMenuOpened }),
-    ...mapGetters(['numberOfPlayers']),
-    noPlayers () {
-      return this.numberOfPlayers === 0
+  mounted () {
+    console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+  },
+  updated () {
+    console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+  },
+  watch: {
+    poisonCountersVisible () {
+      console.log(this.settingsMenuOpened, this.poisonCountersVisible)
     }
+  },
+  computed: {
+    ...mapState({
+      poisonCountersVisible: state => state.app.poisonCountersVisible,
+      settingsMenuOpened: state => state.app.settingsMenuOpened,
+      commanderCountersVisible: state => state.app.commanderCountersVisible
+    }),
+    ...mapGetters(['numberOfPlayers', 'noPlayers'])
   },
   methods: {
     ...mapActions(['togglePoisonCounters', 'toggleCommanderCounters']),
@@ -87,6 +99,9 @@ export default {
   transform: translateY(50%);
   overflow: hidden;
   pointer-events: none;
+  @media (max-width: 400px) {
+    font-size: 2em;
+  }
 }
 
 .icon,
@@ -121,18 +136,25 @@ export default {
 	display: inline-block;
 	transition: all 0.3s;
   &:not(:last-of-type) {
-    margin-right: 10px;
+    margin-right: 0.3em;
+    @media (max-width: 400px) {
+      margin-right: 0.2em;
+    }
   }
+
   &:active {
-    opacity: 0.85;
+    opacity: 1;
     transform: scale(1.1);
+  }
+  &.active {
+    opacity: 1;
   }
 }
 
 .poison,
 .commander,
 .dice {
-	height: 42px;
+	height: 1em;
 	background-position: 50%;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -155,18 +177,18 @@ export default {
 
 .new-game {
 	position: relative;
-	max-width: 45px;
+	width: 1.2em;
 	border: 2px solid;
 	border-radius: 5px;
-	font-size: 0.3em;
-	line-height: 1.4;
 	font-weight: 600;
 	text-align: center;
 	text-transform: uppercase;
-}
-
-.new-game::after {
-  content: "New game"
+  &::after {
+    content: "New game";
+    display: block;
+    font-size: 0.3em;
+    line-height: 1.4;
+  }
 }
 
 [disabled] {

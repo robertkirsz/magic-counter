@@ -11,21 +11,27 @@
       @minusClick="decreaseLife(player.id, 1)"
       @plusClick="increaseLife(player.id, 1)"
     />
-    <!-- <div class="other">
+    <div class="other" v-if="poisonCountersVisible || commanderCountersVisible">
       <counter
-        :value="20"
+        v-if="poisonCountersVisible"
         type="poison"
+        :value="0"
+        @minusClick="decreaseLife(player.id, 1)"
+        @plusClick="increaseLife(player.id, 1)"
       />
       <counter
-        :value="20"
+        v-if="commanderCountersVisible"
         type="commander"
+        :value="0"
+        @minusClick="decreaseLife(player.id, 1)"
+        @plusClick="increaseLife(player.id, 1)"
       />
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Counter from '@/components/Counter'
 import ColorPicker from '@/components/ColorPicker'
 
@@ -33,6 +39,12 @@ export default {
   name: 'Player',
   components: { Counter, ColorPicker },
   props: { player: Object },
+  computed: {
+    ...mapState({
+      poisonCountersVisible: state => state.app.poisonCountersVisible,
+      commanderCountersVisible: state => state.app.commanderCountersVisible
+    })
+  },
   methods: {
     ...mapActions([
       'increaseLife',
@@ -54,13 +66,20 @@ export default {
   align-items: center;
   color: rgba(0, 0, 0, 0.5);
   position: relative;
+  /**/
+  background-color: rgba(255, 255, 0, 0.2);
+  padding: 5px;
+  flex: 1;
 }
 
 .other {
-  flex: 1;
+  flex: none;
+  display: flex;
+  justify-content: space-around;
   width: 100%;
-  position: absolute;
-  bottom: 5px;
+  height: 50px;
+  /*position: absolute;*/
+  /*bottom: 5px;*/
   background-color: rgba(255, 0, 0, 0.2);
 }
 </style>
