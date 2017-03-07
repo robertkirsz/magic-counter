@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 import app from '@/store/modules/app'
 import players from '@/store/modules/players'
 
@@ -8,6 +9,7 @@ Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
+  plugins: [createPersistedState()],
   getters: {
     // Finds element by ID at specified path and returns
     // its index and contents
