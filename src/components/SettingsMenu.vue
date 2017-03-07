@@ -4,7 +4,11 @@
  -->
 
 <template>
-  <div class="settings-menu" :class="{ opened: settingsMenuOpened }">
+  <div
+    class="settings-menu"
+    :class="{ opened: settingsMenuOpened }"
+    v-on-clickaway="clickedOutside"
+  >
     <transition
       enter-active-class="fadeInRight"
       leave-active-class="fadeOutRight"
@@ -30,34 +34,44 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex'
+import { mixin as clickaway } from 'vue-clickaway'
+
 export default {
   name: 'SettingsMenu',
+  mixins: [clickaway],
   data () {
     return {
       buttons: [
-        { class: 'poison', title: 'Posion counter', action: () => console.log('a'), disableable: true },
-        { class: 'commander', title: 'Commander damage', action: () => console.log('a'), disableable: true },
+        { class: 'poison', title: 'Poison counter', action: this.togglePoisonCounters, disableable: true },
+        { class: 'commander', title: 'Commander damage', action: this.toggleCommanderCounters, disableable: true },
+        { class: 'dice', title: 'Roll dice', action: () => this.$router.push('/dice') },
         { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
         { class: 'fa fa-undo', title: 'Reset current game', action: () => console.log('a') },
-        { class: 'new-game', title: 'Start new game', action: () => console.log('a') }
+        { class: 'new-game', title: 'Start new game', action: () => console.log('a') },
+        { class: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') }
       ]
     }
   },
   computed: {
-    settingsMenuOpened () {
-      return this.$store.state.app.settingsMenuOpened
-    },
-    numberOfPlayers () {
-      return this.$store.getters.numberOfPlayers
-    },
+    ...mapState({ settingsMenuOpened: state => state.app.settingsMenuOpened }),
+    ...mapGetters(['numberOfPlayers']),
     noPlayers () {
       return this.numberOfPlayers === 0
+    }
+  },
+  methods: {
+    ...mapActions(['togglePoisonCounters', 'toggleCommanderCounters']),
+    clickedOutside () {
+      if (this.settingsMenuOpened) {
+        this.$store.dispatch('toggleSettingsMenu', false)
+      }
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .settings-menu {
   display: flex;
   justify-content: space-between;
@@ -99,18 +113,20 @@ export default {
 
 .icons {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 
 .icon {
 	display: inline-block;
-	margin-right: 10px;
 	transition: all 0.3s;
-}
-
-.icon:active {
-  opacity: 0.85;
-  transform: scale(1.1);
+  &:not(:last-of-type) {
+    margin-right: 10px;
+  }
+  &:active {
+    opacity: 0.85;
+    transform: scale(1.1);
+  }
 }
 
 .poison,
