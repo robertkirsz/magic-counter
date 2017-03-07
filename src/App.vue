@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <router-links />
     <counter-screen :blurred="blurBackground" />
     <transition
       enter-active-class="fadeIn"
@@ -17,14 +16,12 @@
 // TODO: decide whether to leave blur effect in
 // TODO: remove "Animated.css" when it's no longer needed
 
-import RouterLinks from '@/components/development/RouterLinks'
 import ModifyPlayers from '@/components/development/ModifyPlayers'
 import CounterScreen from '@/routes/CounterScreen'
 
 export default {
   name: 'app',
   components: {
-    RouterLinks,
     ModifyPlayers,
     CounterScreen
   },
