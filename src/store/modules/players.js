@@ -1,9 +1,7 @@
 import * as types from '@/store/mutation-types'
+import Vue from 'vue'
 
-const state = [
-  { id: 0, life: 20, color: 'red' },
-  { id: 1, life: 20, color: 'green' }
-]
+const state = []
 
 const getters = {
   numberOfPlayers: state => state.length,
@@ -14,8 +12,19 @@ const getters = {
 }
 
 const mutations = {
+  [types.START_NEW_GAME] (state) {
+    Vue.set(state, [])
+  },
+  [types.START_NEW_GAME] (state) {
+    state = state.map(player => ({
+      id: player.id,
+      color: player.color,
+      life: 20,
+      posion: 0
+    }))
+  },
   [types.ADD_PLAYER] (state) {
-    state.push({ id: state.length, life: 20, color: '' })
+    state.push({ id: state.length, life: 20, color: '', poison: 0 })
   },
   [types.REMOVE_PLAYER] (state) {
     state.pop()

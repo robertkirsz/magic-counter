@@ -1,14 +1,24 @@
 import * as types from '@/store/mutation-types'
 
-const state = {
+const initialState = {
   settingsMenuOpened: false,
   poisonCountersVisible: false,
   commanderCountersVisible: false
 }
 
+const state = { ...initialState }
+
 const getters = {}
 
 const mutations = {
+  [types.START_NEW_GAME] (state) {
+    for (let property in state) {
+      state[property] = initialState[property]
+    }
+  },
+  [types.RESET_CURRENT_GAME] (state) {
+    state.settingsMenuOpened = false
+  },
   [types.OPEN_SETTINGS_MENU] (state) {
     state.settingsMenuOpened = true
   },
@@ -30,6 +40,12 @@ const mutations = {
 }
 
 const actions = {
+  startNewGame ({ commit }) {
+    commit(types.START_NEW_GAME)
+  },
+  resetCurrentGame ({ commit }) {
+    commit(types.RESET_CURRENT_GAME)
+  },
   toggleSettingsMenu ({ state, commit }) {
     state.settingsMenuOpened
       ? commit(types.CLOSE_SETTINGS_MENU)

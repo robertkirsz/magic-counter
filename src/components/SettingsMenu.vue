@@ -47,8 +47,8 @@ export default {
         { class: 'commander', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disableable: true },
         { class: 'dice', title: 'Roll dice', action: () => this.$router.push('/dice') },
         { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
-        { class: 'fa fa-undo', title: 'Reset current game', action: () => console.log('a') },
-        { class: 'new-game', title: 'Start new game', action: () => console.log('a') },
+        { class: 'fa fa-undo', title: 'Reset current game', action: this.resetCurrentGame },
+        { class: 'new-game', title: 'Start new game', action: this.startNewGame },
         { class: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') }
       ]
     }
@@ -73,7 +73,12 @@ export default {
     ...mapGetters(['numberOfPlayers', 'noPlayers'])
   },
   methods: {
-    ...mapActions(['togglePoisonCounters', 'toggleCommanderCounters']),
+    ...mapActions([
+      'startNewGame',
+      'resetCurrentGame',
+      'togglePoisonCounters',
+      'toggleCommanderCounters'
+    ]),
     clickedOutside () {
       if (this.settingsMenuOpened) {
         this.$store.dispatch('toggleSettingsMenu', false)
