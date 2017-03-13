@@ -1,9 +1,29 @@
 <template>
-  <div v-once>
-    <button @click="$store.dispatch('addPlayer')">Add player</button>
-    <button @click="$store.dispatch('removePlayer')">Remove player</button>
+  <div>
+    <button
+      @click="$store.dispatch('addPlayer')"
+      :disabled="numberOfPlayers > 7"
+    >
+      Add player
+    </button>
+    <button
+      @click="$store.dispatch('removePlayer')"
+      :disabled="numberOfPlayers < 1"
+    >
+      Remove player
+    </button>
   </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters(['numberOfPlayers'])
+  }
+}
+</script>
 
 <style scoped>
   div {
