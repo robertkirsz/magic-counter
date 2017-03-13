@@ -13,8 +13,9 @@
           :enter-active-class="`fadeIn${animationDirection}`"
           :leave-active-class="`fadeOut${animationDirection}`"
         >
-          <span :key="value">{{ value }}</span>
+          <span class="value" :key="value">{{ value }}</span>
         </transition>
+        <span class="placeholder">{{ value }}</span>
       </div>
       <counter-button
         icon="fa fa-plus"
@@ -25,10 +26,11 @@
 </template>
 
 <script>
-// TODO: make '.count' width responsive
+import CounterButton from '@/components/CounterButton'
 
 export default {
   name: 'Counter',
+  components: { CounterButton },
   props: {
     value: { type: Number, required: true },
     type: { type: String, required: true }
@@ -36,6 +38,11 @@ export default {
   data () {
     return {
       animationDirection: ''
+    }
+  },
+  computed: {
+    moreThan100 () {
+      return this.value > 99
     }
   },
   methods: {
@@ -54,36 +61,35 @@ export default {
 <style lang="scss" scoped>
 .counter {}
 
-.plus,
-.minus {
-	transition: color 0.3s;
-	&:active {
-		color: rgba(0,0,0,0.85);
-	}
+.count {
+  transition: font-size 0.3s;
+}
+
+.placeholder {
+  opacity: 0;
 }
 
 .counter--life {
-  flex: 2;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  background: rgba(0, 255, 0, 0.2);
-  transition: all 0.3s;
   .count {
+    flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     position: relative;
-    width: 1.2em;
     font-size: 10em;
-    span {
+    &.moreThan100 {
+      font-size: 6.3em;
+    }
+    .value {
       position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      text-align: center;
     }
   }
-  .minus, .plus {
+  .counter-button {
     font-size: 4.5em;
     padding: 0.3em;
     cursor: pointer;
@@ -92,14 +98,12 @@ export default {
 
 .counter--poison,
 .counter--commander {
-	// bottom: 5px;
-	// position: absolute;
   background: white;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	transition: all 0.3s;
-  .minus, .plus {
+  .counter-button {
     font-size: 1.5em;
     padding: 20px 0;
   }

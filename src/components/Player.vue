@@ -41,8 +41,12 @@ export default {
   props: { player: Object },
   computed: {
     ...mapState({
-      poisonCountersVisible: state => state.app.poisonCountersVisible,
-      commanderCountersVisible: state => state.app.commanderCountersVisible
+      poisonCountersVisible (state) {
+        return this.player.color && state.app.poisonCountersVisible
+      },
+      commanderCountersVisible (state) {
+        return this.player.color && state.app.commanderCountersVisible
+      }
     })
   },
   methods: {
@@ -67,19 +71,16 @@ export default {
   color: rgba(0, 0, 0, 0.5);
   position: relative;
   /**/
-  background-color: rgba(255, 255, 0, 0.2);
-  padding: 5px;
+  /*background-color: rgba(255, 255, 0, 0.2);*/
   flex: 1;
 }
 
 .other {
-  flex: none;
   display: flex;
   justify-content: space-around;
-  width: 100%;
+  /*width: 100%;*/
   height: 50px;
-  /*position: absolute;*/
-  /*bottom: 5px;*/
+  /**/
   background-color: rgba(255, 0, 0, 0.2);
 }
 </style>

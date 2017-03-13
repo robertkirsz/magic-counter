@@ -28,6 +28,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: center;
   position: relative;
   width: 120px;
   height: 120px;
