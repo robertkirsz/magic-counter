@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- <app-state /> -->
     <counter-screen :blurred="blurBackground" />
     <transition
       enter-active-class="fadeIn"
@@ -16,13 +17,15 @@
 // TODO: remove "Animated.css" when it's no longer needed
 
 import ModifyPlayers from '@/components/development/ModifyPlayers'
+import AppState from '@/components/development/AppState'
 import CounterScreen from '@/routes/CounterScreen'
 
 export default {
   name: 'app',
   components: {
     ModifyPlayers,
-    CounterScreen
+    CounterScreen,
+    AppState
   },
   data () {
     return {
