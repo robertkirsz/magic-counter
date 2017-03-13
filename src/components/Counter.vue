@@ -4,8 +4,11 @@
     leave-active-class="fadeOut"
   >
     <div :class="['counter', `counter--${type}`]">
-      <i class="minus fa fa-minus" @click="minusClick" />
-      <div class="count">
+      <counter-button
+        icon="fa fa-minus"
+        @click="minusClick"
+      />
+      <div class="count" :class="{ moreThan100: moreThan100 }">
         <transition
           :enter-active-class="`fadeIn${animationDirection}`"
           :leave-active-class="`fadeOut${animationDirection}`"
@@ -13,7 +16,10 @@
           <span :key="value">{{ value }}</span>
         </transition>
       </div>
-      <i class="plus fa fa-plus" @click="plusClick" />
+      <counter-button
+        icon="fa fa-plus"
+        @click="plusClick"
+      />
     </div>
   </transition>
 </template>
