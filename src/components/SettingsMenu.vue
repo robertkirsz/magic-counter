@@ -46,10 +46,11 @@ export default {
         { class: 'poison', title: 'Poison counter', action: this.togglePoisonCounters, active: this.poisonCountersVisible, disableable: true },
         { class: 'commander', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disableable: true },
         { class: 'dice', title: 'Roll dice', action: () => this.$router.push('/dice') },
-        { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
-        { class: 'fa fa-undo', title: 'Reset current game', action: this.resetCurrentGame },
-        { class: 'new-game', title: 'Start new game', action: this.startNewGame },
-        { class: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') }
+        { class: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer },
+        // { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
+        { class: 'reset-game text-button', title: 'Reset current game', action: this.resetCurrentGame },
+        { class: 'new-game text-button', title: 'Start new game', action: this.startNewGame }
+        // { class: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') }
       ]
     }
   },
@@ -74,6 +75,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      'addPlayer',
       'startNewGame',
       'resetCurrentGame',
       'togglePoisonCounters',
@@ -180,20 +182,30 @@ export default {
   width: 35px;
 }
 
-.new-game {
+.text-button {
+  display: flex;
 	position: relative;
-	width: 1.2em;
+	max-width: 1.2em;
+  height: 1em;
 	border: 2px solid;
 	border-radius: 5px;
 	font-weight: 600;
 	text-align: center;
 	text-transform: uppercase;
   &::after {
-    content: "New game";
+    content: "";
     display: block;
+    margin: auto;
     font-size: 0.3em;
-    line-height: 1.4;
   }
+}
+
+.new-game::after {
+  content: "New game";
+}
+
+.reset-game::after {
+  content: "Reset game";
 }
 
 [disabled] {
