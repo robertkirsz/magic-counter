@@ -41,7 +41,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 50vh;
+  min-height: 50%;
 }
 
 .tile:nth-of-type(even):not(:only-of-type) {

@@ -67,6 +67,7 @@ export default {
 
 <style scoped>
 .counter-screen {
+  height: 100%;
   background-position: center, left top;
   background-size: cover, auto;
   transition: filter 0.3s;

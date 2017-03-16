@@ -64,23 +64,25 @@ export default {
 
 <style scoped>
 .player {
+  flex: 1;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   color: rgba(0, 0, 0, 0.5);
   position: relative;
-  /**/
   /*background-color: rgba(255, 255, 0, 0.2);*/
-  flex: 1;
+}
+
+.player > .counter {
+  /*background-color: rgba(0, 255, 255, 0.2);*/
 }
 
 .other {
+  flex: 1;
   display: flex;
   justify-content: space-around;
-  /*width: 100%;*/
-  height: 50px;
-  /**/
-  background-color: rgba(255, 0, 0, 0.2);
+  width: 100%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
 }
 </style>

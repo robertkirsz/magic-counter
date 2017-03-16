@@ -18,7 +18,7 @@ import Tile from '@/components/layout/Tile'
 
 export default {
   name: 'Tiles',
-  props: [ 'items', 'style' ],
+  props: ['items', 'style'],
   components: { Tile },
   computed: {
     ...mapGetters(['numberOfPlayers'])
@@ -33,7 +33,6 @@ export default {
   flex-flow: column-reverse wrap;
   justify-content: flex-start;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
 }
 </style>
