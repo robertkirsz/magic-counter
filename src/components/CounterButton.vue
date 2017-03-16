@@ -29,7 +29,11 @@ export default {
 </script>
 
 <style scoped>
-span {
+.counter-button {
+  font-size: 0.4em;
+  padding: 0.3em;
+  cursor: pointer;
   transition: color 0.3s, font-size 0.3s;
+  /*background: rgba(255,0,0,0.2);*/
 }
 </style>

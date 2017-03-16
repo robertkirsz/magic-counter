@@ -4,6 +4,9 @@
     leave-active-class="fadeOut"
   >
     <div :class="['counter', `counter--${type}`]">
+      <span v-if="numberOfPlayers > 2 && label !== undefined" class="label">
+        {{ label }}
+      </span>
       <counter-button
         icon="fa fa-minus"
         @click="minusClick"
@@ -26,6 +29,8 @@
 </template>
 
 <script>
+// TODO: transitions look weird when we go from 10 to 9
+import { mapGetters } from 'vuex'
 import CounterButton from '@/components/CounterButton'
 
 export default {
@@ -33,7 +38,8 @@ export default {
   components: { CounterButton },
   props: {
     value: { type: Number, required: true },
-    type: { type: String, required: true }
+    type: { type: String, required: true },
+    label: { type: Number } // TODO: make also a string
   },
   data () {
     return {
@@ -41,6 +47,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['numberOfPlayers']),
     moreThan100 () {
       return this.value > 99
     }
@@ -59,29 +66,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.counter {}
 
-.count {
-  transition: font-size 0.3s;
-}
+// BASE
 
-.placeholder {
-  opacity: 0;
-}
-
-.counter--life {
+.counter {
   display: flex;
-  flex-flow: row nowrap;
+  flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
-  width: 100%;
+  position: relative;
+  font-size: 1em;
+  .label {
+    position: absolute;
+    font-size: 0.4em;
+    top: -0.9em;
+  }
   .count {
-    flex: 1;
-    display: flex;
     position: relative;
-    font-size: 10em;
+    transition: font-size 0.3s;
     &.moreThan100 {
       font-size: 6.3em;
+    }
+    .placeholder {
+      opacity: 0;
     }
     .value {
       position: absolute;
@@ -89,57 +96,45 @@ export default {
       text-align: center;
     }
   }
-  .counter-button {
-    font-size: 4.5em;
-    padding: 0.3em;
-    cursor: pointer;
-  }
+}
+
+// MODIFIERS
+
+.counter--life {
+  font-size: 10em;
 }
 
 .counter--poison,
 .counter--commander {
-  background: white;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	transition: all 0.3s;
-  .counter-button {
-    font-size: 1.5em;
-    padding: 20px 0;
-  }
+  font-size: 3.3em;
+  // background-color: rgba(255, 255, 255, 0.2);
+  z-index: 1;
   .count {
-    margin: 0 8px;
-    font-weight: bold;
-    font-size: 2em;
-    padding: 20px 10px;
-    position: relative;
-    min-width: 56px;
-    text-align: center;
-    &:after {
-      content: "";
-      position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.25;
-      z-index: -1;
-    }
+    font-size: 0.8em;
+  }
+  .counter-buttons {
+    padding: 0.3em 0.5em;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.25;
+    z-index: -1;
   }
 }
 
 .counter--poison {
-	left: 50%;
-	transform: translateX(-50%);
-	.count:after {
+	&::after {
 		background-image: url("../assets/poison.svg");
 		background-position: 50% 50%;
 	}
 }
 
 .counter--commander {
-	right: 50%;
-	transform: translateX(50%);
-	.count:after {
+	&::after {
 		background-image: url("../assets/commander.svg");
 		background-position: 50% 35%;
 	}
