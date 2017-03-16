@@ -4,6 +4,8 @@ import Vue from 'vue'
 const state = []
 
 const getters = {
+  players: state => state,
+  otherPlayers: state => id => state.filter(player => player.id !== id),
   numberOfPlayers: state => state.length,
   noPlayers: state => state.length === 0,
   lastPlayerIndex: state => state.length - 1,

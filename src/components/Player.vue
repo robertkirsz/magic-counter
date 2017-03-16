@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     commanders () {
-      this.$store.getters.otherCommanders(this.player.id)
+      this.$store.getters.otherPlayers(this.player.id)
     },
     ...mapState({
       poisonCountersVisible (state) {
