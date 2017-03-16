@@ -52,17 +52,17 @@ const actions = {
     }
   },
   increaseLife ({ commit, getters }, id, amount = 1) {
-    const player = getters.getElementById('players', id)
+    const player = getters.findById('players', id)
     player.data.life += amount
     commit(types.INCREASE_LIFE, player)
   },
   decreaseLife ({ commit, getters }, id, amount = 1) {
-    const player = getters.getElementById('players', id)
+    const player = getters.findById('players', id)
     player.data.life -= amount
     commit(types.DECREASE_LIFE, player)
   },
   chooseColor ({ commit, getters }, { id, color }) {
-    const player = getters.getElementById('players', id)
+    const player = getters.findById('players', id)
     player.data.color = color
     commit(types.CHOOSE_COLOR, player)
   }
