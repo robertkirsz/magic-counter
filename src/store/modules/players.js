@@ -41,6 +41,12 @@ const mutations = {
   [types.DECREASE_LIFE] ({ all }, payload) {
     all.splice(payload.index, 1, payload.data)
   },
+  [types.ADD_POISON_COUNTER] ({ all }, payload) {
+    all.splice(payload.index, 1, payload.data)
+  },
+  [types.REMOVE_POISON_COUNTER] ({ all }, payload) {
+    all.splice(payload.index, 1, payload.data)
+  },
   [types.CHOOSE_COLOR] ({ all }, payload) {
     all.splice(payload.index, 1, payload.data)
   }
@@ -66,6 +72,16 @@ const actions = {
     const player = getters.findById('players.all', id)
     player.data.life -= amount
     commit(types.DECREASE_LIFE, player)
+  },
+  addPoisonCounter ({ commit, getters }, id, amount = 1) {
+    const player = getters.findById('players.all', id)
+    player.data.poison += amount
+    commit(types.ADD_POISON_COUNTER, player)
+  },
+  removePoisonCounter ({ commit, getters }, id, amount = 1) {
+    const player = getters.findById('players.all', id)
+    player.data.poison -= amount
+    if (player.data.poison >= 0) commit(types.REMOVE_POISON_COUNTER, player)
   },
   chooseColor ({ commit, getters }, { id, color }) {
     const player = getters.findById('players.all', id)
