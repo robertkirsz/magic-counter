@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import Tiles from '@/components/layout/Tiles'
 import SettingsMenu from '@/components/SettingsMenu'
 import Player from '@/components/Player'
@@ -46,8 +46,7 @@ export default {
   components: { Tiles, SettingsMenu, Player },
   props: ['blurred'],
   computed: {
-    ...mapState(['players']),
-    ...mapGetters(['playersColors', 'numberOfPlayers']),
+    ...mapGetters(['players', 'playersColors', 'numberOfPlayers']),
     backgroundGradients () {
       let backgroundImageValues = 'url("static/background.png"), linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25))'
       const direction = this.numberOfPlayers > 2 ? 'moreThanTwo' : 'upToTwo'

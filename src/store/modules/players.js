@@ -1,44 +1,48 @@
 import * as types from '@/store/mutation-types'
 import Vue from 'vue'
 
-const state = []
+const state = {
+  all: []
+}
 
 const getters = {
-  players: state => state,
-  otherPlayers: state => id => state.filter(player => player.id !== id),
-  numberOfPlayers: state => state.length,
-  noPlayers: state => state.length === 0,
-  lastPlayerIndex: state => state.length - 1,
-  playersColors: state => state.map(player => player.color),
-  divider: state => Math.ceil(state.length / 2) || 1
+  players: ({ all }) => all,
+  otherPlayers: (state, { players }) => id => players.filter(player => player.id !== id),
+  numberOfPlayers: (state, { players }) => players.length,
+  noPlayers: (state, { numberOfPlayers }) => numberOfPlayers === 0,
+  lastPlayerIndex: (state, { numberOfPlayers }) => numberOfPlayers - 1,
+  playersColors: (state, { players }) => players.map(player => player.color),
+  divider: (state, { numberOfPlayers }) => Math.ceil(numberOfPlayers / 2) || 1
 }
 
 const mutations = {
   [types.START_NEW_GAME] (state) {
-    Vue.set(state, [])
+    Vue.set(state, 'all', [])
   },
-  [types.START_NEW_GAME] (state) {
-    state = state.map(player => ({
+  [types.RESET_CURRENT_GAME] (state) {
+    const resettedState = state.all.map(player => ({
       id: player.id,
       color: player.color,
       life: 20,
-      posion: 0
+      poison: 0
     }))
+
+    Vue.set(state, 'all', resettedState)
   },
-  [types.ADD_PLAYER] (state) {
-    state.push({ id: state.length, life: 20, color: '', poison: 0 })
+  [types.ADD_PLAYER] ({ all }) {
+    all.push({ id: all.length, life: 20, color: '', poison: 0 })
   },
-  [types.REMOVE_PLAYER] (state) {
-    state.pop()
+  [types.REMOVE_PLAYER] ({ all }) {
+    all.pop()
   },
-  [types.INCREASE_LIFE] (state, payload) {
-    state.splice(payload.index, 1, payload.data)
+  [types.INCREASE_LIFE] ({ all }, payload) {
+    all.splice(payload.index, 1, payload.data)
   },
-  [types.DECREASE_LIFE] (state, payload) {
-    state.splice(payload.index, 1, payload.data)
+  [types.DECREASE_LIFE] ({ all }, payload) {
+    all.splice(payload.index, 1, payload.data)
   },
-  [types.CHOOSE_COLOR] (state, payload) {
-    state.splice(payload.index, 1, payload.data)
+  [types.CHOOSE_COLOR] ({ all }, payload) {
+    all.splice(payload.index, 1, payload.data)
   }
 }
 
@@ -54,17 +58,17 @@ const actions = {
     }
   },
   increaseLife ({ commit, getters }, id, amount = 1) {
-    const player = getters.findById('players', id)
+    const player = getters.findById('players.all', id)
     player.data.life += amount
     commit(types.INCREASE_LIFE, player)
   },
   decreaseLife ({ commit, getters }, id, amount = 1) {
-    const player = getters.findById('players', id)
+    const player = getters.findById('players.all', id)
     player.data.life -= amount
     commit(types.DECREASE_LIFE, player)
   },
   chooseColor ({ commit, getters }, { id, color }) {
-    const player = getters.findById('players', id)
+    const player = getters.findById('players.all', id)
     player.data.color = color
     commit(types.CHOOSE_COLOR, player)
   }
