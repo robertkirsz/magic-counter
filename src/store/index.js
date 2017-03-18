@@ -14,8 +14,8 @@ export default new Vuex.Store({
   getters: {
     // Finds element by ID at specified path and returns
     // its index and contents
+    // TODO: remove that and replace with existing players' getters
     findById: state => (path, id) => {
-      console.warn('state', state, path)
       const index = _get(state, path).findIndex(item => item.id === id)
       const data = { ..._get(state, path)[index] }
       return { index, data }

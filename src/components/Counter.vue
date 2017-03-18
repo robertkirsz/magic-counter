@@ -107,7 +107,7 @@ export default {
 .counter--poison,
 .counter--commander {
   font-size: 3.3em;
-  // background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   z-index: 1;
   .count {
     font-size: 0.8em;

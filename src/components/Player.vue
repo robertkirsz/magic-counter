@@ -7,7 +7,7 @@
     <counter
       v-else
       type="life"
-      :value="player.life"
+      :value="commanderCountersVisible ? player.commanderLife : player.life"
       @minusClick="decreaseLife(player.id, 1)"
       @plusClick="increaseLife(player.id, 1)"
     />
@@ -26,15 +26,23 @@
         :key="commander.id"
         :value="player.commanderDamage[commander.id] || 0"
         :label="commander.id"
-        @minusClick="removeCommanderDamage(player.id, 1, commander.id)"
-        @plusClick="_addCommanderDamage(player.id, 1, commander.id)"
+        @minusClick="removeCommanderDamage({
+          id: player.id,
+          amount: 1,
+          commanderId: commander.id
+        })"
+        @plusClick="addCommanderDamage({
+          id: player.id,
+          amount: 1,
+          commanderId: commander.id
+        })"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import Counter from '@/components/Counter'
 import ColorPicker from '@/components/ColorPicker'
 
@@ -42,26 +50,18 @@ export default {
   name: 'Player',
   components: { Counter, ColorPicker },
   props: { player: Object },
-  updated () {
-    console.warn('this.commanders', this.commanders)
-  },
   computed: {
     commanders () {
-      this.$store.getters.otherPlayers(this.player.id)
+      return this.$store.getters.otherPlayers(this.player.id)
     },
-    ...mapState({
-      poisonCountersVisible (state) {
-        return this.player.color && state.app.poisonCountersVisible
-      },
-      commanderCountersVisible (state) {
-        return this.player.color && state.app.commanderCountersVisible
-      }
-    })
+    poisonCountersVisible () {
+      return this.player.color && this.$store.state.app.poisonCountersVisible
+    },
+    commanderCountersVisible () {
+      return this.player.color && this.$store.state.app.commanderCountersVisible
+    }
   },
   methods: {
-    _addCommanderDamage (...args) {
-      this.addCommanderDamage(...args)
-    },
     ...mapActions([
       'chooseColor',
       'increaseLife',
@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .player {
   flex: 1;
   display: flex;
@@ -87,18 +87,16 @@ export default {
   align-items: center;
   color: rgba(0, 0, 0, 0.5);
   position: relative;
-  /*background-color: rgba(255, 255, 0, 0.2);*/
-}
-
-.player > .counter {
-  /*background-color: rgba(0, 255, 255, 0.2);*/
-}
-
-.other {
-  flex: 1;
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  /*background-color: rgba(255, 0, 0, 0.2);*/
+  // background-color: rgba(255, 255, 0, 0.2);
+  .player > .counter {
+    background-color: rgba(0, 255, 255, 0.2);
+  }
+  .other {
+    // flex: 1;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: rgba(255, 0, 0, 0.2);
+  }
 }
 </style>

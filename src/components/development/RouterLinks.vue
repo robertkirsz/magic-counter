@@ -17,7 +17,7 @@
     right: 0;
     left: 0;
     margin: 8px 0;
-    z-index: 100;
+    z-index: 20;
   }
 
   a {

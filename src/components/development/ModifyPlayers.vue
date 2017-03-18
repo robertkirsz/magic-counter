@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modify-players">
     <button
       @click="$store.dispatch('addPlayer')"
       :disabled="numberOfPlayers > 7"
@@ -25,20 +25,19 @@ export default {
 }
 </script>
 
-<style scoped>
-  div {
+<style lang="scss">
+  .modify-players {
     display: flex;
     justify-content: center;
     align-items: baseline;
-    position: fixed;
+    position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
     margin: 8px 0;
-    z-index: 100;
-  }
-
-  button {
-    margin: 0 8px;
+    z-index: 20;
+    button {
+      margin: 0 8px;
+    }
   }
 </style>

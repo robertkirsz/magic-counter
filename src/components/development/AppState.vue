@@ -60,6 +60,7 @@ export default {
   font-weight: bold;
   cursor: pointer;
   transition: transform 0.3s;
+  z-index: 100;
   &.hidden {
     transform: translateX(calc(100% + 10px));
   }
@@ -92,5 +93,4 @@ export default {
     }
   }
 }
-
 </style>

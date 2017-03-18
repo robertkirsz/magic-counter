@@ -55,14 +55,14 @@ export default {
     }
   },
   mounted () {
-    console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+    // console.log(this.settingsMenuOpened, this.poisonCountersVisible)
   },
   updated () {
-    console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+    // console.log(this.settingsMenuOpened, this.poisonCountersVisible)
   },
   watch: {
     poisonCountersVisible () {
-      console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+      // console.log(this.settingsMenuOpened, this.poisonCountersVisible)
     }
   },
   computed: {
