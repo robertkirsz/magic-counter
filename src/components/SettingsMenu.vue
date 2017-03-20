@@ -22,7 +22,9 @@
           :title="button.title"
           :disabled="button.disableable && noPlayers"
           @click="button.action"
-        />
+        >
+          <span v-if="button.text">{{ button.text }}</span>
+        </span>
       </div>
     </transition>
     <span
@@ -47,22 +49,25 @@ export default {
         { class: 'commander', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disableable: true },
         { class: 'dice', title: 'Roll dice', action: () => this.$router.push('/dice') },
         { class: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer },
-        // { class: 'fa fa-paint-brush', title: 'Change colors', action: () => console.log('a') },
-        { class: 'reset-game text-button', title: 'Reset current game', action: this.resetCurrentGame },
-        { class: 'new-game text-button', title: 'Start new game', action: this.startNewGame }
-        // { class: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') }
+        { class: 'text-button', text: 'Reset game', title: 'Reset current game', action: this.resetCurrentGame },
+        { class: 'text-button', text: 'New game', title: 'Start new game', action: this.startNewGame },
+        { class: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') },
+        { class: 'text-button', text: 'Live game', title: 'Live game', action: () => this.$router.push('/live') }
       ]
     }
   },
   mounted () {
-    // console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+    // console.log('mounted', this.poisonCountersVisible, this.commanderCountersVisible)
   },
   updated () {
-    // console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+    // console.log('updated', this.poisonCountersVisible, this.commanderCountersVisible)
   },
   watch: {
     poisonCountersVisible () {
-      // console.log(this.settingsMenuOpened, this.poisonCountersVisible)
+      // console.log('watch', this.poisonCountersVisible, this.commanderCountersVisible)
+    },
+    commanderCountersVisible () {
+      // console.log('watch', this.poisonCountersVisible, this.commanderCountersVisible)
     }
   },
   computed: {
@@ -192,20 +197,11 @@ export default {
 	font-weight: 600;
 	text-align: center;
 	text-transform: uppercase;
-  &::after {
-    content: "";
+  span {
     display: block;
     margin: auto;
     font-size: 0.3em;
   }
-}
-
-.new-game::after {
-  content: "New game";
-}
-
-.reset-game::after {
-  content: "Reset game";
 }
 
 [disabled] {

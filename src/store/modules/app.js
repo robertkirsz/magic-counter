@@ -8,7 +8,9 @@ const initialState = {
 
 const state = { ...initialState }
 
-const getters = {}
+const getters = {
+  poisonCountersVisible: (state) => state.poisonCountersVisible
+}
 
 const mutations = {
   [types.START_NEW_GAME] (state) {

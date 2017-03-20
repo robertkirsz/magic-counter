@@ -93,7 +93,10 @@ export default {
     }
     .value {
       position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       text-align: center;
     }
   }
@@ -119,6 +122,7 @@ export default {
 .counter--commander {
   padding: 0.1em;
   font-size: 3.3em;
+  font-weight: 800;
   z-index: 1;
   .count {
     font-size: 0.6em;
@@ -129,7 +133,10 @@ export default {
   &::after {
     content: "";
     position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background-repeat: no-repeat;
     background-size: contain;
     opacity: 0.25;
@@ -139,6 +146,10 @@ export default {
 
 .counter--poison {
 	&::after {
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
 		background-image: url("../assets/poison.svg");
 		background-position: 50% 50%;
 	}

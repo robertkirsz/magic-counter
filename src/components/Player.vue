@@ -2,7 +2,7 @@
   <div class="player">
     <color-picker
       v-if="!player.color"
-      @colorChosen="_chooseColor"
+      :playerId="player.id"
     />
     <counter
       v-else
@@ -63,17 +63,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      'chooseColor',
       'increaseLife',
       'decreaseLife',
       'addPoisonCounter',
       'removePoisonCounter',
       'addCommanderDamage',
       'removeCommanderDamage'
-    ]),
-    _chooseColor (color) {
-      this.chooseColor({ id: this.player.id, color })
-    }
+    ])
   }
 }
 </script>

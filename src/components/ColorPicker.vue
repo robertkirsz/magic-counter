@@ -12,7 +12,8 @@
           :class="mana"
           :src="`static/mana/${mana}.svg`"
           alt="Mana symbol"
-          @click="$emit('colorChosen', mana)"
+          @click="chooseColor({ id: playerId, color: mana })"
+          :disabled="playersColors.includes(mana)"
         />
       </div>
     </div>
@@ -20,12 +21,21 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'ColorPicker',
+  props: { playerId: Number },
   data () {
     return {
       manaColors: ['white', 'blue', 'black', 'red', 'green']
     }
+  },
+  computed: {
+    ...mapGetters(['playersColors'])
+  },
+  methods: {
+    ...mapActions(['chooseColor'])
   }
 }
 </script>
@@ -40,8 +50,6 @@ $imgSize: 3.7em;
   right: 0;
   bottom: 0;
   left: 0;
-  // background-color: rgba(0, 255, 255, 0.2);
-  // border: 2px solid rgb(0, 255, 255);
 }
 
 .color-picker {
@@ -52,8 +60,6 @@ $imgSize: 3.7em;
   max-height: 33vh;
   margin: auto;
   transition: width 0.3s, height 0.3s;
-  // background-color: rgba(255, 255, 0, 0.2);
-  // border: 2px solid rgb(255, 255, 0);
 }
 
 img {
@@ -63,6 +69,10 @@ img {
   max-width: 9vh;
   max-height: 9vh;
   transition: width 0.3s, height 0.3s;
+  &[disabled] {
+    opacity: 0.25;
+    pointer-events: none;
+  }
 }
 
 .white {
