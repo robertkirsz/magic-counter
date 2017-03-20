@@ -106,11 +106,11 @@ export default {
 
 .counter--poison,
 .counter--commander {
+  padding: 0.1em;
   font-size: 3.3em;
-  background-color: rgba(255, 255, 255, 0.2);
   z-index: 1;
   .count {
-    font-size: 0.8em;
+    font-size: 0.6em;
   }
   .counter-buttons {
     padding: 0.3em 0.5em;

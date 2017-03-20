@@ -2,7 +2,7 @@
   <div class="player">
     <color-picker
       v-if="!player.color"
-      @colorChosen="_chooseColor"
+      @colorChosen="chooseColor({ id: player.id, color })"
     />
     <counter
       v-else
@@ -70,10 +70,7 @@ export default {
       'removePoisonCounter',
       'addCommanderDamage',
       'removeCommanderDamage'
-    ]),
-    _chooseColor (color) {
-      this.chooseColor({ id: this.player.id, color })
-    }
+    ])
   }
 }
 </script>
@@ -88,15 +85,14 @@ export default {
   color: rgba(0, 0, 0, 0.5);
   position: relative;
   // background-color: rgba(255, 255, 0, 0.2);
-  .player > .counter {
-    background-color: rgba(0, 255, 255, 0.2);
-  }
+  // border: 2px solid rgb(255, 255, 0);
   .other {
     // flex: 1;
     display: flex;
     justify-content: space-around;
     width: 100%;
-    background-color: rgba(255, 0, 0, 0.2);
+    // background-color: rgba(255, 0, 0, 0.2);
+    // border: 2px solid rgb(255, 0, 0);
   }
 }
 </style>

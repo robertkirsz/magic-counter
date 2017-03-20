@@ -29,7 +29,7 @@ export default {
     style () {
       return {
         width: `${100 / this.divider}vw`,
-        fontSize: `${4.5 / this.divider}vw`
+        fontSize: `${4.5 / this.divider}vmin`
       }
     }
   }
