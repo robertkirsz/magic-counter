@@ -106,7 +106,7 @@ export default {
   transform: translateY(50%);
   overflow: hidden;
   pointer-events: none;
-  @media (max-width: 400px) {
+  @media (max-width: 350px) {
     font-size: 2em;
   }
 }
@@ -144,7 +144,7 @@ export default {
 	transition: all 0.3s;
   &:not(:last-of-type) {
     margin-right: 0.3em;
-    @media (max-width: 400px) {
+    @media (max-width: 350px) {
       margin-right: 0.2em;
     }
   }

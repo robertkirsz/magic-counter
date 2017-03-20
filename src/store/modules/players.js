@@ -23,10 +23,29 @@ const mutations = {
   },
   [types.RESET_CURRENT_GAME] (state) {
     const resettedState = state.all.map(player => ({
-      id: player.id,
-      color: player.color,
+      ...player,
       life: 20,
-      poison: 0
+      backupLife: 40,
+      poison: 0,
+      commanderDamage: { 0: 0, 1: 0, 2: 0, 3: 0 }
+    }))
+
+    Vue.set(state, 'all', resettedState)
+  },
+  [types.SHOW_COMMANDER_COUNTERS] (state) {
+    const resettedState = state.all.map(player => ({
+      ...player,
+      life: player.backupLife,
+      backupLife: player.life
+    }))
+
+    Vue.set(state, 'all', resettedState)
+  },
+  [types.HIDE_COMMANDER_COUNTERS] (state) {
+    const resettedState = state.all.map(player => ({
+      ...player,
+      life: player.backupLife,
+      backupLife: player.life
     }))
 
     Vue.set(state, 'all', resettedState)
@@ -51,17 +70,17 @@ const mutations = {
   },
   [types.ADD_COMMANDER_DAMAGE] ({ all }, { player, index, commanderId, amount }) {
     player.commanderDamage[commanderId] += amount
-    player.commanderLife -= amount
+    player.life -= amount
     all.splice(index, 1, player)
   },
   [types.REMOVE_COMMANDER_DAMAGE] ({ all }, { player, index, commanderId, amount }) {
     const commanderDamage = player.commanderDamage[commanderId]
 
     if (commanderDamage - amount < 0) {
-      player.commanderLife += commanderDamage
+      player.life += commanderDamage
       player.commanderDamage[commanderId] = 0
     } else {
-      player.commanderLife += amount
+      player.life += amount
       player.commanderDamage[commanderId] -= amount
     }
 
@@ -87,7 +106,7 @@ const actions = {
         life: 20,
         color: '',
         poison: 0,
-        commanderLife: 40,
+        backupLife: 40,
         commanderDamage
       }
 

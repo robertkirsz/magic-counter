@@ -2,12 +2,12 @@
   <div class="player">
     <color-picker
       v-if="!player.color"
-      @colorChosen="chooseColor({ id: player.id, color })"
+      @colorChosen="_chooseColor"
     />
     <counter
       v-else
       type="life"
-      :value="commanderCountersVisible ? player.commanderLife : player.life"
+      :value="player.life"
       @minusClick="decreaseLife(player.id, 1)"
       @plusClick="increaseLife(player.id, 1)"
     />
@@ -70,7 +70,10 @@ export default {
       'removePoisonCounter',
       'addCommanderDamage',
       'removeCommanderDamage'
-    ])
+    ]),
+    _chooseColor (color) {
+      this.chooseColor({ id: this.player.id, color })
+    }
   }
 }
 </script>
@@ -86,11 +89,13 @@ export default {
   position: relative;
   // background-color: rgba(255, 255, 0, 0.2);
   // border: 2px solid rgb(255, 255, 0);
+  max-height: 50vh;
   .other {
-    // flex: 1;
+    flex: none;
     display: flex;
     justify-content: space-around;
     width: 100%;
+    padding-bottom: 0.5em;
     // background-color: rgba(255, 0, 0, 0.2);
     // border: 2px solid rgb(255, 0, 0);
   }

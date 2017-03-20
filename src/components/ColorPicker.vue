@@ -40,46 +40,56 @@ $imgSize: 3.7em;
   right: 0;
   bottom: 0;
   left: 0;
+  // background-color: rgba(0, 255, 255, 0.2);
+  // border: 2px solid rgb(0, 255, 255);
 }
 
 .color-picker {
   position: relative;
   width: 12em;
   height: 12em;
+  max-width: 33vh;
+  max-height: 33vh;
   margin: auto;
   transition: width 0.3s, height 0.3s;
+  // background-color: rgba(255, 255, 0, 0.2);
+  // border: 2px solid rgb(255, 255, 0);
 }
 
 img {
   position: absolute;
   width: $imgSize;
   height: $imgSize;
+  max-width: 9vh;
+  max-height: 9vh;
   transition: width 0.3s, height 0.3s;
 }
 
 .white {
-  top: calc(#{-$imgSize} / 2);
+  top: 0;
   left: 50%;
-  margin-left: calc(#{-$imgSize} / 2);
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .blue {
-  top: 24%;
-  right: calc(#{-$imgSize} / 2);
+  top: 25%;
+  right: 0;
+  transform: translate3d(50%, 0, 0);
 }
 
 .black {
   bottom: -10%;
-  right: 6%;
+  right: 5%;
 }
 
 .red {
   bottom: -10%;
-  left: 6%;
+  left: 5%;
 }
 
 .green {
-  top: 24%;
-  left: calc(#{-$imgSize} / 2);
+  top: 25%;
+  left: 0;
+  transform: translate3d(-50%, 0, 0);
 }
 </style>

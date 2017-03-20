@@ -77,6 +77,7 @@ export default {
   position: relative;
   font-size: 1em;
   .label {
+    //
     position: absolute;
     font-size: 0.4em;
     top: -0.9em;
@@ -101,7 +102,17 @@ export default {
 // MODIFIERS
 
 .counter--life {
-  font-size: 10em;
+  max-height: 50vh;
+  font-size: 7em;
+  // background-color: rgba(0, 255, 255, 0.2);
+  // border: 2px solid rgb(0, 255, 255);
+  @media (max-width: 420px) {
+    font-size: 9em;
+  }
+  .count {
+    // background-color: rgba(255, 255, 0, 0.2);
+    // border: 2px solid rgb(255, 255, 0);
+  }
 }
 
 .counter--poison,
