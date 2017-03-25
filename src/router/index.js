@@ -1,27 +1,36 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+import CounterScreen from '@/routes/CounterScreen'
 import DiceScreen from '@/routes/DiceScreen'
 import StatisticsScreen from '@/routes/StatisticsScreen'
-import Hello from '@/routes/Hello'
+import SignIn from '@/routes/SignIn'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/dice',
-      name: 'DiceScreen',
-      component: DiceScreen
+      path: '/',
+      name: 'CounterScreen',
+      component: CounterScreen,
+      children: [
+        {
+          path: 'dice',
+          name: 'DiceScreen',
+          component: DiceScreen
+        },
+        {
+          path: 'statistics',
+          name: 'StatisticsScreen',
+          component: StatisticsScreen
+        }
+      ]
     },
     {
-      path: '/statistics',
-      name: 'StatisticsScreen',
-      component: StatisticsScreen
-    },
-    {
-      path: '/hello',
-      name: 'Hello',
-      component: Hello
+      path: '/sign-in',
+      name: 'SignIn',
+      component: SignIn
     }
   ]
 })

@@ -1,7 +1,6 @@
 <template>
   <div
     class="counter-screen"
-    :class="{ blurred: blurred }"
     :style="backgroundGradients"
   >
     <tiles :items="players">
@@ -10,6 +9,13 @@
       </template>
     </tiles>
     <settings-menu />
+    <transition
+      enter-active-class="fadeIn"
+      leave-active-class="fadeOut"
+    >
+      <router-view />
+    </transition>
+    <modify-players />
   </div>
 </template>
 
@@ -18,6 +24,7 @@ import { mapGetters } from 'vuex'
 import Tiles from '@/components/layout/Tiles'
 import SettingsMenu from '@/components/SettingsMenu'
 import Player from '@/components/Player'
+import ModifyPlayers from '@/components/development/ModifyPlayers'
 
 const colors = {
   white: ['#FC9700', '#FFE292'],
@@ -43,8 +50,7 @@ const directions = {
 
 export default {
   name: 'CounterScreen',
-  components: { Tiles, SettingsMenu, Player },
-  props: ['blurred'],
+  components: { Tiles, SettingsMenu, Player, ModifyPlayers },
   computed: {
     ...mapGetters(['players', 'playersColors', 'numberOfPlayers']),
     backgroundGradients () {
@@ -70,9 +76,5 @@ export default {
   background-position: center, left top;
   background-size: cover, auto;
   transition: filter 0.3s;
-}
-
-.blurred {
-  /*filter: blur(3px);*/
 }
 </style>

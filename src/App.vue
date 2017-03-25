@@ -1,14 +1,12 @@
 <template>
   <div id="app">
     <!-- <app-state /> -->
-    <counter-screen :blurred="blurBackground" />
     <transition
       enter-active-class="fadeIn"
       leave-active-class="fadeOut"
     >
       <router-view />
     </transition>
-    <modify-players />
   </div>
 </template>
 
@@ -16,41 +14,12 @@
 // TODO: decide whether to leave blur effect in
 // TODO: remove "Animated.css" when it's no longer needed
 
-import ModifyPlayers from '@/components/development/ModifyPlayers'
 import AppState from '@/components/development/AppState'
-import CounterScreen from '@/routes/CounterScreen'
 
 export default {
   name: 'app',
   components: {
-    ModifyPlayers,
-    CounterScreen,
     AppState
-  },
-  data () {
-    return {
-      blurBackground: false
-    }
-  },
-  methods: {
-    checkBlur () {
-      if (
-        this.$router.currentRoute.name === 'DiceScreen' ||
-        this.$router.currentRoute.name === 'SettingsScreen'
-      ) {
-        this.blurBackground = true
-      } else {
-        this.blurBackground = false
-      }
-    }
-  },
-  mounted () {
-    this.checkBlur()
-  },
-  watch: {
-    '$route' () {
-      this.checkBlur()
-    }
   }
 }
 </script>
@@ -59,12 +28,8 @@ export default {
 @import "./styles/animations";
 
 html,
-body,
-#app {
-  width: 100%;
+body {
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 * {
@@ -83,6 +48,7 @@ button {
 }
 
 #app {
+  height: 100%;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
