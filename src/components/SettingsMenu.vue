@@ -14,17 +14,11 @@
       leave-active-class="fadeOutRight"
     >
       <div class="icons" v-if="settingsMenuOpened">
-        <span
+        <settings-button
           v-for="button in buttons"
-          :key="button.class"
-          class="icon"
-          :class="[button.class, { active: button.active }]"
-          :title="button.title"
-          :disabled="button.disableable && noPlayers"
-          @click="button.action"
-        >
-          <span v-if="button.text">{{ button.text }}</span>
-        </span>
+          :key="button.title"
+          :button="button"
+        />
       </div>
     </transition>
     <span
@@ -38,21 +32,23 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
+import SettingsButton from '@/components/SettingsButton'
 
 export default {
   name: 'SettingsMenu',
   mixins: [clickaway],
+  components: { SettingsButton },
   data () {
     return {
       buttons: [
-        { class: 'poison', title: 'Poison counter', action: this.togglePoisonCounters, active: this.poisonCountersVisible, disableable: true },
-        { class: 'commander', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disableable: true },
-        { class: 'dice', title: 'Roll dice', action: () => this.$router.push('/dice') },
-        { class: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer },
-        { class: 'text-button', text: 'Reset game', title: 'Reset current game', action: this.resetCurrentGame },
-        { class: 'text-button', text: 'New game', title: 'Start new game', action: this.startNewGame },
-        { class: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') },
-        { class: 'text-button', text: 'Live game', title: 'Live game', action: () => this.$router.push('/live') }
+        { icon: 'poison.svg', title: 'Poison counter', action: this.togglePoisonCounters, active: this.poisonCountersVisible, disabled: this.noPlayers },
+        { icon: 'commander.svg', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disabled: this.noPlayers },
+        { icon: 'dice.svg', title: 'Roll dice', action: () => this.$router.push('/dice') },
+        { icon: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer },
+        { text: 'Reset game', title: 'Reset current game', action: this.resetCurrentGame },
+        { text: 'New game', title: 'Start new game', action: this.startNewGame },
+        { icon: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') },
+        { text: 'Live game', title: 'Live game', action: () => this.$router.push('/live') }
       ]
     }
   },
@@ -96,116 +92,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.settings-menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-	position: absolute;
-	bottom: 50%;
-	width: 100vw;
-	background-color: transparent;
-	font-size: 2.5em;
-	padding: 5px;
-	text-align: right;
-	transition: background-color 0.3s ease, opacity 0.4s ease;
-  transform: translateY(50%);
-  overflow: hidden;
-  pointer-events: none;
-  @media (max-width: 350px) {
-    font-size: 2em;
-  }
-}
-
-.icon,
-.fa {
-  color: black;
-  opacity: 0.5;
-  cursor: pointer;
-  pointer-events: auto;
-}
-
-.settings-menu.opened {
-	background-color: rgba(0, 0, 0, 0.1);
-}
-
-.fa-cog {
-  margin-left: auto;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.fa-cog:active {
-  opacity: 0.85;
-}
-
-.icons {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.icon {
-	display: inline-block;
-	transition: all 0.3s;
-  &:not(:last-of-type) {
-    margin-right: 0.3em;
+  .settings-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  	position: absolute;
+  	bottom: 50%;
+  	width: 100vw;
+  	background-color: transparent;
+  	font-size: 2.5em;
+  	padding: 0.3rem 0.3rem 0;
+  	text-align: right;
+  	transition: background-color 0.3s ease, opacity 0.4s ease;
+    transform: translateY(50%);
+    overflow: hidden;
+    pointer-events: none;
     @media (max-width: 350px) {
-      margin-right: 0.2em;
+      font-size: 2em;
+    }
+    &.opened {
+    	background-color: rgba(0, 0, 0, 0.1);
+    }
+    .icon {
+      margin-bottom: 0.3rem;
     }
   }
 
-  &:active {
-    opacity: 1;
-    transform: scale(1.1);
+  .icons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
   }
-  &.active {
-    opacity: 1;
+
+  .fa-cog {
+    margin-left: auto;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: black;
+    opacity: 0.5;
+    cursor: pointer;
+    pointer-events: auto;
+    &:active {
+      opacity: 0.85;
+    }
   }
-}
-
-.poison,
-.commander,
-.dice {
-	height: 1em;
-	background-position: 50%;
-	background-repeat: no-repeat;
-	background-size: contain;
-}
-
-.poison {
-	background-image: url(../assets/poison.svg);
-	width: 26px;
-}
-
-.commander {
-	background-image: url(../assets/commander.svg);
-	width: 35px;
-}
-
-.dice {
-  background-image: url(../assets/dice.svg);
-  width: 35px;
-}
-
-.text-button {
-  display: flex;
-	position: relative;
-	max-width: 1.2em;
-  height: 1em;
-	border: 2px solid;
-	border-radius: 5px;
-	font-weight: 600;
-	text-align: center;
-	text-transform: uppercase;
-  span {
-    display: block;
-    margin: auto;
-    font-size: 0.3em;
-  }
-}
-
-[disabled] {
-	opacity: 0.15;
-	pointer-events: none;
-}
 </style>
