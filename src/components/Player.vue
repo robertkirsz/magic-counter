@@ -10,6 +10,7 @@
       :value="player.life"
       @minusClick="decreaseLife(player.id, 1)"
       @plusClick="increaseLife(player.id, 1)"
+      animated
     />
     <div class="other" v-if="poisonCountersVisible || commanderCountersVisible">
       <counter

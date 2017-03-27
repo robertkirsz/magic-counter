@@ -1,10 +1,14 @@
+<!--
+  .placeholder - used to keep dimensions of otherwise absolutely positioned element
+ -->
+
 <template>
   <transition
     enter-active-class="fadeIn"
     leave-active-class="fadeOut"
   >
     <div :class="['counter', `counter--${type}`]">
-      <span v-if="numberOfPlayers > 2 && label !== undefined" class="label">
+      <span v-if="showLabel" class="label">
         {{ label }}
       </span>
       <counter-button
@@ -13,12 +17,16 @@
       />
       <div class="count" :class="{ moreThan100: moreThan100 }">
         <transition
-          :enter-active-class="`fadeIn${animationDirection}`"
-          :leave-active-class="`fadeOut${animationDirection}`"
+          :enter-active-class="enterClass"
+          :leave-active-class="leaveClass"
         >
-          <span class="value" :key="value">{{ value }}</span>
+          <span class="value" :key="value">
+            {{ value }}
+          </span>
         </transition>
-        <span class="placeholder">{{ value }}</span>
+        <span class="placeholder">
+          {{ value }}
+        </span>
       </div>
       <counter-button
         icon="fa fa-plus"
@@ -39,7 +47,8 @@ export default {
   props: {
     value: { type: Number, required: true },
     type: { type: String, required: true },
-    label: { type: Number } // TODO: make also a string
+    label: { type: Number }, // TODO: make also a string
+    animated: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -48,6 +57,15 @@ export default {
   },
   computed: {
     ...mapGetters(['numberOfPlayers']),
+    enterClass () {
+      return this.animated ? `fadeIn${this.animationDirection}` : false
+    },
+    leaveClass () {
+      return this.animated ? `fadeOut${this.animationDirection}` : false
+    },
+    showLabel () {
+      return this.numberOfPlayers > 2 && this.label !== undefined
+    },
     moreThan100 () {
       return this.value > 99
     }
