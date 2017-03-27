@@ -33,6 +33,7 @@ export default {
   flex-flow: column-reverse wrap;
   justify-content: flex-start;
   align-items: center;
+  width: 100%;
   height: 100%;
 }
 </style>
