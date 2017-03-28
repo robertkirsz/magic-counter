@@ -14,7 +14,7 @@
     :style="style"
     :title="button.title"
     :disabled="button.disabled"
-    @click="button.action"
+    @click.stop="button.action"
   >
     {{ button.text }}
   </button>

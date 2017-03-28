@@ -16,6 +16,7 @@
       <div class="icons" v-if="settingsMenuOpened">
         <settings-button
           v-for="button in buttons"
+          v-if="!button.hidden"
           :key="button.title"
           :button="button"
         />
@@ -38,20 +39,6 @@ export default {
   name: 'SettingsMenu',
   mixins: [clickaway],
   components: { SettingsButton },
-  data () {
-    return {
-      buttons: [
-        { icon: 'poison.svg', title: 'Poison counter', action: this.togglePoisonCounters, active: this.poisonCountersVisible, disabled: this.noPlayers },
-        { icon: 'commander.svg', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disabled: this.noPlayers },
-        { icon: 'dice.svg', title: 'Roll dice', action: () => this.$router.push('/dice') },
-        { icon: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer },
-        { text: 'Reset game', title: 'Reset current game', action: this.resetCurrentGame },
-        { text: 'New game', title: 'Start new game', action: this.startNewGame },
-        { icon: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') },
-        { text: 'Live game', title: 'Live game', action: () => this.$router.push('/live') }
-      ]
-    }
-  },
   mounted () {
     // console.log('mounted', this.poisonCountersVisible, this.commanderCountersVisible)
   },
@@ -72,11 +59,25 @@ export default {
       settingsMenuOpened: state => state.app.settingsMenuOpened,
       commanderCountersVisible: state => state.app.commanderCountersVisible
     }),
-    ...mapGetters(['numberOfPlayers', 'noPlayers'])
+    ...mapGetters(['numberOfPlayers', 'noPlayers']),
+    buttons () {
+      return [
+        { icon: 'poison.svg', title: 'Poison counter', action: this.togglePoisonCounters, active: this.poisonCountersVisible, disabled: this.noPlayers },
+        { icon: 'commander.svg', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disabled: this.noPlayers },
+        { icon: 'dice.svg', title: 'Roll dice', action: () => this.$router.push('/dice') },
+        { icon: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer, hidden: this.numberOfPlayers > 3 },
+        { icon: 'fa fa-user-times', title: 'Remove player', action: this.removePlayer, hidden: this.numberOfPlayers < 1 },
+        { text: 'Reset game', title: 'Reset current game', action: this.resetCurrentGame },
+        { text: 'New game', title: 'Start new game', action: this.startNewGame }
+        // { icon: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') },
+        // { text: 'Live game', title: 'Live game', action: () => this.$router.push('/live') }
+      ]
+    }
   },
   methods: {
     ...mapActions([
       'addPlayer',
+      'removePlayer',
       'startNewGame',
       'resetCurrentGame',
       'togglePoisonCounters',
