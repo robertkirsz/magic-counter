@@ -8,8 +8,10 @@ const initialState = {
 
 const state = { ...initialState }
 
+// TODO: check if we need that, maybe state is just enough
 const getters = {
-  poisonCountersVisible: (state) => state.poisonCountersVisible
+  poisonCountersVisible: state => state.poisonCountersVisible,
+  commanderGame: state => state.commanderCountersVisible
 }
 
 const mutations = {
@@ -45,8 +47,8 @@ const actions = {
   startNewGame ({ commit }) {
     commit(types.START_NEW_GAME)
   },
-  resetCurrentGame ({ commit }) {
-    commit(types.RESET_CURRENT_GAME)
+  resetCurrentGame ({ commit, getters }) {
+    commit(types.RESET_CURRENT_GAME, { commanderGame: getters.commanderGame })
   },
   toggleSettingsMenu ({ state, commit }) {
     state.settingsMenuOpened

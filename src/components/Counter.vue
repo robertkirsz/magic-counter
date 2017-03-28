@@ -58,9 +58,6 @@ export default {
       animationDirection: ''
     }
   },
-  updated () {
-    console.log('this.divider', this.divider)
-  },
   computed: {
     ...mapGetters(['numberOfPlayers', 'divider']),
     style () {

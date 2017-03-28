@@ -1,5 +1,5 @@
 <template>
-  <div class="player" :style="style">
+  <div class="player">
     <color-picker
       v-if="!player.color"
       :playerId="player.id"
@@ -8,11 +8,16 @@
       v-else
       type="life"
       :value="player.life"
+      :label="player.id"
       @minusClick="decreaseLife(player.id, 1)"
       @plusClick="increaseLife(player.id, 1)"
       animated
     />
-    <div class="other" v-if="poisonCountersVisible || commanderCountersVisible">
+    <div
+      class="other"
+      v-if="poisonCountersVisible || commanderCountersVisible"
+      :style="style"
+    >
       <counter
         v-if="poisonCountersVisible"
         type="poison"
@@ -21,8 +26,8 @@
         @plusClick="addPoisonCounter(player.id, 1)"
       />
       <counter
-        v-if="commanderCountersVisible"
         v-for="commander in commanders"
+        v-if="commanderCountersVisible && commander.color"
         type="commander"
         :key="commander.id"
         :value="player.commanderDamage[commander.id] || 0"
@@ -55,7 +60,7 @@ export default {
     ...mapGetters(['numberOfPlayers']),
     style () {
       return {
-        justifyContent: this.numberOfPlayers > 2 ? 'space-around' : 'center'
+        marginTop: this.numberOfPlayers > 2 ? '1em' : 0
       }
     },
     commanders () {
@@ -87,6 +92,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  justify-content: center;
   color: rgba(0, 0, 0, 0.5);
   position: relative;
   max-height: 50vh;

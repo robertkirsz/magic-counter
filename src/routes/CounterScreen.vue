@@ -15,7 +15,7 @@
     >
       <router-view />
     </transition>
-    <modify-players />
+    <!-- <modify-players /> -->
   </div>
 </template>
 

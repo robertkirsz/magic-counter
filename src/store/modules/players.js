@@ -21,11 +21,11 @@ const mutations = {
   [types.START_NEW_GAME] (state) {
     Vue.set(state, 'all', [])
   },
-  [types.RESET_CURRENT_GAME] (state) {
+  [types.RESET_CURRENT_GAME] (state, { commanderGame }) {
     const resettedState = state.all.map(player => ({
       ...player,
-      life: 20,
-      backupLife: 40,
+      life: commanderGame ? 40 : 20,
+      backupLife: commanderGame ? 20 : 40,
       poison: 0,
       commanderDamage: { 0: 0, 1: 0, 2: 0, 3: 0 }
     }))
@@ -102,11 +102,11 @@ const actions = {
 
     if (getters.numberOfPlayers < 4) {
       const player = {
-        id: getters.numberOfPlayers,
-        life: 20,
+        id: getters.numberOfPlayers + 1,
+        life: getters.commanderGame ? 40 : 20,
+        backupLife: getters.commanderGame ? 20 : 40,
         color: '',
         poison: 0,
-        backupLife: 40,
         commanderDamage
       }
 
