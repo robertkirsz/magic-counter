@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import _get from 'lodash/get'
+
 import app from '@/store/modules/app'
 import players from '@/store/modules/players'
 

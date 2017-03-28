@@ -1,5 +1,5 @@
 <template>
-  <div class="player">
+  <div class="player" :style="style">
     <color-picker
       v-if="!player.color"
       :playerId="player.id"
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Counter from '@/components/Counter'
 import ColorPicker from '@/components/ColorPicker'
 
@@ -52,6 +52,12 @@ export default {
   components: { Counter, ColorPicker },
   props: { player: Object },
   computed: {
+    ...mapGetters(['numberOfPlayers']),
+    style () {
+      return {
+        justifyContent: this.numberOfPlayers > 2 ? 'space-around' : 'center'
+      }
+    },
     commanders () {
       return this.$store.getters.otherPlayers(this.player.id)
     },
@@ -80,21 +86,17 @@ export default {
   flex: 1;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
   align-items: center;
   color: rgba(0, 0, 0, 0.5);
   position: relative;
-  // background-color: rgba(255, 255, 0, 0.2);
-  // border: 2px solid rgb(255, 255, 0);
   max-height: 50vh;
   .other {
     flex: none;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     width: 100%;
     padding-bottom: 0.5em;
-    // background-color: rgba(255, 0, 0, 0.2);
-    // border: 2px solid rgb(255, 0, 0);
   }
 }
 </style>

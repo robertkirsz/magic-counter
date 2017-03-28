@@ -7,7 +7,10 @@
     enter-active-class="fadeIn"
     leave-active-class="fadeOut"
   >
-    <div :class="['counter', `counter--${type}`]">
+    <div
+      :class="['counter', `counter--${type}`]"
+      :style="style"
+    >
       <span v-if="showLabel" class="label">
         {{ label }}
       </span>
@@ -47,7 +50,7 @@ export default {
   props: {
     value: { type: Number, required: true },
     type: { type: String, required: true },
-    label: { type: Number }, // TODO: make also a string
+    label: { type: Number },
     animated: { type: Boolean, default: false }
   },
   data () {
@@ -55,13 +58,23 @@ export default {
       animationDirection: ''
     }
   },
+  updated () {
+    console.log('this.divider', this.divider)
+  },
   computed: {
-    ...mapGetters(['numberOfPlayers']),
+    ...mapGetters(['numberOfPlayers', 'divider']),
+    style () {
+      if (this.type === 'life') return false
+      return {
+        fontSize: `${10 / this.divider}vmax`,
+        marginBottom: this.numberOfPlayers > 2 ? '0.5em' : 0
+      }
+    },
     enterClass () {
-      return this.animated ? `fadeIn${this.animationDirection}` : false
+      return this.animated ? `fadeIn${this.animationDirection}` : ''
     },
     leaveClass () {
-      return this.animated ? `fadeOut${this.animationDirection}` : false
+      return this.animated ? `fadeOut${this.animationDirection}` : ''
     },
     showLabel () {
       return this.numberOfPlayers > 2 && this.label !== undefined
@@ -72,12 +85,20 @@ export default {
   },
   methods: {
     minusClick () {
-      this.animationDirection = 'Down'
       this.$emit('minusClick')
     },
     plusClick () {
-      this.animationDirection = 'Up'
       this.$emit('plusClick')
+    }
+  },
+  watch: {
+    value (newVal, oldVal) {
+      if (newVal > oldVal && this.animated) {
+        this.animationDirection = 'Up'
+      }
+      if (newVal < oldVal && this.animated) {
+        this.animationDirection = 'Down'
+      }
     }
   }
 }
@@ -139,7 +160,6 @@ export default {
 .counter--poison,
 .counter--commander {
   padding: 0.1em;
-  font-size: 3.3em;
   font-weight: 800;
   z-index: 1;
   .count {

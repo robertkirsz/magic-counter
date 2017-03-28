@@ -11,16 +11,13 @@
 </template>
 
 <script>
-// TODO: decide whether to leave blur effect in
 // TODO: remove "Animated.css" when it's no longer needed
 
 import AppState from '@/components/development/AppState'
 
 export default {
-  name: 'app',
-  components: {
-    AppState
-  }
+  name: 'App',
+  components: { AppState }
 }
 </script>
 
