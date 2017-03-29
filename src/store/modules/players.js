@@ -1,8 +1,15 @@
 import * as types from '@/store/mutation-types'
 import Vue from 'vue'
 
+const commanderDamage = { 0: 0, 1: 0, 2: 0, 3: 0 }
+
+const getInitialState = () => ([
+  { id: 1, life: 20, backupLife: 40, color: '', poison: 0, commanderDamage },
+  { id: 2, life: 20, backupLife: 40, color: '', poison: 0, commanderDamage }
+])
+
 const state = {
-  all: []
+  all: getInitialState()
 }
 
 const getters = {
@@ -19,7 +26,7 @@ const getters = {
 
 const mutations = {
   [types.START_NEW_GAME] (state) {
-    Vue.set(state, 'all', [])
+    Vue.set(state, 'all', getInitialState())
   },
   [types.RESET_CURRENT_GAME] (state, { commanderGame }) {
     const resettedState = state.all.map(player => ({
@@ -93,13 +100,6 @@ const mutations = {
 
 const actions = {
   addPlayer ({ commit, getters }) {
-    // This code dynamically assign damage counters based on number of players
-    // But it would need to be updated each time the number of players changes
-    // const otherPlayers = getters.otherPlayers(getters.numberOfPlayers)
-    // const commanderDamage = otherPlayers.reduce((result, player) => ({ ...result, [player.id]: 0 }), {})
-    // For now it will be hardcoded, maybe that will be enough
-    const commanderDamage = { 0: 0, 1: 0, 2: 0, 3: 0 }
-
     if (getters.numberOfPlayers < 4) {
       const player = {
         id: getters.numberOfPlayers + 1,
