@@ -58,7 +58,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['numberOfPlayers', 'divider']),
+    ...mapGetters([
+      'numberOfPlayers',
+      'divider',
+      'commanderGame'
+    ]),
     style () {
       if (this.type === 'life') return false
       return {
@@ -73,7 +77,7 @@ export default {
       return this.animated ? `fadeOut${this.animationDirection}` : ''
     },
     showLabel () {
-      return this.numberOfPlayers > 2 && this.label !== undefined
+      return this.commanderGame && this.numberOfPlayers > 2 && this.label !== undefined
     },
     moreThan100 () {
       return this.value > 99
