@@ -65,8 +65,8 @@ export default {
         { icon: 'poison.svg', title: 'Poison counter', action: this.togglePoisonCounters, active: this.poisonCountersVisible, disabled: this.noPlayers },
         { icon: 'commander.svg', title: 'Commander damage', action: this.toggleCommanderCounters, active: this.commanderCountersVisible, disabled: this.noPlayers },
         { icon: 'dice.svg', title: 'Roll dice', action: () => this.$router.push('/dice') },
-        { icon: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer, hidden: this.numberOfPlayers > 3 },
-        { icon: 'fa fa-user-times', title: 'Remove player', action: this.removePlayer, hidden: this.numberOfPlayers < 1 },
+        { icon: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer, disabled: this.numberOfPlayers >= 4 },
+        { icon: 'fa fa-user-times', title: 'Remove player', action: this.removePlayer, disabled: this.numberOfPlayers <= 2 },
         { text: 'Reset game', title: 'Reset current game', action: this.resetCurrentGame },
         { text: 'New game', title: 'Start new game', action: this.startNewGame }
         // { icon: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') },

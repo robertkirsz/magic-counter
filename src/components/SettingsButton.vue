@@ -40,10 +40,11 @@ export default {
 <style lang="scss" scoped>
   button {
     display: inline-flex;
-    color: black;
-    opacity: 0.5;
+    padding: 0;
     background-color: transparent;
     border: none;
+    color: black;
+    opacity: 0.5;
     cursor: pointer;
     pointer-events: auto;
   	transition: all 0.3s;
@@ -73,6 +74,7 @@ export default {
 
   .text-button {
   	max-width: 5em;
+    padding: 0.3em 0;
   	border: 2px solid;
   	border-radius: 5px;
     font-size: 0.3em;
