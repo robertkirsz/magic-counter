@@ -1,11 +1,11 @@
 import * as types from '@/store/mutation-types'
 import Vue from 'vue'
 
-const commanderDamage = { 0: 0, 1: 0, 2: 0, 3: 0 }
+const commanderDamage = () => ({ 1: 0, 2: 0, 3: 0, 4: 0 })
 
 const getInitialState = () => ([
-  { id: 1, life: 20, backupLife: 40, color: '', poison: 0, commanderDamage },
-  { id: 2, life: 20, backupLife: 40, color: '', poison: 0, commanderDamage }
+  { id: 1, life: 20, backupLife: 40, color: '', poison: 0, commanderDamage: commanderDamage() },
+  { id: 2, life: 20, backupLife: 40, color: '', poison: 0, commanderDamage: commanderDamage() }
 ])
 
 const state = {
@@ -34,7 +34,7 @@ const mutations = {
       life: commanderGame ? 40 : 20,
       backupLife: commanderGame ? 20 : 40,
       poison: 0,
-      commanderDamage: { 0: 0, 1: 0, 2: 0, 3: 0 }
+      commanderDamage: commanderDamage()
     }))
 
     Vue.set(state, 'all', resettedState)
@@ -107,7 +107,7 @@ const actions = {
         backupLife: getters.commanderGame ? 20 : 40,
         color: '',
         poison: 0,
-        commanderDamage
+        commanderDamage: commanderDamage()
       }
 
       commit(types.ADD_PLAYER, player)
