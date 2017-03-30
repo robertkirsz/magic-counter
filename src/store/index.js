@@ -5,6 +5,7 @@ import _get from 'lodash/get'
 
 import app from '@/store/modules/app'
 import players from '@/store/modules/players'
+import game from '@/store/modules/game'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ export default new Vuex.Store({
   },
   modules: {
     app,
-    players
+    players,
+    game
   },
   strict: debug
 })

@@ -1,6 +1,9 @@
 import * as types from '@/store/mutation-types'
 import Vue from 'vue'
 
+// TODO: when number of players changes, clear commander
+// damage dealt by players that left the game
+
 const commanderDamage = () => ({ 1: 0, 2: 0, 3: 0, 4: 0 })
 
 const getInitialState = () => ([
