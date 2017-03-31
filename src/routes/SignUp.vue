@@ -1,20 +1,13 @@
 <template>
   <div class="container">
-    <form @submit.prevent="signIn">
+    <form @submit.prevent="signUp">
       <input type="email" v-model="email" placeholder="Email" />
       <input type="password" v-model="password" placeholder="Password" />
-      <button @click="">{{ signInButtonText }}</button>
+      <input type="password" v-model="repeatedPassword" placeholder="Repeat password" />
+      <button @click="">{{ signUpButtonText }}</button>
     </form>
     <p v-if="errorMessage">{{ errorMessage }}</p>
-    <p>Or</p>
-    <div class="social-buttons">
-      <button>Log in with Facebook</button>
-      <button>Log in with Twitter</button>
-      <button>Log in with Google</button>
-      <button>Log in with GitHub</button>
-    </div>
-    <p>Or</p>
-    <router-link to="sign-up">Sign up</router-link>
+    <router-link to="sign-in">Sign in</router-link>
   </div>
 </template>
 
@@ -25,23 +18,24 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      repeatedPassword: ''
     }
   },
   computed: {
     errorMessage () {
       return this.$store.state.user.errorMessage
     },
-    signInButtonText () {
-      return this.authRequestPending ? 'Signing...' : 'Sign in'
+    signUpButtonText () {
+      return this.authRequestPending ? 'Signing...' : 'Sign up'
     },
     authRequestPending () {
       return this.$store.state.user.authRequestPending
     }
   },
   methods: {
-    signIn () {
-      this.$store.dispatch('signIn', { email: this.email, password: this.password })
+    signUp () {
+      this.$store.dispatch('signUp', { email: this.email, password: this.password })
     }
   }
 }
@@ -55,11 +49,6 @@ export default {
   }
 
   form {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .social-buttons {
     display: flex;
     flex-direction: column;
   }

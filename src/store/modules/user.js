@@ -3,9 +3,9 @@ import * as types from '@/store/mutation-types'
 import { firebaseSignIn, firebaseSignUp, firebaseSignOut, firebaseProviderSignIn, updateUserData } from '@/firebase'
 
 const getInitialState = () => ({
-  authRequestPending: true,
+  authRequestPending: false,
   signedIn: false,
-  error: null,
+  errorMessage: null,
   name: '',
   email: '',
   picture: ''
@@ -19,8 +19,8 @@ const getters = {
 
 const mutations = {
   [types.AUTH_REQUEST] (state) {
+    state.errorMessage = null
     state.authRequestPending = true
-    state.error = null
   },
   [types.AUTH_SUCCESS] (state, user) {
     updateUserData(user)
@@ -31,12 +31,12 @@ const mutations = {
     state.authRequestPending = false
     state.signedIn = true
   },
-  [types.AUTH_ERROR] (state, { error }) {
-    state.authRequestPending = true
-    state.error = error
+  [types.AUTH_ERROR] (state, { errorMessage }) {
+    state.errorMessage = errorMessage
+    state.authRequestPending = false
   },
   [types.CLEAR_AUTH_ERROR] (state) {
-    state.error = null
+    state.errorMessage = null
   },
   [types.SIGN_IN] (state) {},
   [types.SIGN_OUT_SUCCESS] (state) {
@@ -56,7 +56,7 @@ const actions = {
     // Sign the user in in Firebase
     const firebaseSignInResponse = await firebaseSignIn(email, password)
     // If we got error, display it
-    if (firebaseSignInResponse.error) commit(types.AUTH_ERROR, firebaseSignInResponse.error)
+    if (firebaseSignInResponse.error) commit(types.AUTH_ERROR, { errorMessage: firebaseSignInResponse.error })
   },
   async signUp ({ commit, getters }, { email, password }) {
     // Return if request is pending
@@ -66,7 +66,7 @@ const actions = {
     // Sign the user up in Firebase
     const firebaseSignUpResponse = await firebaseSignUp(email, password)
     // If we got error, display it
-    if (firebaseSignUpResponse.error) commit(types.AUTH_ERROR, firebaseSignUpResponse.error)
+    if (firebaseSignUpResponse.error) commit(types.AUTH_ERROR, { errorMessage: firebaseSignUpResponse.error })
   },
   async signOut ({ commit, getters }) {
     // Return if request is pending
@@ -76,7 +76,7 @@ const actions = {
     // Sign user out of Firebase
     const firebaseSignOutResponse = await firebaseSignOut()
     // Display errors if we get any
-    if (firebaseSignOutResponse.error) commit(types.AUTH_ERROR, `There was a problem with signing out. This is what we know: ${firebaseSignOutResponse.error}`)
+    if (firebaseSignOutResponse.error) commit(types.AUTH_ERROR, { errorMessage: `There was a problem with signing out. This is what we know: ${firebaseSignOutResponse.error}` })
     else commit(types.SIGN_OUT_SUCCESS)
   },
   async signInWithProvider ({ commit, getters }, { providerName }) {
@@ -87,7 +87,7 @@ const actions = {
     // Sign in via provider
     const firebaseSignInResponse = await firebaseProviderSignIn(providerName)
     // Display errors if we get any
-    if (firebaseSignInResponse.error) commit(types.AUTH_ERROR, firebaseSignInResponse.error)
+    if (firebaseSignInResponse.error) commit(types.AUTH_ERROR, { errorMessage: firebaseSignInResponse.error })
   },
   authSuccess ({ commit }, { user }) {
     commit(types.AUTH_SUCCESS, user)

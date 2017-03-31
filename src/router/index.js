@@ -5,6 +5,7 @@ import CounterScreen from '@/routes/CounterScreen'
 import DiceScreen from '@/routes/DiceScreen'
 import StatisticsScreen from '@/routes/StatisticsScreen'
 import SignIn from '@/routes/SignIn'
+import SignUp from '@/routes/SignUp'
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/sign-in',
       name: 'SignIn',
       component: SignIn
+    },
+    {
+      path: '/sign-up',
+      name: 'SignUp',
+      component: SignUp
     }
   ]
 })
