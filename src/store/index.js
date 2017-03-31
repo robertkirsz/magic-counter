@@ -3,9 +3,10 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import _get from 'lodash/get'
 
-import app from '@/store/modules/app'
-import players from '@/store/modules/players'
-import game from '@/store/modules/game'
+import app from './modules/app'
+import players from './modules/players'
+import game from './modules/game'
+import user from './modules/user'
 
 Vue.use(Vuex)
 
@@ -26,7 +27,8 @@ export default new Vuex.Store({
   modules: {
     app,
     players,
-    game
+    game,
+    user
   },
   strict: debug
 })

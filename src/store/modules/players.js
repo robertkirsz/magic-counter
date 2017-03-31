@@ -1,5 +1,5 @@
-import * as types from '@/store/mutation-types'
 import Vue from 'vue'
+import * as types from '@/store/mutation-types'
 
 // TODO: when number of players changes, clear commander
 // damage dealt by players that left the game

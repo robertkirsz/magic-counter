@@ -68,8 +68,9 @@ export default {
         { icon: 'fa fa-user-plus', title: 'Add player', action: this.addPlayer, disabled: this.numberOfPlayers >= 4 },
         { icon: 'fa fa-user-times', title: 'Remove player', action: this.removePlayer, disabled: this.numberOfPlayers <= 2 },
         { text: 'Reset game', title: 'Reset current game', action: this.resetCurrentGame },
-        { text: 'New game', title: 'Start new game', action: this.startNewGame }
+        { text: 'New game', title: 'Start new game', action: this.startNewGame },
         // { icon: 'fa fa-bar-chart', title: 'Game statistics', action: () => this.$router.push('/statistics') },
+        { text: 'Sign in', title: 'Sign in', action: () => this.$router.push('/sign-in') }
         // { text: 'Live game', title: 'Live game', action: () => this.$router.push('/live') }
       ]
     }

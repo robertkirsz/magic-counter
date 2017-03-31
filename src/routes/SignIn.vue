@@ -3,7 +3,7 @@
     <form>
       <input type="text" planceholder="Email" />
       <input type="text" planceholder="Password" />
-      <button>Sign In</button>
+      <button @click="signIn">Sign In</button>
     </form>
     <p>Or</p>
     <div class="social-buttons">
@@ -14,6 +14,26 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex'
+
+export default {
+  name: 'SignIn',
+  data () {
+    return {
+      value: ''
+    }
+  },
+  computed: {
+    ...mapGetters(['playersColors'])
+  },
+  methods: {
+    ...mapActions(['chooseColor']),
+    signIn () {}
+  }
+}
+</script>
 
 <style scoped>
   .container {
