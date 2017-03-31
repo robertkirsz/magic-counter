@@ -1,20 +1,44 @@
 <template>
-  <div class="container">
-    <form @submit.prevent="signUp">
-      <input type="email" v-model="email" placeholder="Email" />
-      <input type="password" v-model="password" placeholder="Password" />
-      <input type="password" v-model="repeatedPassword" placeholder="Repeat password" />
-      <button @click="">{{ signUpButtonText }}</button>
-    </form>
-    <p v-if="errorMessage">{{ errorMessage }}</p>
-    <router-link to="sign-in">Sign in</router-link>
-  </div>
+  <transition
+    enter-active-class="animated fadeInUp"
+    leave-active-class="animated fadeOutUp"
+  >
+    <div class="container">
+      <form @submit.prevent="signUp">
+        <email-input
+          v-model="email"
+          :showError="emailError"
+          :errorMessage="errorMessage"
+        />
+        <password-input
+          v-model="password"
+          :showError="passwordError"
+          :errorMessage="errorMessage"
+        />
+        <password-input
+          v-model="repeatedPassword"
+          :showError="passwordError"
+          :errorMessage="errorMessage"
+        />
+        <md-button type="submit" class="md-raised md-primary">
+          {{ signUpButtonText }}
+        </md-button>
+        <p v-if="genericError" class="md-warn">{{ errorMessage }}</p>
+      </form>
+      <p style="margin-top: auto;">
+        <router-link to="sign-in">Sign in</router-link>
+      </p>
+    </div>
+  </transition>
 </template>
 
 <script>
+import EmailInput from '@/components/EmailInput'
+import PasswordInput from '@/components/PasswordInput'
 
 export default {
   name: 'SignIn',
+  components: { EmailInput, PasswordInput },
   data () {
     return {
       email: '',
@@ -23,14 +47,26 @@ export default {
     }
   },
   computed: {
+    authRequestPending () {
+      return this.$store.state.user.authRequestPending
+    },
+    errorCode () {
+      return this.$store.state.user.error.code
+    },
     errorMessage () {
-      return this.$store.state.user.errorMessage
+      return this.$store.state.user.error.message
+    },
+    emailError () {
+      return this.errorCode === 'auth/invalid-email'
+    },
+    passwordError () {
+      return this.errorCode === 'auth/wrong-password'
+    },
+    genericError () {
+      return this.errorCode && !this.emailError && !this.passwordError
     },
     signUpButtonText () {
       return this.authRequestPending ? 'Signing...' : 'Sign up'
-    },
-    authRequestPending () {
-      return this.$store.state.user.authRequestPending
     }
   },
   methods: {
@@ -45,7 +81,17 @@ export default {
   .container {
     display: flex;
     flex-direction: column;
-    margin: 24px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-width: 380px;
+    background: powderblue;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  p {
+    text-align: center;
   }
 
   form {

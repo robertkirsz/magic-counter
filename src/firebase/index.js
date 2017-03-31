@@ -73,14 +73,14 @@ export const firebaseUpdateData = (table, id, data) => (
 export const firebaseSignIn = (email, password) => (
   auth.signInWithEmailAndPassword(email, password)
     .then(response => ({ success: true, id: response.uid, response }))
-    .catch(response => ({ error: response.message, response }))
+    .catch(response => ({ error: true, response }))
 )
 
 // Generic email and password sign up
 export const firebaseSignUp = (email, password) => (
   auth.createUserWithEmailAndPassword(email, password)
     .then(response => ({ success: true, id: response.uid }))
-    .catch(response => ({ error: response.message }))
+    .catch(response => ({ error: true, response }))
 )
 
 // Sign out
