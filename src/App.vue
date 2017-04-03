@@ -1,22 +1,23 @@
 <template>
   <div id="app">
     <!-- <app-state /> -->
-    <main-menu-button />
     <router-view />
+    <user-menu-button />
   </div>
 </template>
 
 <script>
 // TODO: remove "Animated.css" when it's no longer needed
 import { auth, firebaseGetData } from '@/firebase'
+import _get from 'lodash/get'
 import AppState from '@/components/development/AppState'
-import MainMenuButton from '@/components/MainMenuButton'
+import UserMenuButton from '@/components/UserMenuButton'
 
 const debug = true
 
 export default {
   name: 'App',
-  components: { AppState, MainMenuButton },
+  components: { AppState, UserMenuButton },
   mounted () {
     this.authChange()
   },
@@ -28,7 +29,7 @@ export default {
         if (debug) console.info('Authentication state has changed')
 
         // Show loading message
-        // dispatch(authRequest())
+        this.$store.dispatch('authRequest')
 
         // Get currect time
         const now = Date.now()
@@ -69,19 +70,16 @@ export default {
             if (userIsAdmin.success) userData.admin = true
 
             // Apply user's setting if he has any stored
-            // _get(usersDataFromDatabase, 'data.settings') &&
-              // dispatch(loadInitialSettings(usersDataFromDatabase.data.settings))
+            _get(usersDataFromDatabase, 'data.settings') &&
+              this.$store.dispatch('loadInitialSettings', { settings: usersDataFromDatabase.data.settings })
           }
 
-          // Load user's collection
-          // dispatch(loadMyCards())
           // Save user's data in Firebase and in store
-          // dispatch(authSuccess(userData))
-          // Close any sign in or sign up modals
-          // if (authModalOpened) dispatch(closeModal())
+          console.warn('Firebase auth listeners', userData)
+          this.$store.dispatch('authSuccess', { user: userData })
         // If user's not logged in or logged out...
         } else {
-          // dispatch(noUser())
+          this.$store.dispatch('noUser')
           // Log that into console
           if (debug) console.warn('No user')
         }

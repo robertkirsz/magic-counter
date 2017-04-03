@@ -8,7 +8,8 @@
         <player :player="props.item" />
       </template>
     </tiles>
-    <settings-menu />
+    <!-- <settings-menu /> -->
+    <main-menu-button />
     <transition
       enter-active-class="fadeIn"
       leave-active-class="fadeOut"
@@ -25,6 +26,7 @@ import Tiles from '@/components/layout/Tiles'
 import SettingsMenu from '@/components/SettingsMenu'
 import Player from '@/components/Player'
 import ModifyPlayers from '@/components/development/ModifyPlayers'
+import MainMenuButton from '@/components/MainMenuButton'
 
 const colors = {
   white: ['#FC9700', '#FFE292'],
@@ -50,7 +52,7 @@ const directions = {
 
 export default {
   name: 'CounterScreen',
-  components: { Tiles, SettingsMenu, Player, ModifyPlayers },
+  components: { Tiles, SettingsMenu, Player, ModifyPlayers, MainMenuButton },
   computed: {
     ...mapGetters(['players', 'playersColors', 'numberOfPlayers']),
     backgroundGradients () {

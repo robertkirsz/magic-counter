@@ -6,14 +6,19 @@ const getInitialState = () => ({
   authRequestPending: false,
   signedIn: false,
   error: { code: null, message: null },
-  name: '',
+  displayName: '',
   email: '',
-  picture: ''
+  photoURL: ''
 })
 
 const state = getInitialState()
 
 const getters = {
+  user: (state) => ({
+    displayName: state.displayName,
+    email: state.email,
+    photoURL: state.photoURL
+  }),
   authRequestPending: ({ authRequestPending }) => authRequestPending
 }
 
@@ -22,12 +27,10 @@ const mutations = {
     state.error = { code: null, message: null }
     state.authRequestPending = true
   },
-  [types.AUTH_SUCCESS] (state, user) {
-    updateUserData(user)
-
-    state.name = user.name
+  [types.AUTH_SUCCESS] (state, { user }) {
+    state.displayName = user.displayName
     state.email = user.email
-    state.picture = user.picture
+    state.photoURL = user.photoURL
     state.authRequestPending = false
     state.signedIn = true
   },
@@ -41,10 +44,12 @@ const mutations = {
   },
   [types.SIGN_IN] (state) {},
   [types.SIGN_OUT_SUCCESS] (state) {
-    Vue.set(state, 'all', { ...getInitialState(), authRequestPending: false })
+    const reset = getInitialState()
+    for (let f in state) Vue.set(state, f, reset[f])
   },
   [types.NO_USER] (state) {
-    Vue.set(state, 'all', { ...getInitialState(), authRequestPending: false })
+    const reset = getInitialState()
+    for (let f in state) Vue.set(state, f, reset[f])
   }
 }
 
@@ -114,7 +119,9 @@ const actions = {
       })
     }
   },
-  authSuccess ({ commit }, { user }) {
+  authSuccess ({ commit }, user) {
+    // TODO: maybe should use await here?
+    updateUserData(user)
     commit(types.AUTH_SUCCESS, user)
   },
   signOutSuccess ({ commit }) {
@@ -122,6 +129,12 @@ const actions = {
   },
   noUser ({ commit }) {
     commit(types.NO_USER)
+  },
+  authRequest ({ commit }) {
+    commit(types.AUTH_REQUEST)
+  },
+  loadInitialSettings ({ commit }, { settings }) {
+    console.warn('loadInitialSettings', settings)
   }
 }
 

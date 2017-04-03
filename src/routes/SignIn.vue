@@ -21,7 +21,7 @@
         <p v-if="genericError" class="md-warn">{{ errorMessage }}</p>
       </form>
       <p>Or continue with</p>
-      <social-buttons />
+      <social-buttons @providerChosen="signInWithProvider" />
       <p style="margin-top: auto;">
         <router-link to="sign-up">Or sign up</router-link>
       </p>
@@ -69,6 +69,9 @@ export default {
   methods: {
     signIn () {
       this.$store.dispatch('signIn', { email: this.email, password: this.password })
+    },
+    signInWithProvider (providerName) {
+      this.$store.dispatch('signInWithProvider', { providerName })
     }
   }
 }
