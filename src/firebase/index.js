@@ -2,11 +2,12 @@ import firebase from 'firebase'
 
 // Firebase configuration
 const config = {
-  apiKey: 'AIzaSyBnC_HytloAcEA5iJN-fXXZRu2cYgXJpyU',
-  authDomain: 'magic-counter.firebaseapp.com',
-  databaseURL: 'https://magic-counter.firebaseio.com',
-  storageBucket: 'magic-counter.appspot.com',
-  messagingSenderId: '739955111556'
+  apiKey: 'AIzaSyDwDacwAuGy4LxSOJnJKgVDOBSgHQm6PgU',
+  authDomain: 'mtg-collection-cd492.firebaseapp.com',
+  databaseURL: 'https://mtg-collection-cd492.firebaseio.com',
+  projectId: 'mtg-collection-cd492',
+  storageBucket: 'mtg-collection-cd492.appspot.com',
+  messagingSenderId: '378575387948'
 }
 
 export const app = firebase.initializeApp(config)
