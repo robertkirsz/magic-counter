@@ -7,6 +7,7 @@ import app from './modules/app'
 import players from './modules/players'
 import game from './modules/game'
 import user from './modules/user'
+import errors from './modules/errors'
 
 Vue.use(Vuex)
 
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     app,
     players,
     game,
-    user
+    user,
+    errors
   },
   strict: debug
 })

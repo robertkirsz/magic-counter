@@ -31,3 +31,8 @@ export const NO_USER = 'NO_USER'
 // GAME
 export const CREATE_GAME = 'CREATE_GAME'
 export const DESTROY_GAME = 'DESTROY_GAME'
+
+// ERRORS
+export const SHOW_ERROR = 'SHOW_ERROR'
+export const HIDE_ERROR = 'HIDE_ERROR'
+export const HIDE_ALL_ERRORS = 'HIDE_ALL_ERRORS'
