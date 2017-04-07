@@ -6,11 +6,6 @@
       class="md-fab-bottom-right button"
       style="bottom: 8px; right: 8px;"
     >
-      <!-- <md-button class="md-fab" md-fab-trigger>
-        <md-icon md-icon-morph>close</md-icon>
-        <md-icon>settings</md-icon>
-      </md-button> -->
-
       <md-button
         class="md-icon-button"
         md-fab-trigger
@@ -31,19 +26,20 @@
       </md-button>
 
       <md-button
-        class="md-fab md-primary md-mini md-clean"
-        @click.native="$store.dispatch('signOut')"
-      >
-        <i class="md-icon md-theme-default fa fa-sign-out" />
-      </md-button>
-
-      <md-button
-        class="md-fab md-primary md-mini md-clean"
         v-for="button in buttons"
-        :key="button"
+        v-if="!button.hidden"
+        :key="button.id"
+        class="md-fab md-primary md-mini md-clean"
         @click.native="button.action"
       >
-        <md-icon>{{ button.icon }}</md-icon>
+        <i
+          v-if="button.iconType === 'Font Awesome'"
+          class="md-icon md-theme-default fa"
+          :class="`fa fa-${button.icon}`"
+        />
+        <md-icon v-if="button.iconType === 'Material'">
+          {{ button.icon }}
+        </md-icon>
       </md-button>
     </md-speed-dial>
   </div>
@@ -53,13 +49,16 @@
 export default {
   name: 'UserMenu',
   computed: {
+    signedIn () {
+      return this.$store.getters.signedIn
+    },
     user () {
       return this.$store.getters.user
     },
     buttons () {
       return [
-        { icon: 'email', action: () => console.log('email') },
-        { icon: 'phone', action: () => console.log('phone') }
+        { id: 0, label: 'Sign in', icon: 'sign-in', iconType: 'Font Awesome', action: () => this.$router.push('/sign-in'), hidden: this.signedIn },
+        { id: 1, label: 'Sign out', icon: 'sign-out', iconType: 'Font Awesome', action: () => this.$store.dispatch('signOut'), hidden: !this.signedIn }
       ]
     }
   }

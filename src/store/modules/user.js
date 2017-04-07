@@ -19,6 +19,7 @@ const getters = {
     email: state.email,
     photoURL: state.photoURL
   }),
+  signedIn: ({ signedIn }) => signedIn,
   authRequestPending: ({ authRequestPending }) => authRequestPending
 }
 

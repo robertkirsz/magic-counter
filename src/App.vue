@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     authChange () {
-      console.warn('START')
       // When user's authentication status changes...
       auth.onAuthStateChanged(async firebaseUser => {
         if (debug) console.info('Authentication state has changed')
