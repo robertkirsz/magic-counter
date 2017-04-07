@@ -5,16 +5,21 @@
  -->
 
 <template>
-  <backdrop>
-    <tiles :items="dice">
-      <template slot="item" scope="props">
-        <die
-          :value="props.item"
-          @click.native.stop="rollDie(props.index)"
-        />
-      </template>
-    </tiles>
-  </backdrop>
+  <transition
+    enter-active-class="fadeIn"
+    leave-active-class="fadeOut"
+  >
+    <backdrop>
+      <tiles :items="dice">
+        <template slot="item" scope="props">
+          <die
+            :value="props.item"
+            @click.native.stop="rollDie(props.index)"
+          />
+        </template>
+      </tiles>
+    </backdrop>
+  </transition>
 </template>
 
 <script>

@@ -5,45 +5,52 @@ import { firebaseSignIn, firebaseSignUp, firebaseSignOut, firebaseProviderSignIn
 const getInitialState = () => ({
   authRequestPending: false,
   signedIn: false,
-  errorMessage: null,
-  name: '',
+  error: { code: null, message: null },
+  displayName: '',
   email: '',
-  picture: ''
+  photoURL: ''
 })
 
 const state = getInitialState()
 
 const getters = {
+  user: (state) => ({
+    displayName: state.displayName,
+    email: state.email,
+    photoURL: state.photoURL
+  }),
+  signedIn: ({ signedIn }) => signedIn,
   authRequestPending: ({ authRequestPending }) => authRequestPending
 }
 
 const mutations = {
   [types.AUTH_REQUEST] (state) {
-    state.errorMessage = null
+    state.error = { code: null, message: null }
     state.authRequestPending = true
   },
-  [types.AUTH_SUCCESS] (state, user) {
-    updateUserData(user)
-
-    state.name = user.name
+  [types.AUTH_SUCCESS] (state, { user }) {
+    state.displayName = user.displayName
     state.email = user.email
-    state.picture = user.picture
+    state.photoURL = user.photoURL
     state.authRequestPending = false
     state.signedIn = true
   },
-  [types.AUTH_ERROR] (state, { errorMessage }) {
-    state.errorMessage = errorMessage
+  [types.AUTH_ERROR] (state, { error }) {
+    console.warn('ERROR code:', error.code, 'message:', error.message)
+    state.error = { code: error.code, message: error.message }
     state.authRequestPending = false
   },
   [types.CLEAR_AUTH_ERROR] (state) {
-    state.errorMessage = null
+    state.error = { code: null, message: null }
   },
   [types.SIGN_IN] (state) {},
   [types.SIGN_OUT_SUCCESS] (state) {
-    Vue.set(state, 'all', { ...getInitialState(), authRequestPending: false })
+    const reset = getInitialState()
+    for (let f in state) Vue.set(state, f, reset[f])
   },
   [types.NO_USER] (state) {
-    Vue.set(state, 'all', { ...getInitialState(), authRequestPending: false })
+    const reset = getInitialState()
+    for (let f in state) Vue.set(state, f, reset[f])
   }
 }
 
@@ -56,9 +63,17 @@ const actions = {
     // Sign the user in in Firebase
     const firebaseSignInResponse = await firebaseSignIn(email, password)
     // If we got error, display it
-    if (firebaseSignInResponse.error) commit(types.AUTH_ERROR, { errorMessage: firebaseSignInResponse.error })
+    if (firebaseSignInResponse.error) {
+      commit(types.AUTH_ERROR, {
+        error: {
+          code: firebaseSignInResponse.response.code,
+          message: firebaseSignInResponse.response.message
+        }
+      })
+    }
   },
   async signUp ({ commit, getters }, { email, password }) {
+    // TODO: test errors
     // Return if request is pending
     if (getters.authRequestPending) return
     // Commit mutation so we can show spinner
@@ -66,9 +81,17 @@ const actions = {
     // Sign the user up in Firebase
     const firebaseSignUpResponse = await firebaseSignUp(email, password)
     // If we got error, display it
-    if (firebaseSignUpResponse.error) commit(types.AUTH_ERROR, { errorMessage: firebaseSignUpResponse.error })
+    if (firebaseSignUpResponse.error) {
+      commit(types.AUTH_ERROR, {
+        error: {
+          code: firebaseSignUpResponse.response.code,
+          message: firebaseSignUpResponse.response.message
+        }
+      })
+    }
   },
   async signOut ({ commit, getters }) {
+    // TODO: test errors
     // Return if request is pending
     if (getters.authRequestPending) return
     // Commit mutation so we can show spinner
@@ -80,6 +103,7 @@ const actions = {
     else commit(types.SIGN_OUT_SUCCESS)
   },
   async signInWithProvider ({ commit, getters }, { providerName }) {
+    // TODO: test errors
     // Return if request is pending
     if (getters.authRequestPending) return
     // Commit mutation so we can show spinner
@@ -87,9 +111,18 @@ const actions = {
     // Sign in via provider
     const firebaseSignInResponse = await firebaseProviderSignIn(providerName)
     // Display errors if we get any
-    if (firebaseSignInResponse.error) commit(types.AUTH_ERROR, { errorMessage: firebaseSignInResponse.error })
+    if (firebaseSignInResponse.error) {
+      commit(types.AUTH_ERROR, {
+        error: {
+          code: firebaseSignInResponse.response.code,
+          message: firebaseSignInResponse.response.message
+        }
+      })
+    }
   },
-  authSuccess ({ commit }, { user }) {
+  authSuccess ({ commit }, user) {
+    // TODO: maybe should use await here?
+    updateUserData(user)
     commit(types.AUTH_SUCCESS, user)
   },
   signOutSuccess ({ commit }) {
@@ -97,6 +130,12 @@ const actions = {
   },
   noUser ({ commit }) {
     commit(types.NO_USER)
+  },
+  authRequest ({ commit }) {
+    commit(types.AUTH_REQUEST)
+  },
+  loadInitialSettings ({ commit }, { settings }) {
+    console.warn('loadInitialSettings', settings)
   }
 }
 

@@ -1,27 +1,42 @@
 <template>
-  <div class="container">
-    <form @submit.prevent="signIn">
-      <input type="email" v-model="email" placeholder="Email" />
-      <input type="password" v-model="password" placeholder="Password" />
-      <button @click="">{{ signInButtonText }}</button>
-    </form>
-    <p v-if="errorMessage">{{ errorMessage }}</p>
-    <p>Or</p>
-    <div class="social-buttons">
-      <button>Log in with Facebook</button>
-      <button>Log in with Twitter</button>
-      <button>Log in with Google</button>
-      <button>Log in with GitHub</button>
+  <transition
+    enter-active-class="animated fadeInUp"
+    leave-active-class="animated fadeOutUp"
+  >
+    <div class="container">
+      <form @submit.prevent="signIn">
+        <email-input
+          v-model="email"
+          :showError="emailError"
+          :errorMessage="errorMessage"
+        />
+        <password-input
+          v-model="password"
+          :showError="passwordError"
+          :errorMessage="errorMessage"
+        />
+        <md-button type="submit" class="md-raised md-primary">
+          {{ signInButtonText }}
+        </md-button>
+        <p v-if="genericError" class="md-warn">{{ errorMessage }}</p>
+      </form>
+      <p>Or continue with</p>
+      <social-buttons @providerChosen="signInWithProvider" />
+      <p style="margin-top: auto;">
+        <router-link to="sign-up">Or sign up</router-link>
+      </p>
     </div>
-    <p>Or</p>
-    <router-link to="sign-up">Sign up</router-link>
-  </div>
+  </transition>
 </template>
 
 <script>
+import EmailInput from '@/components/EmailInput'
+import PasswordInput from '@/components/PasswordInput'
+import SocialButtons from '@/components/SocialButtons'
 
 export default {
   name: 'SignIn',
+  components: { EmailInput, SocialButtons, PasswordInput },
   data () {
     return {
       email: '',
@@ -29,19 +44,34 @@ export default {
     }
   },
   computed: {
+    authRequestPending () {
+      return this.$store.state.user.authRequestPending
+    },
+    errorCode () {
+      return this.$store.state.user.error.code
+    },
     errorMessage () {
-      return this.$store.state.user.errorMessage
+      return this.$store.state.user.error.message
+    },
+    emailError () {
+      return this.errorCode === 'auth/invalid-email'
+    },
+    passwordError () {
+      return this.errorCode === 'auth/wrong-password' || this.errorCode === 'auth/weak-password'
+    },
+    genericError () {
+      return this.errorCode && !this.emailError && !this.passwordError
     },
     signInButtonText () {
       return this.authRequestPending ? 'Signing...' : 'Sign in'
-    },
-    authRequestPending () {
-      return this.$store.state.user.authRequestPending
     }
   },
   methods: {
     signIn () {
       this.$store.dispatch('signIn', { email: this.email, password: this.password })
+    },
+    signInWithProvider (providerName) {
+      this.$store.dispatch('signInWithProvider', { providerName })
     }
   }
 }
@@ -49,9 +79,17 @@ export default {
 
 <style scoped>
   .container {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    margin: 24px;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  p {
+    text-align: center;
   }
 
   form {

@@ -9,6 +9,7 @@
         <img
           v-for="mana in manaColors"
           :key="mana"
+          class="md-whiteframe-10dp"
           :class="mana"
           :src="`static/mana/${mana}.svg`"
           alt="Mana symbol"
@@ -68,6 +69,7 @@ img {
   height: $imgSize;
   max-width: 9vh;
   max-height: 9vh;
+  border-radius: 50%;
   transition: width 0.3s, height 0.3s;
   &[disabled] {
     opacity: 0.25;

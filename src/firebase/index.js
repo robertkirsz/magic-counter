@@ -2,11 +2,12 @@ import firebase from 'firebase'
 
 // Firebase configuration
 const config = {
-  apiKey: 'AIzaSyBnC_HytloAcEA5iJN-fXXZRu2cYgXJpyU',
-  authDomain: 'magic-counter.firebaseapp.com',
-  databaseURL: 'https://magic-counter.firebaseio.com',
-  storageBucket: 'magic-counter.appspot.com',
-  messagingSenderId: '739955111556'
+  apiKey: 'AIzaSyDwDacwAuGy4LxSOJnJKgVDOBSgHQm6PgU',
+  authDomain: 'mtg-collection-cd492.firebaseapp.com',
+  databaseURL: 'https://mtg-collection-cd492.firebaseio.com',
+  projectId: 'mtg-collection-cd492',
+  storageBucket: 'mtg-collection-cd492.appspot.com',
+  messagingSenderId: '378575387948'
 }
 
 export const app = firebase.initializeApp(config)
@@ -73,14 +74,14 @@ export const firebaseUpdateData = (table, id, data) => (
 export const firebaseSignIn = (email, password) => (
   auth.signInWithEmailAndPassword(email, password)
     .then(response => ({ success: true, id: response.uid, response }))
-    .catch(response => ({ error: response.message, response }))
+    .catch(response => ({ error: true, response }))
 )
 
 // Generic email and password sign up
 export const firebaseSignUp = (email, password) => (
   auth.createUserWithEmailAndPassword(email, password)
     .then(response => ({ success: true, id: response.uid }))
-    .catch(response => ({ error: response.message }))
+    .catch(response => ({ error: true, response }))
 )
 
 // Sign out
