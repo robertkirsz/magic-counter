@@ -3,6 +3,8 @@
     <!-- <app-state /> -->
     <router-view />
     <user-menu-button />
+    <error-modal />
+    <button @click="addError">Add error</button>
   </div>
 </template>
 
@@ -10,18 +12,33 @@
 // TODO: remove "Animated.css" when it's no longer needed
 import { auth, firebaseGetData } from '@/firebase'
 import _get from 'lodash/get'
+import _sample from 'lodash/sample'
 import AppState from '@/components/development/AppState'
 import UserMenuButton from '@/components/UserMenuButton'
+import ErrorModal from '@/components/ErrorModal'
 
 const debug = true
 
 export default {
   name: 'App',
-  components: { AppState, UserMenuButton },
+  components: { AppState, UserMenuButton, ErrorModal },
   mounted () {
     this.authChange()
   },
   methods: {
+    addError () {
+      this.$store.dispatch('showError', {
+        type: _sample(['type1', 'type2', 'type3']),
+        message: _sample(['Lorem', 'Ipsum', 'Dolor'])
+      })
+
+      setTimeout(() => {
+        this.$store.dispatch('showError', {
+          type: _sample(['type1', 'type2', 'type3']),
+          message: _sample(['Lorem', 'Ipsum', 'Dolor'])
+        })
+      }, 1000)
+    },
     authChange () {
       // When user's authentication status changes...
       auth.onAuthStateChanged(async firebaseUser => {
@@ -89,37 +106,37 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./styles/animations";
+  @import "./styles/animations";
 
-html,
-body {
-  height: 100%;
-}
+  html,
+  body {
+    height: 100%;
+  }
 
-* {
-	box-sizing: border-box;
-	user-drag: none;
-	user-select: none;
-	outline: none;
-	cursor: inherit;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-tap-highlight-color: transparent;
-}
+  * {
+  	box-sizing: border-box;
+  	user-drag: none;
+  	user-select: none;
+  	outline: none;
+  	cursor: inherit;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+  }
 
-a,
-button {
-  cursor: pointer;
-}
+  a,
+  button {
+    cursor: pointer;
+  }
 
-#app {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  cursor: default;
-  overflow: hidden;
-}
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    cursor: default;
+    overflow: hidden;
+  }
 </style>

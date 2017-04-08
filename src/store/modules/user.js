@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import * as types from '@/store/mutation-types'
 import { firebaseSignIn, firebaseSignUp, firebaseSignOut, firebaseProviderSignIn, updateUserData } from '@/firebase'
+import _get from 'lodash/get'
 
 const getInitialState = () => ({
   authRequestPending: false,
@@ -110,13 +111,12 @@ const actions = {
     commit(types.AUTH_REQUEST)
     // Sign in via provider
     const firebaseSignInResponse = await firebaseProviderSignIn(providerName)
+    console.warn('firebaseSignInResponse', firebaseSignInResponse)
     // Display errors if we get any
     if (firebaseSignInResponse.error) {
-      commit(types.AUTH_ERROR, {
-        error: {
-          code: firebaseSignInResponse.response.code,
-          message: firebaseSignInResponse.response.message
-        }
+      commit(types.SHOW_ERROR, {
+        type: _get(firebaseSignInResponse, 'response.code', 'generic'),
+        message: _get(firebaseSignInResponse, 'response.message', firebaseSignInResponse.error)
       })
     }
   },

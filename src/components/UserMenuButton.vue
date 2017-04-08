@@ -21,7 +21,7 @@
           v-else
           class="md-fab md-primary md-mini md-clean"
         >
-          <md-icon>person</md-icon>
+          <md-icon v-text="'person'" />
         </md-button>
       </md-button>
 
@@ -32,14 +32,10 @@
         class="md-fab md-primary md-mini md-clean"
         @click.native="button.action"
       >
-        <i
-          v-if="button.iconType === 'Font Awesome'"
-          class="md-icon md-theme-default fa"
-          :class="`fa fa-${button.icon}`"
+        <md-icon
+          v-text="button.iconType === 'Material' ? button.icon : null"
+          :md-iconset="button.iconType === 'Font Awesome' ? `fa fa-${button.icon}` : null"
         />
-        <md-icon v-if="button.iconType === 'Material'">
-          {{ button.icon }}
-        </md-icon>
       </md-button>
     </md-speed-dial>
   </div>
