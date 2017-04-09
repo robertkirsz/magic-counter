@@ -21,7 +21,7 @@
           v-else
           class="md-fab md-primary md-mini md-clean"
         >
-          <md-icon v-text="'person'" />
+          <md-icon :md-iconset="signedIn ? 'fa fa-user' : 'fa fa-user-times'" />
         </md-button>
       </md-button>
 
@@ -46,7 +46,7 @@ export default {
   name: 'UserMenu',
   computed: {
     signedIn () {
-      return this.$store.getters.signedIn
+      return this.$store.state.user.signedIn
     },
     user () {
       return this.$store.getters.user

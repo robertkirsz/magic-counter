@@ -124,8 +124,7 @@ export const updateEmail = email => (
 // ---------- USER DATA UPDATING ----------
 
 export const updateUserData = user => {
-  if (!user.uid) return
-  firebaseUpdateData('Users', user.uid, user)
+  if (user.uid) return firebaseUpdateData('Users', user.uid, user)
 }
 
 export const updateAndReturnUserSettings = settings => {

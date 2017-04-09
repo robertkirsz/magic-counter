@@ -9,7 +9,7 @@
 
 <script>
 // TODO: remove "Animated.css" when it's no longer needed
-import { auth, firebaseGetData } from '@/firebase'
+import { auth, firebaseGetData, updateUserData } from '@/firebase'
 import _get from 'lodash/get'
 import AppState from '@/components/development/AppState'
 import UserMenuButton from '@/components/UserMenuButton'
@@ -43,13 +43,13 @@ export default {
           const usersDataFromDatabase = await firebaseGetData('Users', uid)
 
           // Create empty user data object
-          let userData = {}
+          let user = {}
 
           // If user's data don't exists in database (this is his first time logging in)...
           if (!usersDataFromDatabase.success) {
             if (debug) console.info('No user data in the database')
             // Gather user's data from Firebase authentication
-            userData = {
+            user = {
               uid,
               displayName,
               email,
@@ -59,26 +59,28 @@ export default {
             }
           } else {
             if (debug) console.info('Got user\'s data from the database')
-            userData = {
+            user = {
               ...usersDataFromDatabase.data,
               lastLogin: now
             }
 
+            // TODO
             // Check if user is an admin
             const userIsAdmin = await firebaseGetData('Admins', uid)
-            if (userIsAdmin.success) userData.admin = true
+            if (userIsAdmin.success) user.admin = true
 
+            // TODO
             // Apply user's setting if he has any stored
             _get(usersDataFromDatabase, 'data.settings') &&
               this.$store.dispatch('loadInitialSettings', { settings: usersDataFromDatabase.data.settings })
           }
 
           // Save user's data in Firebase and in store
-          console.warn('Firebase auth listeners', userData)
-          this.$store.dispatch('authSuccess', { user: userData })
+          const foo = await updateUserData(user)
+          console.warn(user, 'foo', foo)
+          this.$store.dispatch('saveUser', user)
         // If user's not logged in or logged out...
         } else {
-          this.$store.dispatch('noUser')
           // Log that into console
           if (debug) console.info('No user')
         }

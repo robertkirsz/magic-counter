@@ -3,10 +3,11 @@ import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
 import _first from 'lodash/first'
 import _last from 'lodash/last'
+import _includes from 'lodash/includes'
 import _startsWith from 'lodash/startsWith'
 import * as types from '@/store/mutation-types'
 
-/*
+/* EXAMPLE
 error = {
   type: '',
   message: '',
@@ -24,12 +25,14 @@ const state = getInitialState()
 const getters = {
   errors: ({ all }) => all,
   anyErrors: ({ all }) => all.length > 0,
-  firstError: ({ all }) => _first(all),
-  lastError: ({ all }) => _last(all),
+  firstError: ({ all }) => _first(all) || {},
+  lastError: ({ all }) => _last(all) || {},
   newestError: ({ all }) => moment.max(all.map(err => err.time)),
   oldestError: ({ all }) => moment.min(all.map(err => err.time)),
   errorsOfType: ({ all }) => (type) => all.filter(err => _startsWith(err.type, type)),
-  firstErrorOfType: ({ all }, { errorsOfType }) => (type) => errorsOfType(type)[0] || {}
+  firstErrorOfType: (state, { errorsOfType }) => (type) => errorsOfType(type)[0] || {},
+  isEmailError: (state, { firstError }) => firstError.type === 'auth/invalid-email',
+  isPasswordError: (state, { firstError }) => _includes(['auth/wrong-password', 'auth/weak-password'], firstError.type)
 }
 
 const mutations = {

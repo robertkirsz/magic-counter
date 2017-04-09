@@ -1,37 +1,32 @@
 <template>
-  <transition
-    enter-active-class="animated fadeInUp"
-    leave-active-class="animated fadeOutUp"
-  >
-    <div class="container">
-      <form @submit.prevent="signIn">
-        <email-input
-          v-model="email"
-          :showError="isEmailError"
-          :errorMessage="error.message"
-        />
-        <password-input
-          v-model="password"
-          :showError="isPasswordError"
-          :errorMessage="error.message"
-        />
-        <md-button
-          type="submit"
-          class="md-raised md-primary"
-          v-text="signInButtonText"
-        />
-      </form>
-      <p>Or continue with</p>
-      <social-buttons @providerChosen="signInWithProvider" />
-      <p>
-        <router-link to="sign-up">Or sign up</router-link>
-      </p>
-    </div>
-  </transition>
+  <div class="container">
+    <form @submit.prevent="signIn" novalidate>
+      <email-input
+        v-model="email"
+        :showError="isEmailError"
+        :errorMessage="error.message"
+      />
+      <password-input
+        v-model="password"
+        :showError="isPasswordError"
+        :errorMessage="error.message"
+      />
+      <md-button
+        type="submit"
+        class="md-raised md-primary"
+        v-text="signInButtonText"
+      />
+    </form>
+    <p>Or continue with</p>
+    <social-buttons @providerChosen="signInWithProvider" />
+    <p>
+      <router-link to="sign-up">Or sign up</router-link>
+    </p>
+  </div>
 </template>
 
 <script>
-import _includes from 'lodash/includes'
+import { mapGetters } from 'vuex'
 import EmailInput from '@/components/EmailInput'
 import PasswordInput from '@/components/PasswordInput'
 import SocialButtons from '@/components/SocialButtons'
@@ -46,14 +41,12 @@ export default {
     }
   },
   computed: {
+    signedIn () {
+      return this.$store.state.user.signedIn
+    },
+    ...mapGetters(['firstErrorOfType', 'isEmailError', 'isPasswordError']),
     error () {
-      return this.$store.getters.firstErrorOfType('auth/')
-    },
-    isEmailError () {
-      return this.error.type === 'auth/invalid-email'
-    },
-    isPasswordError () {
-      return _includes(['auth/wrong-password', 'auth/weak-password'], this.error.type)
+      return this.firstErrorOfType('auth/')
     },
     signInButtonText () {
       return this.$store.state.user.signingIn ? 'Signing...' : 'Sign in' // TODO: replace with spinner
@@ -65,6 +58,15 @@ export default {
     },
     signInWithProvider (providerName) {
       this.$store.dispatch('signInWithProvider', { providerName })
+    }
+  },
+  watch: {
+    signedIn (newVal, oldVal) {
+      if (!oldVal || newVal) {
+        this.email = ''
+        this.password = ''
+        this.$router.replace('/')
+      }
     }
   }
 }

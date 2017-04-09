@@ -2,6 +2,7 @@
   <md-input-container :class="{'md-input-invalid': showError }">
     <label>Email</label>
     <md-input
+      type="email"
       v-bind:value="value"
       v-on:input="updateValue"
     />
