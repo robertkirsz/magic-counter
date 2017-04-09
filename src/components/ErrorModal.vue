@@ -1,5 +1,5 @@
 <template>
-  <modal v-if="anyErrors"
+  <modal v-if="error.message"
     error
     center
     @close="close"
@@ -9,22 +9,20 @@
       class="md-accent md-size-2x"
       v-text="'error_outline'"
     />
-    <p slot="body" v-text="`${error.type} - ${error.message}`" />
+    <p slot="body" v-text="error.message" />
   </modal>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Modal from '@/components/Modal'
 
 export default {
   name: 'ErrorModal',
   components: { Modal },
   computed: {
-    ...mapGetters({
-      anyErrors: 'anyErrors',
-      error: 'firstError'
-    })
+    error () {
+      return this.$store.getters.firstErrorOfType('generic')
+    }
   },
   methods: {
     close () {

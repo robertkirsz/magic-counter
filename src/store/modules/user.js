@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import * as types from '@/store/mutation-types'
-import { firebaseSignIn, firebaseSignUp, firebaseSignOut, firebaseProviderSignIn } from '@/firebase'
+import { firebaseGetData, updateUserData, firebaseSignIn, firebaseSignUp, firebaseSignOut, firebaseProviderSignIn } from '@/firebase'
 import _get from 'lodash/get'
+
+const debug = true
 
 const getInitialState = () => ({
   // REQUESTS
@@ -10,6 +12,7 @@ const getInitialState = () => ({
   signingOut: false,
   signingInProvider: false,
   signingInProviderName: '',
+  firebaseAuthentication: false,
   // TODO: move above to the requests module maybe?
   // STATUSES
   signedIn: false,
@@ -23,7 +26,8 @@ const getInitialState = () => ({
   lastLogin: null,
   displayName: '',
   email: '',
-  photoURL: ''
+  photoURL: '',
+  settings: {}
 })
 
 const state = getInitialState()
@@ -84,19 +88,88 @@ const mutations = {
     state.signingInProvider = false
     state.signingInProviderName = ''
   },
+  [types.FIREBASE_AUTHENTICATION_REQUEST] (state) {
+    state.firebaseAuthentication = true
+  },
+  [types.FIREBASE_AUTHENTICATION_RESPONSE] (state) {
+    state.firebaseAuthentication = false
+  },
   [types.SAVE_USER] (state, user) {
-    console.warn('user', user)
     state.displayName = user.displayName
     state.email = user.email
     state.photoURL = user.photoURL
     state.authRequestPending = false
     state.signedIn = true
+  },
+  [types.LOAD_USER_SETTINGS] (state, settings) {
+    state.settings = settings
   }
 }
 
 const actions = {
-  showError ({ commit }, { type, message }) {
-    commit(types.SHOW_ERROR, { error: { type, message } })
+  async firebaseAuthentication ({ commit }, firebaseUser) {
+    if (debug) console.info('Authentication state has changed')
+    // Show spinner
+    commit(types.FIREBASE_AUTHENTICATION_REQUEST)
+    // Get currect time
+    const now = Date.now()
+    // If user's logged in...
+    if (firebaseUser) {
+      // Get user's from Firebase auth object
+      const { uid, displayName, email, photoURL } = firebaseUser
+      if (debug) console.info('User logged in as', displayName || email)
+      // Get user's data from database
+      const usersDataFromDatabase = await firebaseGetData('Users', uid)
+      // Create empty user data object
+      let user = {}
+      // If user's data don't exists in database (this is his first time logging in)...
+      if (!usersDataFromDatabase.success) {
+        if (debug) console.info('No user data in the database')
+        // Gather user's data from Firebase authentication
+        user = {
+          uid,
+          displayName,
+          email,
+          photoURL,
+          lastLogin: now,
+          createdOn: now
+        }
+      } else {
+        if (debug) console.info('Got user\'s data from the database')
+        user = {
+          ...usersDataFromDatabase.data,
+          lastLogin: now
+        }
+
+        /* TODO
+        // Check if user is an admin
+        const userIsAdmin = await firebaseGetData('Admins', uid)
+        if (userIsAdmin.success) user.admin = true
+
+        // Apply user's setting if he has any stored
+        _get(usersDataFromDatabase, 'data.settings') &&
+          commit(types.LOAD_USER_SETTINGS, usersDataFromDatabase.data.settings)
+        */
+      }
+
+      // Save user's data in Firebase and in store
+      const updateUserDataResponse = await updateUserData(user)
+      if (updateUserDataResponse.success) {
+        if (debug) console.info('User\'s data:', user)
+        commit(types.SAVE_USER, user)
+      } else if (updateUserDataResponse.error) {
+        commit(types.SHOW_ERROR, {
+          type: 'firebase/auth',
+          message: updateUserDataResponse.error
+        })
+      }
+
+    // If user's not logged in or logged out...
+    } else {
+      // Log that into console
+      if (debug) console.info('No user')
+    }
+    commit(types.FIREBASE_AUTHENTICATION_RESPONSE)
   },
   async signIn ({ commit, getters }, { email, password }) {
     // Return if request is pending
@@ -141,12 +214,11 @@ const actions = {
     commit(types.SIGN_OUT_REQUEST)
     // Sign user out of Firebase
     const firebaseSignOutResponse = await firebaseSignOut()
-    console.warn('firebaseSignOutResponse', firebaseSignOutResponse)
     // Display errors if we get any
     if (firebaseSignOutResponse.error) {
       commit(types.SHOW_ERROR, {
         type: 'generic',
-        message: `There was a problem with signing out. This is what we know: ${firebaseSignOutResponse.error}`
+        message: `There was a problem while signing out. This is what we know: ${firebaseSignOutResponse.error}`
       })
     } else {
       commit(types.SIGN_OUT_SUCCESS)
@@ -169,15 +241,6 @@ const actions = {
     } else {
       commit(types.SIGN_IN_PROVIDER_SUCCESS)
     }
-  },
-  saveUser ({ commit }, user) {
-    commit(types.SAVE_USER, user)
-  },
-  signOutSuccess ({ commit }) {
-    commit(types.SIGN_OUT_SUCCESS)
-  },
-  loadInitialSettings ({ commit }, { settings }) {
-    console.warn('loadInitialSettings', settings)
   }
 }
 

@@ -10,3 +10,4 @@ selenium-debug.log
 .firebaserc
 database.rules.json
 firebase.json
+firebase-debug.log

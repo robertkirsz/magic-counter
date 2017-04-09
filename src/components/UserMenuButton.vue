@@ -21,7 +21,7 @@
           v-else
           class="md-fab md-primary md-mini md-clean"
         >
-          <md-icon :md-iconset="signedIn ? 'fa fa-user' : 'fa fa-user-times'" />
+          <md-icon :md-iconset="buttonIcon" />
         </md-button>
       </md-button>
 
@@ -45,11 +45,19 @@
 export default {
   name: 'UserMenu',
   computed: {
+    firebaseAuthentication () {
+      return this.$store.state.user.firebaseAuthentication
+    },
     signedIn () {
       return this.$store.state.user.signedIn
     },
     user () {
       return this.$store.getters.user
+    },
+    buttonIcon () {
+      if (this.firebaseAuthentication) return 'fa fa-spinner fa-spin'
+      if (this.signedIn) return 'fa fa-user'
+      return 'fa fa-user-times'
     },
     buttons () {
       return [
