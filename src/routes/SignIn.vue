@@ -7,22 +7,23 @@
       <form @submit.prevent="signIn">
         <email-input
           v-model="email"
-          :showError="emailError"
-          :errorMessage="errorMessage"
+          :showError="isEmailError"
+          :errorMessage="error.message"
         />
         <password-input
           v-model="password"
-          :showError="passwordError"
-          :errorMessage="errorMessage"
+          :showError="isPasswordError"
+          :errorMessage="error.message"
         />
-        <md-button type="submit" class="md-raised md-primary">
-          {{ signInButtonText }}
-        </md-button>
-        <p v-if="genericError" class="md-warn">{{ errorMessage }}</p>
+        <md-button
+          type="submit"
+          class="md-raised md-primary"
+          v-text="signInButtonText"
+        />
       </form>
       <p>Or continue with</p>
       <social-buttons @providerChosen="signInWithProvider" />
-      <p style="margin-top: auto;">
+      <p>
         <router-link to="sign-up">Or sign up</router-link>
       </p>
     </div>
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import _includes from 'lodash/includes'
 import EmailInput from '@/components/EmailInput'
 import PasswordInput from '@/components/PasswordInput'
 import SocialButtons from '@/components/SocialButtons'
@@ -44,26 +46,17 @@ export default {
     }
   },
   computed: {
-    authRequestPending () {
-      return this.$store.state.user.authRequestPending
+    error () {
+      return this.$store.getters.firstErrorOfType('auth/')
     },
-    errorCode () {
-      return this.$store.state.user.error.code
+    isEmailError () {
+      return this.error.type === 'auth/invalid-email'
     },
-    errorMessage () {
-      return this.$store.state.user.error.message
-    },
-    emailError () {
-      return this.errorCode === 'auth/invalid-email'
-    },
-    passwordError () {
-      return this.errorCode === 'auth/wrong-password' || this.errorCode === 'auth/weak-password'
-    },
-    genericError () {
-      return this.errorCode && !this.emailError && !this.passwordError
+    isPasswordError () {
+      return _includes(['auth/wrong-password', 'auth/weak-password'], this.error.type)
     },
     signInButtonText () {
-      return this.authRequestPending ? 'Signing...' : 'Sign in'
+      return this.$store.state.user.signingIn ? 'Signing...' : 'Sign in' // TODO: replace with spinner
     }
   },
   methods: {

@@ -4,9 +4,18 @@ import { firebaseSignIn, firebaseSignUp, firebaseSignOut, firebaseProviderSignIn
 import _get from 'lodash/get'
 
 const getInitialState = () => ({
-  authRequestPending: false,
+  // REQUESTS
+  signingIn: false,
+  signingUp: false,
+  signingOut: false,
+  signingInProvider: false,
+  signingInProviderName: '',
+  // TODO: move above to the requests module maybe?
+  // STATUSES
   signedIn: false,
-  error: { code: null, message: null },
+  signedInProvider: false,
+  signedInProviderName: '',
+  // USER
   displayName: '',
   email: '',
   photoURL: ''
@@ -21,14 +30,23 @@ const getters = {
     photoURL: state.photoURL
   }),
   signedIn: ({ signedIn }) => signedIn,
-  authRequestPending: ({ authRequestPending }) => authRequestPending
+  authRequestPending: (state) => state.signingIn || state.signingUp || state.signingOut || state.signingInProvider
 }
 
 const mutations = {
-  [types.AUTH_REQUEST] (state) {
-    state.error = { code: null, message: null }
-    state.authRequestPending = true
+  [types.SIGN_IN_REQUEST] (state) {
+    state.signingIn = true
   },
+  [types.SIGN_IN_SUCCESS] (state) {
+    state.signedIn = true
+    state.signingIn = false
+  },
+  [types.SIGN_IN_FAIL] (state) {
+    state.signedIn = false
+    state.signingIn = false
+  },
+  //
+  [types.AUTH_REQUEST] () {},
   [types.AUTH_SUCCESS] (state, { user }) {
     state.displayName = user.displayName
     state.email = user.email
@@ -36,15 +54,8 @@ const mutations = {
     state.authRequestPending = false
     state.signedIn = true
   },
-  [types.AUTH_ERROR] (state, { error }) {
-    console.warn('ERROR code:', error.code, 'message:', error.message)
-    state.error = { code: error.code, message: error.message }
-    state.authRequestPending = false
-  },
-  [types.CLEAR_AUTH_ERROR] (state) {
-    state.error = { code: null, message: null }
-  },
-  [types.SIGN_IN] (state) {},
+  [types.AUTH_ERROR] () {},
+  [types.CLEAR_AUTH_ERROR] () {},
   [types.SIGN_OUT_SUCCESS] (state) {
     const reset = getInitialState()
     for (let f in state) Vue.set(state, f, reset[f])
@@ -56,21 +67,26 @@ const mutations = {
 }
 
 const actions = {
+  showError ({ commit }, { type, message }) {
+    commit(types.SHOW_ERROR, { error: { type, message } })
+  },
   async signIn ({ commit, getters }, { email, password }) {
     // Return if request is pending
     if (getters.authRequestPending) return
     // Commit mutation so we can show spinner
-    commit(types.AUTH_REQUEST)
+    commit(types.SIGN_IN_REQUEST)
     // Sign the user in in Firebase
     const firebaseSignInResponse = await firebaseSignIn(email, password)
+    console.warn('firebaseSignInResponse', firebaseSignInResponse)
     // If we got error, display it
     if (firebaseSignInResponse.error) {
-      commit(types.AUTH_ERROR, {
-        error: {
-          code: firebaseSignInResponse.response.code,
-          message: firebaseSignInResponse.response.message
-        }
+      commit(types.SIGN_IN_FAIL)
+      commit(types.SHOW_ERROR, {
+        type: firebaseSignInResponse.response.code,
+        message: firebaseSignInResponse.response.message
       })
+    } else {
+      commit(types.SIGN_IN_SUCCESS)
     }
   },
   async signUp ({ commit, getters }, { email, password }) {
@@ -83,9 +99,9 @@ const actions = {
     const firebaseSignUpResponse = await firebaseSignUp(email, password)
     // If we got error, display it
     if (firebaseSignUpResponse.error) {
-      commit(types.AUTH_ERROR, {
+      commit(types.SHOW_ERROR, {
         error: {
-          code: firebaseSignUpResponse.response.code,
+          type: firebaseSignUpResponse.response.code,
           message: firebaseSignUpResponse.response.message
         }
       })
@@ -100,8 +116,14 @@ const actions = {
     // Sign user out of Firebase
     const firebaseSignOutResponse = await firebaseSignOut()
     // Display errors if we get any
-    if (firebaseSignOutResponse.error) commit(types.AUTH_ERROR, { errorMessage: `There was a problem with signing out. This is what we know: ${firebaseSignOutResponse.error}` })
-    else commit(types.SIGN_OUT_SUCCESS)
+    if (firebaseSignOutResponse.error) {
+      commit(types.SHOW_ERROR, {
+        type: 'generic',
+        message: `There was a problem with signing out. This is what we know: ${firebaseSignOutResponse.error}`
+      })
+    } else {
+      commit(types.SIGN_OUT_SUCCESS)
+    }
   },
   async signInWithProvider ({ commit, getters }, { providerName }) {
     // TODO: test errors

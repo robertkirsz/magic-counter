@@ -4,7 +4,6 @@
     <router-view />
     <user-menu-button />
     <error-modal />
-    <button @click="addError">Add error</button>
   </div>
 </template>
 
@@ -12,7 +11,6 @@
 // TODO: remove "Animated.css" when it's no longer needed
 import { auth, firebaseGetData } from '@/firebase'
 import _get from 'lodash/get'
-import _sample from 'lodash/sample'
 import AppState from '@/components/development/AppState'
 import UserMenuButton from '@/components/UserMenuButton'
 import ErrorModal from '@/components/ErrorModal'
@@ -26,26 +24,11 @@ export default {
     this.authChange()
   },
   methods: {
-    addError () {
-      this.$store.dispatch('showError', {
-        type: _sample(['type1', 'type2', 'type3']),
-        message: _sample(['Lorem', 'Ipsum', 'Dolor'])
-      })
-
-      setTimeout(() => {
-        this.$store.dispatch('showError', {
-          type: _sample(['type1', 'type2', 'type3']),
-          message: _sample(['Lorem', 'Ipsum', 'Dolor'])
-        })
-      }, 1000)
-    },
     authChange () {
+      // TODO: move that logic to a separate file
       // When user's authentication status changes...
       auth.onAuthStateChanged(async firebaseUser => {
         if (debug) console.info('Authentication state has changed')
-
-        // Show loading message
-        this.$store.dispatch('authRequest')
 
         // Get currect time
         const now = Date.now()
@@ -97,7 +80,7 @@ export default {
         } else {
           this.$store.dispatch('noUser')
           // Log that into console
-          if (debug) console.warn('No user')
+          if (debug) console.info('No user')
         }
       })
     }

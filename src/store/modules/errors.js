@@ -3,13 +3,14 @@ import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
 import _first from 'lodash/first'
 import _last from 'lodash/last'
+import _startsWith from 'lodash/startsWith'
 import * as types from '@/store/mutation-types'
 
 /*
 error = {
   type: '',
   message: '',
-  time: 0,
+  time: Moment,
   autohide: 1000
 }
 */
@@ -25,13 +26,20 @@ const getters = {
   anyErrors: ({ all }) => all.length > 0,
   firstError: ({ all }) => _first(all),
   lastError: ({ all }) => _last(all),
-  newestError: ({ all }) => moment.max(all.map(error => error.time)),
-  oldestError: ({ all }) => moment.min(all.map(error => error.time))
+  newestError: ({ all }) => moment.max(all.map(err => err.time)),
+  oldestError: ({ all }) => moment.min(all.map(err => err.time)),
+  errorsOfType: ({ all }) => (type) => all.filter(err => _startsWith(err.type, type)),
+  firstErrorOfType: ({ all }, { errorsOfType }) => (type) => errorsOfType(type)[0] || {}
 }
 
 const mutations = {
   [types.SHOW_ERROR] (state, error) {
-    state.all.push({ ...error, time: moment() })
+    state.all.push({
+      type: 'generic',
+      time: moment(),
+      message: '',
+      ...error
+    })
   },
   [types.HIDE_ERROR] (state) {
     state.all.shift()

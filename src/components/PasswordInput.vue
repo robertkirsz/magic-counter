@@ -5,7 +5,6 @@
   >
     <label>Password</label>
     <md-input
-      type="password"
       v-bind:value="value"
       v-on:input="updateValue"
     />

@@ -24,9 +24,12 @@ export const AUTH_REQUEST = 'AUTH_REQUEST'
 export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const AUTH_ERROR = 'AUTH_ERROR'
 export const CLEAR_AUTH_ERROR = 'CLEAR_AUTH_ERROR'
-export const SIGN_IN = 'SIGN_IN'
 export const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS'
 export const NO_USER = 'NO_USER'
+
+export const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST'
+export const SIGN_IN_FAIL = 'SIGN_IN_FAIL'
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS'
 
 // GAME
 export const CREATE_GAME = 'CREATE_GAME'
