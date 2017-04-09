@@ -1,44 +1,43 @@
 <template>
-  <div class="user-menu">
-    <md-speed-dial
-      md-open="click"
-      md-direction="top"
-      class="md-fab-bottom-right button"
-      style="bottom: 8px; right: 8px;"
+  <md-speed-dial
+    md-open="click"
+    md-direction="top"
+    class="user-menu md-fab-bottom-right"
+  >
+    <md-button
+      class="main-button md-icon-button"
+      md-fab-trigger
+      style="padding: 0;"
     >
-      <md-button
-        class="md-icon-button"
-        md-fab-trigger
-        style="padding: 0;"
+      <md-avatar
+        v-if="user.photoURL"
+        style="pointer-events: none;"
       >
-        <md-avatar
-          v-if="user.photoURL"
-          style="pointer-events: none;"
-        >
-          <img :src="user.photoURL" alt="Avatar">
-        </md-avatar>
-        <md-button
-          v-else
-          class="md-fab md-primary md-mini md-clean"
-        >
-          <md-icon :md-iconset="buttonIcon" />
-        </md-button>
-      </md-button>
-
+        <img :src="user.photoURL" alt="Avatar">
+      </md-avatar>
       <md-button
-        v-for="button in buttons"
-        v-if="!button.hidden"
-        :key="button.id"
+        v-else
         class="md-fab md-primary md-mini md-clean"
-        @click.native="button.action"
       >
-        <md-icon
-          v-text="button.iconType === 'Material' ? button.icon : null"
-          :md-iconset="button.iconType === 'Font Awesome' ? `fa fa-${button.icon}` : null"
-        />
+        <md-icon :md-iconset="buttonIcon" />
       </md-button>
-    </md-speed-dial>
-  </div>
+    </md-button>
+
+    <md-button
+      v-for="button in buttons"
+      v-if="!button.hidden"
+      :key="button.id"
+      class="list-button md-fab md-primary md-mini md-clean"
+      @click.native="button.action"
+      style="position: relative;"
+    >
+      <span class="label" v-text="button.label" />
+      <md-icon
+        v-text="button.iconType === 'Material' ? button.icon : null"
+        :md-iconset="button.iconType === 'Font Awesome' ? `fa fa-${button.icon}` : null"
+      />
+    </md-button>
+  </md-speed-dial>
 </template>
 
 <script>
@@ -85,6 +84,27 @@ export default {
 
 <style scoped>
   .user-menu {
+    bottom: 8px;
+    right: 8px;
     z-index: 200;
+  }
+
+  .main-button {}
+
+  .list-button {
+    overflow: visible;
+  }
+
+  .label {
+    position: absolute;
+    right: 115%;
+    top: 50%;
+    font-size: 0.9em;
+    line-height: 1;
+    transform: translateY(-50%);
+    color: white;
+    padding: 4px;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.5);
   }
 </style>
