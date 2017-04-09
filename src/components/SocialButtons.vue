@@ -18,7 +18,7 @@ export default {
   name: 'SocialButtons',
   computed: {
     activeProviderName () {
-      return this.$store.state.user.signingInProviderName
+      return this.$store.state.session.signingInProviderName
     },
     buttons () {
       return [
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     iconset (providerName) {
-      if (providerName === this.$store.state.user.signingInProviderName) {
+      if (providerName === this.$store.state.session.signingInProviderName) {
         return 'fa fa-circle-o-notch fa-spin'
       }
 

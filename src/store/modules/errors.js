@@ -1,10 +1,10 @@
-// import Vue from 'vue'
 import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
 import _first from 'lodash/first'
 import _last from 'lodash/last'
 import _includes from 'lodash/includes'
 import _startsWith from 'lodash/startsWith'
+import _reject from 'lodash/reject'
 import * as types from '@/store/mutation-types'
 
 /* EXAMPLE
@@ -27,6 +27,7 @@ const getters = {
   anyErrors: ({ all }) => all.length > 0,
   firstError: ({ all }) => _first(all) || {},
   lastError: ({ all }) => _last(all) || {},
+  // TODO: check wha two values below appear in Vue devtools store
   newestError: ({ all }) => moment.max(all.map(err => err.time)),
   oldestError: ({ all }) => moment.min(all.map(err => err.time)),
   errorsOfType: ({ all }) => (type) => all.filter(err => _startsWith(err.type, type)),
@@ -49,6 +50,9 @@ const mutations = {
   },
   [types.HIDE_ALL_ERRORS] (state) {
     state.all = []
+  },
+  [types.HIDE_ERRORS_OF_TYPE] (state, type) {
+    state.all = _reject(state.all, error => _startsWith(error.type, type))
   }
 }
 
@@ -70,6 +74,9 @@ const actions = {
   },
   hideAllErrors ({ commit }) {
     commit(types.HIDE_ALL_ERRORS)
+  },
+  hideErrorsOfType ({ commit }, type) {
+    commit(types.HIDE_ERRORS_OF_TYPE, type)
   }
 }
 

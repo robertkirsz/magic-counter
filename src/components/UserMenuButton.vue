@@ -46,13 +46,13 @@ export default {
   name: 'UserMenu',
   computed: {
     firebaseAuthentication () {
-      return this.$store.state.user.firebaseAuthentication
+      return this.$store.state.session.firebaseAuthentication
     },
     signedIn () {
-      return this.$store.state.user.signedIn
+      return this.$store.state.session.signedIn
     },
     user () {
-      return this.$store.getters.user
+      return this.$store.state.user
     },
     buttonIcon () {
       if (this.firebaseAuthentication) return 'fa fa-spinner fa-spin'
@@ -61,8 +61,22 @@ export default {
     },
     buttons () {
       return [
-        { id: 0, label: 'Sign in', icon: 'sign-in', iconType: 'Font Awesome', action: () => this.$router.push('/sign-in'), hidden: this.signedIn },
-        { id: 1, label: 'Sign out', icon: 'sign-out', iconType: 'Font Awesome', action: () => this.$store.dispatch('signOut'), hidden: !this.signedIn }
+        {
+          id: 0,
+          label: 'Sign in',
+          icon: 'sign-in',
+          iconType: 'Font Awesome',
+          action: () => this.$router.push('/sign-in'),
+          hidden: this.signedIn
+        },
+        {
+          id: 1,
+          label: 'Sign out',
+          icon: 'sign-out',
+          iconType: 'Font Awesome',
+          action: () => this.$store.dispatch('signOut'),
+          hidden: !this.signedIn
+        }
       ]
     }
   }

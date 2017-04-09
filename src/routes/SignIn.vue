@@ -42,14 +42,14 @@ export default {
   },
   computed: {
     signedIn () {
-      return this.$store.state.user.signedIn
+      return this.$store.state.session.signedIn
     },
     ...mapGetters(['firstErrorOfType', 'isEmailError', 'isPasswordError']),
     error () {
       return this.firstErrorOfType('auth/')
     },
     signInButtonText () {
-      return this.$store.state.user.signingIn ? 'Signing...' : 'Sign in' // TODO: replace with spinner
+      return this.$store.state.session.signingIn ? 'Signing...' : 'Sign in' // TODO: replace with spinner
     }
   },
   methods: {
