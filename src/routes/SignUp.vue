@@ -1,77 +1,67 @@
 <template>
-  <transition
-    enter-active-class="animated fadeInUp"
-    leave-active-class="animated fadeOutUp"
-  >
-    <div class="container">
-      <form @submit.prevent="signUp">
-        <email-input
-          v-model="email"
-          :showError="emailError"
-          :errorMessage="errorMessage"
-        />
-        <password-input
-          v-model="password"
-          :showError="passwordError"
-          :errorMessage="errorMessage"
-        />
-        <password-input
-          v-model="repeatedPassword"
-          :showError="passwordError"
-          :errorMessage="errorMessage"
-        />
-        <md-button type="submit" class="md-raised md-primary">
-          {{ signUpButtonText }}
-        </md-button>
-        <p v-if="genericError" class="md-warn">{{ errorMessage }}</p>
-      </form>
-      <p style="margin-top: auto;">
-        <router-link to="sign-in">Sign in</router-link>
-      </p>
-    </div>
-  </transition>
+  <div class="container">
+    <form @submit.prevent="signUp" novalidate>
+      <email-input
+        v-model="email"
+        :showError="isEmailError"
+        :errorMessage="error.message"
+      />
+      <password-input
+        v-model="password"
+        :showError="isPasswordError"
+        :errorMessage="error.message"
+      />
+      <md-button
+        type="submit"
+        class="md-raised md-primary"
+        v-text="signUpButtonText"
+      />
+      </md-button>
+    </form>
+    <p>
+      <router-link to="sign-in">Sign in</router-link>
+    </p>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import EmailInput from '@/components/EmailInput'
 import PasswordInput from '@/components/PasswordInput'
 
 export default {
-  name: 'SignIn',
+  name: 'SignUp',
   components: { EmailInput, PasswordInput },
   data () {
     return {
       email: '',
-      password: '',
-      repeatedPassword: ''
+      password: ''
     }
   },
   computed: {
-    authRequestPending () {
-      return this.$store.state.user.authRequestPending
+    signedUp () {
+      return this.$store.state.session.signedUp
     },
-    errorCode () {
-      return this.$store.state.user.error.code
-    },
-    errorMessage () {
-      return this.$store.state.user.error.message
-    },
-    emailError () {
-      return this.errorCode === 'auth/invalid-email'
-    },
-    passwordError () {
-      return this.errorCode === 'auth/wrong-password'
-    },
-    genericError () {
-      return this.errorCode && !this.emailError && !this.passwordError
+    ...mapGetters(['firstErrorOfType', 'isEmailError', 'isPasswordError']),
+    error () {
+      return this.firstErrorOfType('auth/')
     },
     signUpButtonText () {
-      return this.authRequestPending ? 'Signing...' : 'Sign up'
+      return this.$store.state.session.signingUp ? 'Signing...' : 'Sign up' // TODO: replace with spinner
     }
   },
   methods: {
     signUp () {
       this.$store.dispatch('signUp', { email: this.email, password: this.password })
+    }
+  },
+  watch: {
+    signedUp (newVal, oldVal) {
+      if (!oldVal || newVal) {
+        this.email = ''
+        this.password = ''
+        this.$router.replace('/')
+      }
     }
   }
 }
@@ -79,13 +69,11 @@ export default {
 
 <style scoped>
   .container {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    position: absolute;
     width: 100%;
-    height: 100%;
     max-width: 380px;
-    background: powderblue;
     margin: 0 auto;
     padding: 24px;
   }

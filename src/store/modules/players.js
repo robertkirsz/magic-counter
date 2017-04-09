@@ -66,17 +66,21 @@ const mutations = {
   [types.REMOVE_PLAYER] ({ all }) {
     all.pop()
   },
-  [types.INCREASE_LIFE] ({ all }, payload) {
-    all.splice(payload.index, 1, payload.data)
+  [types.INCREASE_LIFE] ({ all }, { index, player, amount }) {
+    player.life += amount
+    all.splice(index, 1, player)
   },
-  [types.DECREASE_LIFE] ({ all }, payload) {
-    all.splice(payload.index, 1, payload.data)
+  [types.DECREASE_LIFE] ({ all }, { index, player, amount }) {
+    player.life -= amount
+    all.splice(index, 1, player)
   },
-  [types.ADD_POISON_COUNTER] ({ all }, payload) {
-    all.splice(payload.index, 1, payload.data)
+  [types.ADD_POISON_COUNTER] ({ all }, { index, player, amount }) {
+    player.poison -= amount
+    all.splice(index, 1, player)
   },
-  [types.REMOVE_POISON_COUNTER] ({ all }, payload) {
-    all.splice(payload.index, 1, payload.data)
+  [types.REMOVE_POISON_COUNTER] ({ all }, { index, player, amount }) {
+    player.poison -= amount
+    all.splice(index, 1, player)
   },
   [types.ADD_COMMANDER_DAMAGE] ({ all }, { player, index, commanderId, amount }) {
     player.commanderDamage[commanderId] += amount
@@ -96,8 +100,9 @@ const mutations = {
 
     all.splice(index, 1, player)
   },
-  [types.CHOOSE_COLOR] ({ all }, payload) {
-    all.splice(payload.index, 1, payload.data)
+  [types.CHOOSE_COLOR] ({ all }, { index, player, color }) {
+    player.data.color = color
+    all.splice(index, 1, player)
   }
 }
 
@@ -122,31 +127,30 @@ const actions = {
     }
   },
   increaseLife ({ commit, getters }, id, amount = 1) {
-    const player = getters.findById('players.all', id)
-    player.data.life += amount
-    commit(types.INCREASE_LIFE, player)
+    const player = getters.getPlayer(id)
+    const index = getters.getPlayerIndex(id)
+    commit(types.INCREASE_LIFE, { index, player, amount })
   },
   decreaseLife ({ commit, getters }, id, amount = 1) {
-    const player = getters.findById('players.all', id)
-    player.data.life -= amount
-    commit(types.DECREASE_LIFE, player)
+    const player = getters.getPlayer(id)
+    const index = getters.getPlayerIndex(id)
+    commit(types.DECREASE_LIFE, { index, player, amount })
   },
   addPoisonCounter ({ commit, getters }, id, amount = 1) {
-    const player = getters.findById('players.all', id)
-    player.data.poison += amount
-    commit(types.ADD_POISON_COUNTER, player)
+    const player = getters.getPlayer(id)
+    const index = getters.getPlayerIndex(id)
+    commit(types.ADD_POISON_COUNTER, { index, player, amount })
   },
   removePoisonCounter ({ commit, getters }, id, amount = 1) {
-    const player = getters.findById('players.all', id)
-    if (player.data.poison === 0) return
-    player.data.poison -= amount
-    commit(types.REMOVE_POISON_COUNTER, player)
+    const player = getters.getPlayer(id)
+    const index = getters.getPlayerIndex(id)
+    if (player.poison === 0) return
+    commit(types.REMOVE_POISON_COUNTER, { index, player, amount })
   },
   addCommanderDamage ({ commit, getters }, { id, amount = 1, commanderId }) {
     const player = getters.getPlayer(id)
     const index = getters.getPlayerIndex(id)
-    const payload = { player, index, commanderId, amount }
-    commit(types.ADD_COMMANDER_DAMAGE, payload)
+    commit(types.ADD_COMMANDER_DAMAGE, { player, index, commanderId, amount })
   },
   removeCommanderDamage ({ commit, getters }, { id, amount = 1, commanderId }) {
     const player = getters.getPlayer(id)
@@ -156,9 +160,9 @@ const actions = {
     commit(types.REMOVE_COMMANDER_DAMAGE, payload)
   },
   chooseColor ({ commit, getters }, { id, color }) {
-    const player = getters.findById('players.all', id)
-    player.data.color = color
-    commit(types.CHOOSE_COLOR, player)
+    const player = getters.getPlayer(id)
+    const index = getters.getPlayerIndex(id)
+    commit(types.CHOOSE_COLOR, { index, player, color })
   }
 }
 

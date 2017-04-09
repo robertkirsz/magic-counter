@@ -21,7 +21,7 @@
           v-else
           class="md-fab md-primary md-mini md-clean"
         >
-          <md-icon>person</md-icon>
+          <md-icon :md-iconset="buttonIcon" />
         </md-button>
       </md-button>
 
@@ -32,14 +32,10 @@
         class="md-fab md-primary md-mini md-clean"
         @click.native="button.action"
       >
-        <i
-          v-if="button.iconType === 'Font Awesome'"
-          class="md-icon md-theme-default fa"
-          :class="`fa fa-${button.icon}`"
+        <md-icon
+          v-text="button.iconType === 'Material' ? button.icon : null"
+          :md-iconset="button.iconType === 'Font Awesome' ? `fa fa-${button.icon}` : null"
         />
-        <md-icon v-if="button.iconType === 'Material'">
-          {{ button.icon }}
-        </md-icon>
       </md-button>
     </md-speed-dial>
   </div>
@@ -49,16 +45,38 @@
 export default {
   name: 'UserMenu',
   computed: {
+    firebaseAuthentication () {
+      return this.$store.state.session.firebaseAuthentication
+    },
     signedIn () {
-      return this.$store.getters.signedIn
+      return this.$store.state.session.signedIn
     },
     user () {
-      return this.$store.getters.user
+      return this.$store.state.user
+    },
+    buttonIcon () {
+      if (this.firebaseAuthentication) return 'fa fa-spinner fa-spin'
+      if (this.signedIn) return 'fa fa-user'
+      return 'fa fa-user-times'
     },
     buttons () {
       return [
-        { id: 0, label: 'Sign in', icon: 'sign-in', iconType: 'Font Awesome', action: () => this.$router.push('/sign-in'), hidden: this.signedIn },
-        { id: 1, label: 'Sign out', icon: 'sign-out', iconType: 'Font Awesome', action: () => this.$store.dispatch('signOut'), hidden: !this.signedIn }
+        {
+          id: 0,
+          label: 'Sign in',
+          icon: 'sign-in',
+          iconType: 'Font Awesome',
+          action: () => this.$router.push('/sign-in'),
+          hidden: this.signedIn
+        },
+        {
+          id: 1,
+          label: 'Sign out',
+          icon: 'sign-out',
+          iconType: 'Font Awesome',
+          action: () => this.$store.dispatch('signOut'),
+          hidden: !this.signedIn
+        }
       ]
     }
   }

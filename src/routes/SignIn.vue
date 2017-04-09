@@ -1,35 +1,32 @@
 <template>
-  <transition
-    enter-active-class="animated fadeInUp"
-    leave-active-class="animated fadeOutUp"
-  >
-    <div class="container">
-      <form @submit.prevent="signIn">
-        <email-input
-          v-model="email"
-          :showError="emailError"
-          :errorMessage="errorMessage"
-        />
-        <password-input
-          v-model="password"
-          :showError="passwordError"
-          :errorMessage="errorMessage"
-        />
-        <md-button type="submit" class="md-raised md-primary">
-          {{ signInButtonText }}
-        </md-button>
-        <p v-if="genericError" class="md-warn">{{ errorMessage }}</p>
-      </form>
-      <p>Or continue with</p>
-      <social-buttons @providerChosen="signInWithProvider" />
-      <p style="margin-top: auto;">
-        <router-link to="sign-up">Or sign up</router-link>
-      </p>
-    </div>
-  </transition>
+  <div class="container">
+    <form @submit.prevent="signIn" novalidate>
+      <email-input
+        v-model="email"
+        :showError="isEmailError"
+        :errorMessage="error.message"
+      />
+      <password-input
+        v-model="password"
+        :showError="isPasswordError"
+        :errorMessage="error.message"
+      />
+      <md-button
+        type="submit"
+        class="md-raised md-primary"
+        v-text="signInButtonText"
+      />
+    </form>
+    <p>Or continue with</p>
+    <social-buttons @providerChosen="signInWithProvider" />
+    <p>
+      <router-link to="sign-up">Or sign up</router-link>
+    </p>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import EmailInput from '@/components/EmailInput'
 import PasswordInput from '@/components/PasswordInput'
 import SocialButtons from '@/components/SocialButtons'
@@ -44,26 +41,15 @@ export default {
     }
   },
   computed: {
-    authRequestPending () {
-      return this.$store.state.user.authRequestPending
+    signedIn () {
+      return this.$store.state.session.signedIn
     },
-    errorCode () {
-      return this.$store.state.user.error.code
-    },
-    errorMessage () {
-      return this.$store.state.user.error.message
-    },
-    emailError () {
-      return this.errorCode === 'auth/invalid-email'
-    },
-    passwordError () {
-      return this.errorCode === 'auth/wrong-password' || this.errorCode === 'auth/weak-password'
-    },
-    genericError () {
-      return this.errorCode && !this.emailError && !this.passwordError
+    ...mapGetters(['firstErrorOfType', 'isEmailError', 'isPasswordError']),
+    error () {
+      return this.firstErrorOfType('auth/')
     },
     signInButtonText () {
-      return this.authRequestPending ? 'Signing...' : 'Sign in'
+      return this.$store.state.session.signingIn ? 'Signing...' : 'Sign in' // TODO: replace with spinner
     }
   },
   methods: {
@@ -72,6 +58,15 @@ export default {
     },
     signInWithProvider (providerName) {
       this.$store.dispatch('signInWithProvider', { providerName })
+    }
+  },
+  watch: {
+    signedIn (newVal, oldVal) {
+      if (!oldVal || newVal) {
+        this.email = ''
+        this.password = ''
+        this.$router.replace('/')
+      }
     }
   }
 }
