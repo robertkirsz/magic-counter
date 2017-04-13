@@ -75,7 +75,7 @@ const mutations = {
     all.splice(index, 1, player)
   },
   [types.ADD_POISON_COUNTER] ({ all }, { index, player, amount }) {
-    player.poison -= amount
+    player.poison += amount
     all.splice(index, 1, player)
   },
   [types.REMOVE_POISON_COUNTER] ({ all }, { index, player, amount }) {
