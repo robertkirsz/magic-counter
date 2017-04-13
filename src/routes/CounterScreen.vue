@@ -8,25 +8,21 @@
         <player :player="props.item" />
       </template>
     </tiles>
-    <!-- <settings-menu /> -->
-    <main-menu-button />
+    <main-menu />
     <transition
       enter-active-class="fadeIn"
       leave-active-class="fadeOut"
     >
       <router-view />
     </transition>
-    <!-- <modify-players /> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Tiles from '@/components/layout/Tiles'
-import SettingsMenu from '@/components/SettingsMenu'
 import Player from '@/components/Player'
-import ModifyPlayers from '@/components/development/ModifyPlayers'
-import MainMenuButton from '@/components/MainMenuButton'
+import MainMenu from '@/components/MainMenu'
 
 const colors = {
   white: ['#FC9700', '#FFE292'],
@@ -52,7 +48,7 @@ const directions = {
 
 export default {
   name: 'CounterScreen',
-  components: { Tiles, SettingsMenu, Player, ModifyPlayers, MainMenuButton },
+  components: { Tiles, Player, MainMenu },
   computed: {
     ...mapGetters(['players', 'playersColors', 'numberOfPlayers']),
     backgroundGradients () {

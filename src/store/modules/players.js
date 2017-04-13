@@ -101,7 +101,7 @@ const mutations = {
     all.splice(index, 1, player)
   },
   [types.CHOOSE_COLOR] ({ all }, { index, player, color }) {
-    player.data.color = color
+    player.color = color
     all.splice(index, 1, player)
   }
 }

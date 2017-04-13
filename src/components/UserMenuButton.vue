@@ -7,18 +7,12 @@
     <md-button
       class="main-button md-icon-button"
       md-fab-trigger
-      style="padding: 0;"
     >
-      <md-avatar
-        v-if="user.photoURL"
-        style="pointer-events: none;"
-      >
+      <md-avatar v-if="user.photoURL" class="avatar">
         <img :src="user.photoURL" alt="Avatar">
       </md-avatar>
-      <md-button
-        v-else
-        class="md-fab md-primary md-mini md-clean"
-      >
+      <md-button v-else class="md-fab md-primary md-mini md-clean">
+        <md-icon md-icon-morph>close</md-icon>
         <md-icon :md-iconset="buttonIcon" />
       </md-button>
     </md-button>
@@ -41,6 +35,8 @@
 </template>
 
 <script>
+// TODO: add icon morph to avatar button
+
 export default {
   name: 'UserMenu',
   computed: {
@@ -75,6 +71,14 @@ export default {
           iconType: 'Font Awesome',
           action: () => this.$store.dispatch('signOut'),
           hidden: !this.signedIn
+        },
+        {
+          id: 2,
+          label: 'Live game',
+          icon: 'gamepad',
+          iconType: 'Font Awesome',
+          action: () => this.$router.push('/live'),
+          hidden: !this.signedIn
         }
       ]
     }
@@ -89,7 +93,13 @@ export default {
     z-index: 200;
   }
 
-  .main-button {}
+  .avatar {
+    pointer-events: none;
+  }
+
+  .main-button {
+    padding: 0;
+  }
 
   .list-button {
     overflow: visible;
@@ -97,14 +107,14 @@ export default {
 
   .label {
     position: absolute;
-    right: 115%;
     top: 50%;
+    right: 115%;
+    padding: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
     font-size: 0.9em;
     line-height: 1;
-    transform: translateY(-50%);
     color: white;
-    padding: 4px;
-    border-radius: 2px;
-    background: rgba(0, 0, 0, 0.5);
+    transform: translateY(-50%);
   }
 </style>
