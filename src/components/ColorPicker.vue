@@ -11,7 +11,7 @@
           :key="mana"
           class="md-whiteframe-10dp"
           :class="mana"
-          :src="`static/mana/${mana}.svg`"
+          :src="require(`../assets/mana/${mana}.svg`)"
           alt="Mana symbol"
           @click="chooseColor({ id: playerId, color: mana })"
           :disabled="playersColors.includes(mana)"

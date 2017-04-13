@@ -128,9 +128,8 @@ export default {
       justify-content: flex-start;
       padding: 4px 8px;
       transition: background 0.3s;
-      &.md-active {
-        background: rgba(0, 0, 0, 0.1);
-      }
+      &.md-active { background: rgba(0, 0, 0, 0.1); }
+      .md-icon-button { margin: 0; }
     }
   }
 </style>

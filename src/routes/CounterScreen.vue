@@ -52,7 +52,7 @@ export default {
   computed: {
     ...mapGetters(['players', 'playersColors', 'numberOfPlayers']),
     backgroundGradients () {
-      let backgroundImageValues = 'url("static/background.png"), linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25))'
+      let backgroundImageValues = `url("${require('../assets/background.png')}"), linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25))`
       const direction = this.numberOfPlayers > 2 ? 'moreThanTwo' : 'upToTwo'
       const spread = this.numberOfPlayers > 2 ? '50%' : '65%'
 
