@@ -87,22 +87,22 @@ export default {
 </script>
 
 <style lang="scss">
-.player {
-  flex: 1;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  color: rgba(0, 0, 0, 0.5);
-  position: relative;
-  max-height: 50vh;
-  .other {
-    flex: none;
+  .player {
+    flex: 1;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    width: 100%;
-    padding-bottom: 0.5em;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    max-height: 50vh;
+    .other {
+      flex: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      width: 100%;
+      padding-bottom: 0.5em;
+    }
   }
-}
 </style>

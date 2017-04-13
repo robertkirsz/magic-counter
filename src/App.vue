@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <app-state /> -->
     <router-view />
     <user-menu-button />
     <error-modal />
@@ -10,13 +9,12 @@
 <script>
 // TODO: remove "Animated.css" when it's no longer needed
 import { auth } from '@/firebase'
-import AppState from '@/components/development/AppState'
 import UserMenuButton from '@/components/UserMenuButton'
 import ErrorModal from '@/components/ErrorModal'
 
 export default {
   name: 'App',
-  components: { AppState, UserMenuButton, ErrorModal },
+  components: { UserMenuButton, ErrorModal },
   mounted () {
     this.authChange()
   },
