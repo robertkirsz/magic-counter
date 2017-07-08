@@ -21,6 +21,7 @@
 </template>
 
 <script>
+// TODO: remove this file (for it's used in testing as a reference)
 export default {
   name: 'hello',
   data () {

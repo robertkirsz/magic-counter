@@ -1,5 +1,5 @@
 <!--
-  This component creates a space for each player.
+  This component creates a space for each player
 -->
 
 <template>
@@ -18,22 +18,20 @@ import Tile from '@/components/layout/Tile'
 
 export default {
   name: 'Tiles',
-  props: ['items', 'style'],
+  props: ['items'],
   components: { Tile },
-  computed: {
-    ...mapGetters(['numberOfPlayers'])
-  }
+  computed: mapGetters(['numberOfPlayers'])
 }
 </script>
 
 <style scoped>
-.tiles {
-  flex: 1;
-  display: flex;
-  flex-flow: column-reverse wrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
+  .tiles {
+    flex: 1;
+    display: flex;
+    flex-flow: column-reverse wrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
 </style>

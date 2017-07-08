@@ -6,6 +6,7 @@ import DiceScreen from '@/routes/DiceScreen'
 import StatisticsScreen from '@/routes/StatisticsScreen'
 import SignIn from '@/routes/SignIn'
 import SignUp from '@/routes/SignUp'
+import LiveGame from '@/routes/LiveGame'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/sign-up',
       name: 'SignUp',
       component: SignUp
+    },
+    {
+      path: '/live',
+      name: 'LiveGame',
+      component: LiveGame
     }
   ]
 })

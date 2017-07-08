@@ -68,6 +68,21 @@ export const firebaseUpdateData = (table, id, data) => (
     .catch(response => ({ error: response.message }))
 )
 
+// 'On' listener
+export const firebaseListener = (table, id, callback) => (
+  database
+    .ref(table)
+    .child(id)
+    .on('value')
+    .then(snapshot => {
+      const data = snapshot.val()
+      callback(data
+        ? ({ success: true, data })
+        : ({ error: 'Can\'t attach database listener' })
+      )
+    })
+)
+
 // ---------- AUTHENTICATION ----------
 
 // Generic email and password sign in
@@ -99,7 +114,7 @@ export const firebaseProviderSignIn = (providerName) => (
 )
 
 // ---------- PROFILE ----------
-
+// TODO: check if needed
 export const updateProfile = userProfile => (
   auth.currentUser.updateProfile({
     displayName: userProfile.displayName,
@@ -127,6 +142,7 @@ export const updateUserData = user => {
   if (user.uid) return firebaseUpdateData('Users', user.uid, user)
 }
 
+// TODO: check if needed
 export const updateAndReturnUserSettings = settings => {
   firebaseUpdateData('Users', auth.currentUser.uid, { settings })
   return settings

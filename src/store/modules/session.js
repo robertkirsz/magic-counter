@@ -24,7 +24,7 @@ const getInitialState = () => ({
 const state = getInitialState()
 
 const getters = {
-  authRequestPending: (state) => state.signingIn || state.signingUp || state.signingOut || state.signingInProvider
+  authRequestPending: state => state.signingIn || state.signingUp || state.signingOut || state.signingInProvider
 }
 
 const mutations = {

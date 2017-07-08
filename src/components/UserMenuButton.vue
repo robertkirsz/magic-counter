@@ -27,8 +27,8 @@
     >
       <span class="label" v-text="button.label" />
       <md-icon
-        v-text="button.iconType === 'Material' ? button.icon : null"
-        :md-iconset="button.iconType === 'Font Awesome' ? `fa fa-${button.icon}` : null"
+        v-text="button.iconType === 'md' ? button.icon : null"
+        :md-iconset="button.iconType === 'fa' ? `fa fa-${button.icon}` : null"
       />
     </md-button>
   </md-speed-dial>
@@ -58,26 +58,26 @@ export default {
       return [
         {
           id: 0,
+          label: 'Live game',
+          icon: 'gamepad',
+          iconType: 'fa',
+          action: () => this.$router.push('/live'),
+          hidden: !this.signedIn
+        },
+        {
+          id: 1,
           label: 'Sign in',
           icon: 'sign-in',
-          iconType: 'Font Awesome',
+          iconType: 'fa',
           action: () => this.$router.push('/sign-in'),
           hidden: this.signedIn
         },
         {
-          id: 1,
+          id: 2,
           label: 'Sign out',
           icon: 'sign-out',
-          iconType: 'Font Awesome',
+          iconType: 'fa',
           action: () => this.$store.dispatch('signOut'),
-          hidden: !this.signedIn
-        },
-        {
-          id: 2,
-          label: 'Live game',
-          icon: 'gamepad',
-          iconType: 'Font Awesome',
-          action: () => this.$router.push('/live'),
           hidden: !this.signedIn
         }
       ]

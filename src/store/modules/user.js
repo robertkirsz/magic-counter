@@ -17,9 +17,12 @@ const getters = {}
 
 const mutations = {
   [types.SAVE_USER] (state, user) {
+    state.uid = user.uid
     state.displayName = user.displayName
     state.email = user.email
     state.photoURL = user.photoURL
+    state.createdOn = user.createdOn
+    state.lastLogin = user.lastLogin
     state.authRequestPending = false
     state.signedIn = true
   },
