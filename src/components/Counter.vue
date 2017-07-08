@@ -66,8 +66,7 @@ export default {
     style () {
       if (this.type === 'life') return false
       return {
-        fontSize: `${10 / this.divider}vmax`,
-        marginBottom: this.numberOfPlayers > 2 ? '0.5em' : 0
+        fontSize: `${10 / this.divider}vmax`
       }
     },
     enterClass () {
@@ -153,6 +152,7 @@ export default {
 
   .counter--poison,
   .counter--commander {
+    margin-top: 1rem;
     padding: 0.1em;
     font-weight: 800;
     z-index: 1;

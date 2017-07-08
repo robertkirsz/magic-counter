@@ -16,7 +16,6 @@
     <div
       class="other"
       v-if="poisonCountersVisible || commanderCountersVisible"
-      :style="style"
     >
       <counter
         v-if="poisonCountersVisible"
@@ -58,11 +57,6 @@ export default {
   props: { player: Object },
   computed: {
     ...mapGetters(['numberOfPlayers']),
-    style () {
-      return {
-        marginTop: this.numberOfPlayers > 2 ? '1em' : 0
-      }
-    },
     commanders () {
       return this.$store.getters.otherPlayers(this.player.id)
     },
@@ -102,7 +96,7 @@ export default {
       flex-wrap: wrap;
       justify-content: space-around;
       width: 100%;
-      padding-bottom: 0.5em;
+      margin-top: 1rem;
     }
   }
 </style>
