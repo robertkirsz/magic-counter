@@ -5,7 +5,7 @@ import { firebaseGetData, firebaseSetData, firebaseListener } from '@/firebase'
 const getInitialState = () => ({
   creating: false,
   destroying: false,
-  game: null
+  gameData: null
 })
 
 const state = getInitialState()
@@ -33,12 +33,16 @@ const mutations = {
     state.destroying = false
   },
   [types.SYNC_LIVE_GAME] (state, game) {
-    state.game = game
+    state.gameData = game
   }
 }
 
+// TODO: on refresh use should rejoin his game
+// TODO: user should ony be able to destroy his game
+// TODO: user should only be able to create one game or take part in one game
+
 const actions = {
-  async createGame ({ commit, getters }, gameName) {
+  async createLiveGame ({ commit, getters }, gameName) {
     commit(types.CREATE_LIVE_GAME_REQUEST)
 
     // Prepare game data
@@ -67,10 +71,13 @@ const actions = {
       })
 
     // Add database listener on that game data
-    firebaseListener('LiveGames', gameName, response => {
-      if (response.success) commit(types.SYNC_LIVE_GAME, response.data)
-      if (response.error) commit(types.SHOW_ERROR, { message: 'Error while synchronising the game: ' + response.error })
-    })
+    firebaseListener('LiveGames', gameName, data => commit(types.SYNC_LIVE_GAME, data))
+  },
+  joinLiveGame () {},
+  async destroyLiveGame ({ commit, state }) {
+    commit(types.DESTROY_LIVE_GAME_REQUEST)
+    await firebaseSetData('LiveGames', state.gameData.name, null)
+    commit(types.DESTROY_LIVE_GAME_SUCCESS)
   }
 }
 

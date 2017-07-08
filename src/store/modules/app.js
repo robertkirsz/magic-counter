@@ -1,5 +1,7 @@
 import * as types from '@/store/mutation-types'
 
+// TODO: rename to "localGame"?
+
 const initialState = {
   settingsMenuOpened: false,
   poisonCountersVisible: false,
