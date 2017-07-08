@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import * as types from '@/store/mutation-types'
-import { firebaseUpdateData, firebaseListener } from '@/firebase'
+import { firebaseUpdateData } from '@/firebase'
 
 const getInitialState = () => ({
   isLive: false,
@@ -41,10 +41,8 @@ const actions = {
   createGame ({ commit }) {
     commit(types.CREATE_LIVE_GAME_REQUEST)
 
-    firebaseListener
-
     firebaseUpdateData('LiveGames', this.userId, { name: 'Test' })
-      .then(response => commit(types.CREATE_LIVE_GAME_REQUEST, response)
+      .then(response => commit(types.CREATE_LIVE_GAME_REQUEST, response))
       .catch(error => console.log('error', error))
   }
 }
