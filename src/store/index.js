@@ -4,7 +4,8 @@ import Vuex from 'vuex'
 
 import app from './modules/app'
 import players from './modules/players'
-import game from './modules/game'
+// import game from './modules/game'
+import liveGame from './modules/liveGame'
 import user from './modules/user'
 import errors from './modules/errors'
 import session from './modules/session'
@@ -18,7 +19,8 @@ export default new Vuex.Store({
   modules: {
     app,
     players,
-    game,
+    // game,
+    liveGame,
     user,
     errors,
     session

@@ -13,7 +13,13 @@ const getInitialState = () => ({
 
 const state = getInitialState()
 
-const getters = {}
+const getters = {
+  getUser: state => ({
+    id: state.uid,
+    name: state.displayName || 'John Doe',
+    picture: state.photoURL || 'https://placebear.com/100/100'
+  })
+}
 
 const mutations = {
   [types.SAVE_USER] (state, user) {

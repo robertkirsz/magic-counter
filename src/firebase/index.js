@@ -83,8 +83,7 @@ export const firebaseListener = (table, id, callback) => (
   database
     .ref(table)
     .child(id)
-    .on('value')
-    .then(snapshot => {
+    .on('value', snapshot => {
       const data = snapshot.val()
       callback(data
         ? ({ success: true, data })
