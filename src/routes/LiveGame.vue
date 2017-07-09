@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div v-if="userSignedIn" class="content">
     <div v-if="!liveGame">
       <md-input-container>
         <md-input v-model="createGameName"></md-input>
@@ -26,15 +26,15 @@
       </p>
       <md-button
         class="md-raised md-accent"
-        @click.native="destroyLiveGame"
-        v-text="'Destroy'"
+        @click.native="exitGame"
+        v-text="userIsOwner ? 'Destroy' : 'Leave'"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'LiveGame',
@@ -42,11 +42,20 @@ export default {
     createGameName: '',
     joinGameName: ''
   }),
-  mounted () { console.log('this.liveGame', this.liveGame) },
-  computed: mapState({
-    liveGame: state => state.liveGame.gameData
-  }),
-  methods: mapActions(['createLiveGame', 'joinLiveGame', 'destroyLiveGame'])
+  computed: {
+    ...mapState({
+      liveGame: state => state.liveGame.gameData,
+      userSignedIn: state => state.session.signedIn
+    }),
+    ...mapGetters(['userIsOwner'])
+  },
+  methods: {
+    ...mapActions(['createLiveGame', 'joinLiveGame', 'destroyLiveGame', 'leaveLiveGame']),
+    exitGame () {
+      if (this.userIsOwner) this.destroyLiveGame()
+      else this.leaveLiveGame()
+    }
+  }
 }
 </script>
 

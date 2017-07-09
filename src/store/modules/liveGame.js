@@ -6,12 +6,15 @@ const getInitialState = () => ({
   creating: false,
   joining: false,
   destroying: false,
+  leaving: false,
   gameData: null
 })
 
 const state = getInitialState()
 
-const getters = {}
+const getters = {
+  userIsOwner: (state, getters, rootState, rootGetters) => state.gameData && state.gameData.owner.id === rootGetters.getUser.id
+}
 
 const mutations = {
   // Create game
@@ -45,6 +48,18 @@ const mutations = {
   [types.DESTROY_LIVE_GAME_FAIL] (state) {
     state.destroying = false
   },
+  // Leave game
+  [types.LEAVE_LIVE_GAME_REQUEST] (state) {
+    state.leaving = true
+  },
+  [types.LEAVE_LIVE_GAME_SUCCESS] (state) {
+    const reset = getInitialState()
+    for (let f in state) Vue.set(state, f, reset[f])
+  },
+  [types.LEAVE_LIVE_GAME_FAIL] (state) {
+    state.leaving = false
+  },
+  // Listener
   [types.SYNC_LIVE_GAME] (state, game) {
     state.gameData = game
   }
@@ -52,6 +67,7 @@ const mutations = {
 
 // TODO: on refresh user should rejoin his game
 // TODO: perhaps if user leaves his game, ownership shoul be passed on to another player?
+// TODO: add "off" listener when user leaves or destroys a game
 
 const actions = {
   async createLiveGame ({ commit, getters }, gameName) {
@@ -133,11 +149,34 @@ const actions = {
   },
   async destroyLiveGame ({ commit, state, getters }) {
     // Stop if there is no game data or if the user is not that game's owner
-    if (!state.gameData || state.gameData.owner.id !== getters.getUser.id) return
+    if (!state.gameData || !getters.userIsOwner) return
 
     commit(types.DESTROY_LIVE_GAME_REQUEST)
     await firebaseSetData('LiveGames', state.gameData.name, null)
     commit(types.DESTROY_LIVE_GAME_SUCCESS)
+  },
+  leaveLiveGame ({ commit, state, getters, rootGetters }) {
+    // Stop if there is no game data or if the user is that game's owner
+    if (!state.gameData || getters.userIsOwner) return
+
+    // Start request
+    commit(types.LEAVE_LIVE_GAME_REQUEST)
+
+    // Prepare game data (remove user from the "players" array)
+    const gameData = {
+      ...state.gameData,
+      players: state.gameData.players.filter(p => p.id !== rootGetters.getUser.id)
+    }
+
+    // Update game data in the database
+    firebaseUpdateData('LiveGames', state.gameData.name, gameData)
+      // Finish request
+      .then(response => commit(types.LEAVE_LIVE_GAME_SUCCESS, response))
+      // Show error if thrown
+      .catch(error => {
+        commit(types.LEAVE_LIVE_GAME_FAIL)
+        commit(types.SHOW_ERROR, { message: 'Error while leaving a game: ' + error })
+      })
   }
 }
 
