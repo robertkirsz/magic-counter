@@ -68,8 +68,11 @@ const mutations = {
 // TODO: on refresh user should rejoin his game
 // TODO: perhaps if user leaves his game, ownership shoul be passed on to another player?
 // TODO: add "off" listener when user leaves or destroys a game
+// localStorage.setItem('MtgCounterGameState', JSON.stringify(state))
+// let savedGameState = JSON.parse(localStorage.getItem('MtgCounterGameState'))
 
 const actions = {
+  rejoinLiveGame () {},
   async createLiveGame ({ commit, getters }, gameName) {
     // Stop if user already is taking part in a live game
     if (state.gameData) return
